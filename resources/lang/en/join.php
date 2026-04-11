@@ -1,0 +1,107 @@
+<?php
+
+/**
+ * Author: Kanatas Dimitrios (labschool.gr)
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ **/
+
+return [
+    // join.blade.php
+    'app_title' => 'Knowledge Assessment App',
+    'description' => "Enter the quiz code provided by your teacher to begin your knowledge assessment.\nNo account registration is required.",
+    'quiz_code' => 'Quiz Code',
+    'start_button' => 'Start',
+    'teacher_area' => 'Educator Area',
+    'quiz_code_error' => 'The code does not match any active quiz.',
+
+    // student.blade.php
+    'student_code_title' => 'Enter Student Code',
+    'for_quiz' => 'For the quiz titled:',
+    'description_label' => 'Description:',
+    'student_code_label' => 'Exam PIN (4 digits):',
+    'start_quiz' => 'Start Quiz',
+    'placeholder_code' => '----',
+
+    // start.blade.php
+    'preparing_quiz' => 'Starting Quiz',
+    'student' => 'Participant:',
+    'starting_in' => ':seconds',
+    'starting_shortly_in' => 'Starting in :seconds',
+    'countdown_unit' => 'SEC',
+    'get_ready' => 'Please wait a few seconds while we prepare your quiz.',
+
+    // question.blade.php
+    'access_denied' => 'Access to this question is not allowed.',
+    'invalid_question' => 'The question is not valid.',
+    'question_number' => 'Question :current of :total',
+    'review_skipped_question' => 'Skipped question to answer',
+    'submit_answer' => 'Submit Answer',
+    'submit_quiz' => 'Submit Quiz',
+    'skip_question' => 'Skip Question',
+    'select_instruction' => 'You must select exactly :count answer|You must select exactly :count answers',
+    'selected' => 'You selected:',
+    'time_remaining' => 'Time remaining:',
+    'question_image_alt' => 'Question image',
+
+    // result.blade.php
+    'quiz_completed' => 'Assessment Completed!',
+    'congrats' => 'Congratulations, :name!',
+    'quiz_success' => 'The quiz has been completed and your score has been recorded.',
+    'learning_mode_start' => 'You are starting the quiz in learning mode.',
+    'learning_mode_check_answer' => 'Check answer',
+    'learning_mode_continue' => 'Next question',
+    'learning_mode_finish' => 'Finish learning session',
+    'learning_mode_feedback_correct' => 'Correct. The highlighted answer is the right one.',
+    'learning_mode_feedback_wrong' => 'Not quite. The highlighted answer shows the correct choice.',
+    'learning_mode_feedback_correct_plural' => 'Correct. The highlighted answers are the right ones.',
+    'learning_mode_feedback_wrong_plural' => 'Not quite. The highlighted answers show the correct choices.',
+    'learning_mode_result_message' => 'The learning session has been completed. No attempt, score, or statistics were stored.',
+    'results' => 'Results',
+    'correct_answers' => 'Correct answers: :correct out of :total',
+    'score_percentage' => 'Score: :score%',
+    'total_questions_note' => 'Total questions: :total',
+    'pass_threshold_note' => 'Passing threshold: :required%',
+    'passed' => 'Well done! You passed with a score of :score% (Required: :required%)',
+    'failed' => 'Unfortunately, you did not pass. You scored :score%, but at least :required% is required.',
+    'download_pdf' => 'Download Results',
+    'pdf_unavailable' => 'Download Results not available',
+    'pdf_note' => '* PDF download is not available for guest users.',
+    'uni_module_header' => 'LAB EXAMINATION FOR THE MODULE "INTRODUCTION TO GOVERNANCE"',
+    'back_to_home' => 'Back to Home',
+
+    // QuizController.php (messages from session)
+    'missing_code' => 'You have not entered a quiz code.',
+    'quiz_not_found' => 'The quiz was not found.',
+    'guests_not_allowed' => 'This quiz does not allow guest participation.',
+    'guest_name' => 'Guest',
+    'guest_start' => 'You are starting as a guest without tracking.',
+    'student_not_found' => 'The participant has not been registered by the educator.',
+    'max_attempts_exceeded' => 'You have used all allowed attempts for this quiz.',
+    'resume_attempt' => 'You are continuing your previous quiz attempt.',
+    'new_attempt' => 'You are starting a new quiz attempt.',
+    'no_session' => 'You are not connected to any quiz.',
+    'cannot_resume' => 'This attempt cannot be resumed. Please start again.',
+    'previous_attempt_expired' => 'Your previous attempt has expired. Please try again.',
+    'no_questions' => 'There are no questions in this quiz.',
+    'attempt_not_found' => 'The attempt was not found.',
+    'active_quiz_conflict_title' => 'Another quiz is already active in this browser.',
+    'active_quiz_conflict_message' => 'This tab belongs to an older quiz session. For safety, only one active quiz can run in the same browser at a time.',
+    'active_quiz_conflict_current' => 'Current active quiz: :title',
+    'active_quiz_conflict_participant' => 'Participant: :name',
+    'active_quiz_conflict_tip' => 'If you need to work on two quizzes at the same time, use another browser or a private window.',
+    'continue_active_quiz' => 'Continue Current Quiz',
+    'must_select_exactly_n' => 'You must select exactly :count answer|You must select exactly :count answers',
+    'unanswered_questions_warning' => 'There are unanswered questions. All must be answered before submitting.',
+    'quiz_inactive' => 'The quiz is not active.',
+    'personal_link_start' => 'You are starting the quiz from a personalized link.',
+    'student_pin_access_disabled' => 'This quiz only allows registered participants through personalized links.',
+    'personal_link_access_disabled' => 'This quiz only allows registered participants through quiz code and exam PIN.',
+    'public_pool_full' => 'The shared anonymous pool is currently full. Please try again later.',
+    'public_pool_start' => 'You are starting through the shared anonymous pool.',
+    'public_pool_slot_expired' => 'Your temporary anonymous slot expired before submission. Please start again.',
+    'retry_quiz' => 'Try Again',
+    'participant_notice' => 'This content was created by the quiz owner. The choices you submit are sent to the quiz owner. Cookies are used for the examination process.',
+    'participant_notice_guest' => 'This content was created by the quiz owner. Cookies are used for the examination process.',
+    'participant_notice_aria' => 'Quiz participation notice',
+    'participant_notice_dismiss' => 'Hide participation notice',
+];
