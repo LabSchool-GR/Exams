@@ -507,6 +507,18 @@ h1, h2, h3, h4, h5, h6 {
     min-height: 100%;
 }
 
+.dashboard-resource-link__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+}
+
+.dashboard-resource-link__content strong,
+.dashboard-resource-link__content small {
+    display: block;
+}
+
 .dashboard-resource-link:hover {
     color: var(--dashboard-primary-deep);
     border-color: rgba(26, 106, 143, 0.24);

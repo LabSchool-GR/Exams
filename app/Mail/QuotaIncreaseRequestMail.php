@@ -18,7 +18,10 @@ class QuotaIncreaseRequestMail extends Mailable implements ShouldQueue
 
     public function build(): self
     {
-        return $this->subject('[EXAMS] ' . $this->payload['resource_label'] . ' request from ' . $this->payload['user_name'])
+        return $this->subject(__('emails.quota_request.subject', [
+            'resource' => $this->payload['resource_label'],
+            'user' => $this->payload['user_name'],
+        ]))
             ->view('emails.quota_request');
     }
 }

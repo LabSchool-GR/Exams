@@ -13,6 +13,7 @@ use App\Http\Controllers\Concerns\AuthorizesQuizOwnership;
 use App\Models\Category;
 use App\Models\Quiz;
 use App\Models\QuizTemplate;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -29,6 +30,13 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class QuizController extends Controller
 {
     use AuthorizesQuizOwnership;
+
+    private function currentUser(): ?User
+    {
+        $user = Auth::user();
+
+        return $user instanceof User ? $user : null;
+    }
 
     private function exampleQuizzesQuery()
     {
@@ -55,7 +63,7 @@ class QuizController extends Controller
 
     private function authorizeQuizDuplicationSource(Quiz $quiz): void
     {
-        $user = Auth::user();
+        $user = $this->currentUser();
 
         if (!$user) {
             abort(403, 'Not authenticated.');
@@ -96,10 +104,10 @@ class QuizController extends Controller
 
     private function currentUserCanManageSpecialModes(): bool
     {
-        return Auth::user()?->isAdmin() ?? false;
+        return $this->currentUser()?->isAdmin() ?? false;
     }
 
-    private function availableTemplatesQuery($user)
+    private function availableTemplatesQuery(?User $user)
     {
         $query = QuizTemplate::query();
 
@@ -133,7 +141,7 @@ class QuizController extends Controller
         return true;
     }
 
-    private function availableTemplatesForUser($user)
+    private function availableTemplatesForUser(?User $user)
     {
         $databaseTemplates = $this->availableTemplatesQuery($user)
             ->orderBy('name')
@@ -159,7 +167,7 @@ class QuizController extends Controller
             ->values();
     }
 
-    private function userCanUseTemplateCode(?string $templateCode, $user): bool
+    private function userCanUseTemplateCode(?string $templateCode, ?User $user): bool
     {
         if (!is_string($templateCode) || trim($templateCode) === '') {
             return false;
@@ -176,7 +184,7 @@ class QuizController extends Controller
 
     private function creatorCanCreateQuiz(): bool
     {
-        $user = Auth::user();
+        $user = $this->currentUser();
 
         if (!$user || $user->isAdmin()) {
             return true;
@@ -192,7 +200,11 @@ class QuizController extends Controller
      */
     public function index(): View
     {
-        $user = Auth::user();
+        $user = $this->currentUser();
+
+        if (!$user) {
+            abort(403, 'Not authenticated.');
+        }
 
         $quizzesQuery = Quiz::query()
             ->where('is_system_example', false)
@@ -222,7 +234,7 @@ class QuizController extends Controller
         }
 
         $categories = Category::orderBy('name')->get();
-        $templates = $this->availableTemplatesForUser(Auth::user());
+        $templates = $this->availableTemplatesForUser($this->currentUser());
 
         return view('quizzes.create', compact('categories', 'templates'));
     }
@@ -236,7 +248,7 @@ class QuizController extends Controller
 
         $categories = Category::orderBy('name')->get();
         $questionCount = $quiz->questions()->count();
-        $templates = $this->availableTemplatesForUser(Auth::user());
+        $templates = $this->availableTemplatesForUser($this->currentUser());
         $isContentLocked = $quiz->hasLockedContent();
 
         return view('quizzes.edit', compact('quiz', 'categories', 'questionCount', 'templates', 'isContentLocked'));
@@ -281,7 +293,7 @@ class QuizController extends Controller
                 'string',
                 'max:50',
                 function (string $attribute, mixed $value, \Closure $fail): void {
-                    if (!$this->userCanUseTemplateCode((string) $value, Auth::user())) {
+                    if (!$this->userCanUseTemplateCode((string) $value, $this->currentUser())) {
                         $fail(__('validation.exists', ['attribute' => $attribute]));
                     }
                 },
@@ -439,7 +451,7 @@ class QuizController extends Controller
                 'string',
                 'max:50',
                 function (string $attribute, mixed $value, \Closure $fail): void {
-                    if (!$this->userCanUseTemplateCode((string) $value, Auth::user())) {
+                    if (!$this->userCanUseTemplateCode((string) $value, $this->currentUser())) {
                         $fail(__('validation.exists', ['attribute' => $attribute]));
                     }
                 },
@@ -636,7 +648,12 @@ class QuizController extends Controller
                 ->with('error', __('controllers.quiz_limit_reached'));
         }
 
-        $owner = Auth::user();
+        $owner = $this->currentUser();
+
+        if (!$owner) {
+            abort(403, 'Not authenticated.');
+        }
+
         $quiz->load(['questions.answers']);
 
         $newQuiz = DB::transaction(function () use ($quiz, $owner): Quiz {

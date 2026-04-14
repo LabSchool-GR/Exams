@@ -20,7 +20,7 @@ class AdminFeedbackAlert extends Mailable implements ShouldQueue
 
     public function build(): self
     {
-        return $this->subject('[EXAMS] New feedback submission')
+        return $this->subject(__('emails.feedback_alert.subject'))
             ->view('emails.feedback');
     }
 }

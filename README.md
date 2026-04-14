@@ -1,6 +1,6 @@
 # LabSchool Exams
 
-[![Version](https://img.shields.io/github/v/release/LabSchool-GR/Exams?display_name=tag)](https://github.com/LabSchool-GR/Exams/releases)
+[![Version](https://img.shields.io/github/v/tag/LabSchool-GR/Exams?sort=semver)](https://github.com/LabSchool-GR/Exams/tags)
 [![License](https://img.shields.io/github/license/LabSchool-GR/Exams)](https://github.com/LabSchool-GR/Exams/blob/main/LICENSE.md)
 [![CI](https://github.com/LabSchool-GR/Exams/actions/workflows/tests.yml/badge.svg)](https://github.com/LabSchool-GR/Exams/actions/workflows/tests.yml)
 
@@ -21,31 +21,52 @@ Open `http://127.0.0.1:8000` and sign in with your admin account.
 - Greek summary: [Ελληνική Παρουσίαση](#ελληνική-παρουσίαση)
 - English summary: [English Overview](#english-overview)
 - Screenshots: [Βασικές Οθόνες / Key Screenshots](#βασικές-οθόνες--key-screenshots)
+- Visual gallery page: [docs/showcase.html](docs/showcase.html)
 - Installation: [Εγκατάσταση / Installation](#εγκατάσταση--installation)
 - Operations: [Λειτουργία Παραγωγής / Production Operations](#λειτουργία-παραγωγής--production-operations)
 - Legal and privacy: [Όροι, Απόρρητο και Συμμόρφωση / Terms, Privacy and Compliance](#όροι-απόρρητο-και-συμμόρφωση--terms-privacy-and-compliance)
 
 ## Βασικές Οθόνες / Key Screenshots
 
-### 1. Quiz Join
+Πλήρης gallery σελίδα:
 
-![Quiz Join](docs/screenshots/01-join.png)
+- [docs/showcase.html](docs/showcase.html)
 
-### 2. About Page
+### 1. Registration
 
-![About](docs/screenshots/02-about.png)
+![Registration](docs/screenshots/01.register.jpg)
 
-### 3. Terms of Use
+### 2. Login
 
-![Terms](docs/screenshots/03-terms.png)
+![Login](docs/screenshots/02.login.jpg)
 
-### 4. Privacy Policy
+### 3. Dashboard
 
-![Privacy](docs/screenshots/04-privacy.png)
+![Dashboard](docs/screenshots/03.dashboard.jpg)
 
-### 5. Login
+### 4. Quizzes Management
 
-![Login](docs/screenshots/05-login.png)
+![Quizzes](docs/screenshots/04.quizzes.jpg)
+
+### 5. Public Catalogue
+
+![Catalogue](docs/screenshots/05.catalogue.jpg)
+
+### 6. Quiz Screen
+
+![Quiz](docs/screenshots/06.quiz.jpg)
+
+### 7. Quiz Q&A
+
+![Quiz Q&A](docs/screenshots/07.quiz-qa.jpg)
+
+### 8. Quiz Completion
+
+![Quiz Completion](docs/screenshots/08.quiz-fl.jpg)
+
+### 9. Join Entry
+
+![Join](docs/screenshots/join.png)
 
 ## Ελληνική Παρουσίαση
 

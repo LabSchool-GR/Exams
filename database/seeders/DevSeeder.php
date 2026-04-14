@@ -15,9 +15,9 @@ class DevSeeder extends Seeder
         }
 
         User::query()->firstOrCreate(
-            ['email' => 'dev-admin@example.test'],
+            ['email' => 'admin@labschool.sch.gr'],
             [
-                'name' => 'Dev Admin',
+                'name' => 'LabSchool Admin',
                 'password' => Hash::make('dev-password-change-me'),
                 'role' => 'admin',
                 'email_verified_at' => now(),

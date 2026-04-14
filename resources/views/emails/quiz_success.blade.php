@@ -1,19 +1,21 @@
-<p>Αγαπητέ/ή εκπαιδευτικέ,</p>
+@extends('emails.layout')
 
-<p>Ο εξεταζόμενος <strong>{{ $studentName }}</strong> ολοκλήρωσε με επιτυχία τη δοκιμασία:</p>
+@section('email_title', __('emails.quiz_success.title'))
+@section('email_intro', __('emails.quiz_success.greeting'))
 
-<ul>
-    <li><strong>Τίτλος δοκιμασίας:</strong> {{ $quizTitle }}</li>
-    <li><strong>Ποσοστό επιτυχίας:</strong> {{ $score }}%</li>
-</ul>
+@section('email_body')
+    <p style="margin: 0 0 12px;">{{ __('emails.quiz_success.lead', ['name' => $studentName]) }}</p>
 
-<p>Για περισσότερες πληροφορίες, επισκεφθείτε την εφαρμογή <strong>Αξιολόγηση Γνώσεων</strong> στον παρακάτω σύνδεσμο:</p>
+    <ul style="margin: 0 0 16px; padding-left: 18px;">
+        <li><strong>{{ __('emails.quiz_success.quiz_title_label') }}:</strong> {{ $quizTitle }}</li>
+        <li><strong>{{ __('emails.quiz_success.score_label') }}:</strong> {{ $score }}%</li>
+    </ul>
 
-<p>
-    <a href="{{ route('dashboard') }}" target="_blank">
-        {{ route('dashboard') }}
-    </a>
-</p>
+    <p style="margin: 0 0 12px;">{{ __('emails.quiz_success.more_info') }}</p>
 
-<p>Με εκτίμηση,<br>
-Η ομάδα υποστήριξης του Labschool.gr</p>
+    <p style="margin: 0 0 12px;">
+        <a href="{{ route('dashboard') }}" target="_blank" rel="noopener noreferrer">{{ __('emails.quiz_success.open_dashboard') }}</a>
+    </p>
+
+    <p style="margin: 0;">{{ __('emails.quiz_success.signature') }}</p>
+@endsection

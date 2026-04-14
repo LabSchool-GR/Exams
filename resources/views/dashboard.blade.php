@@ -230,8 +230,8 @@
                     <span class="dashboard-resource-link__icon">
                         <i class="fas fa-file-pdf"></i>
                     </span>
-                    <span>
-                        <strong>{{ __('dashboard.manual_teacher') }}</strong>
+                    <span class="dashboard-resource-link__content">
+                        <strong>{{ __('dashboard.manual_teacher') }}</strong><br>
                         <small>{{ __('dashboard.resource_manual_text') }}</small>
                     </span>
                     <i class="fas fa-arrow-right"></i>
@@ -241,8 +241,8 @@
                     <span class="dashboard-resource-link__icon">
                         <i class="fas fa-comment-dots"></i>
                     </span>
-                    <span>
-                        <strong>{{ __('dashboard.submit_feedback') }}</strong>
+                    <span class="dashboard-resource-link__content">
+                        <strong>{{ __('dashboard.submit_feedback') }}</strong><br>
                         <small>{{ __('dashboard.resource_feedback_text') }}</small>
                     </span>
                     <i class="fas fa-arrow-right"></i>

@@ -8,7 +8,9 @@ class CoreSeeder extends Seeder
 {
     public function run(): void
     {
-        // Keep this seeder intentionally minimal and idempotent.
-        // Core seeding should only include non-sensitive baseline records.
+        // Core seeding stays idempotent and includes only baseline records.
+        $this->call([
+            QuizTemplateSeeder::class,
+        ]);
     }
 }

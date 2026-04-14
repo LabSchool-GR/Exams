@@ -19,7 +19,7 @@ class AdminTeacherRegistrationAlert extends Mailable implements ShouldQueue
 
     public function build(): self
     {
-        return $this->subject('[EXAMS] New teacher registration')
+        return $this->subject(__('emails.admin_teacher_registration.subject'))
             ->view('emails.admin_teacher_registration_alert');
     }
 }
