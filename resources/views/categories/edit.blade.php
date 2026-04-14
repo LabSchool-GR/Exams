@@ -11,11 +11,8 @@
                         {{ __('quizzes.category_description') }}
                     </span>
                     <h1 class="dashboard-page-header__title">{{ $category->name }}</h1>
-                    <p class="dashboard-page-header__subtitle">{{ __('quizzes.category_edit_text') }}</p>
+                    <p class="dashboard-page-header__subtitle mw-100">{{ __('quizzes.category_edit_text') }}</p>
                 </div>
-                <a href="{{ route('categories.index') }}" class="dashboard-secondary-button">
-                    <i class="fas fa-arrow-left me-2"></i>{{ __('common.back') }}
-                </a>
             </div>
 
             @if($errors->any())
@@ -37,7 +34,11 @@
                     <input id="name" type="text" name="name" value="{{ old('name', $category->name) }}" required class="dashboard-input" placeholder="{{ __('quizzes_cards.example_math') }}">
                 </div>
 
-                <div class="dashboard-form-actions">
+                <div class="dashboard-form-actions dashboard-form-field--full">
+                    <a href="{{ route('categories.index') }}" class="dashboard-secondary-button">
+                        <i class="fas fa-arrow-left me-2"></i>{{ __('common.back') }}
+                    </a>
+
                     <button type="submit" class="dashboard-primary-button">
                         <i class="fas fa-save me-2"></i>{{ __('common.save') }}
                     </button>

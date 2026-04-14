@@ -13,10 +13,6 @@
                     <h1 class="dashboard-page-header__title">{{ __('dashboard.submit_feedback') }}</h1>
                     <p class="dashboard-page-header__text">{{ __('dashboard.resource_feedback_text') }}</p>
                 </div>
-
-                <a href="{{ route('dashboard') }}" class="btn dashboard-btn dashboard-btn--ghost">
-                    <i class="fas fa-arrow-left me-2"></i>{{ __('dashboard.back') }}
-                </a>
             </div>
 
             @if ($errors->any())
@@ -35,7 +31,7 @@
 
                 <div class="dashboard-form-group">
                     <label for="title" class="dashboard-form-label">
-                        <i class="fas fa-heading text-muted"></i>{{ __('dashboard.feedback_title') }}
+                        {{ __('dashboard.feedback_title') }}
                     </label>
                     <input type="text" name="title" id="title" class="form-control dashboard-form-control @error('title') is-invalid @enderror" required value="{{ old('title') }}">
                     @error('title')
@@ -45,7 +41,7 @@
 
                 <div class="dashboard-form-group">
                     <label for="message" class="dashboard-form-label">
-                        <i class="fas fa-message text-muted"></i>{{ __('dashboard.feedback_message') }}
+                        {{ __('dashboard.feedback_message') }}
                     </label>
                     <textarea name="message" id="message" class="form-control dashboard-form-control @error('message') is-invalid @enderror" rows="6" required>{{ old('message') }}</textarea>
                     @error('message')
@@ -53,7 +49,11 @@
                     @enderror
                 </div>
 
-                <div class="dashboard-form-actions dashboard-form-actions--end">
+                <div class="dashboard-form-actions">
+                    <a href="{{ route('dashboard') }}" class="btn dashboard-btn dashboard-btn--ghost">
+                        <i class="fas fa-arrow-left me-2"></i>{{ __('dashboard.back') }}
+                    </a>
+
                     <button type="submit" class="btn dashboard-btn dashboard-btn--primary">
                         <i class="fas fa-paper-plane me-2"></i>{{ __('dashboard.feedback_submit') }}
                     </button>

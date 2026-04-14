@@ -181,7 +181,11 @@
         </div>
     </div>
 
-    <div class="dashboard-form-actions dashboard-form-actions--end">
+    <div class="dashboard-form-actions">
+        <a href="{{ route('quizzes.questions.index', $quiz) }}" class="btn dashboard-btn dashboard-btn--ghost">
+            <i class="fas fa-arrow-left me-2"></i>{{ __('quizzes_cards.back') }}
+        </a>
+
         <button type="submit" class="btn dashboard-btn dashboard-btn--primary">
             <i class="fas fa-save me-2"></i>{{ $submitLabel }}
         </button>

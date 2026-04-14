@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Quiz;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use RuntimeException;
 
 class SharedExampleQuizSeeder extends Seeder
 {
@@ -16,14 +17,14 @@ class SharedExampleQuizSeeder extends Seeder
      */
     public function run(): void
     {
-        $admin = User::firstOrCreate(
-            ['email' => 'admin@quizapp.com'],
-            [
-                'name' => 'Admin User',
-                'password' => bcrypt('password'),
-                'role' => 'admin',
-            ]
-        );
+        $admin = User::query()
+            ->where('role', 'admin')
+            ->orderBy('id')
+            ->first();
+
+        if (!$admin) {
+            throw new RuntimeException('Demo seeding requires an admin user. Run "php artisan app:setup-admin" first.');
+        }
 
         $category = Category::firstOrCreate([
             'name' => 'Τέχνη και Πολιτισμός',

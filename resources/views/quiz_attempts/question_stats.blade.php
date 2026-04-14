@@ -12,15 +12,6 @@
                     </span>
                     <h1 class="dashboard-page-header__title">{{ $quiz->title }}</h1>
                 </div>
-
-                <div class="dashboard-form-actions">
-                    <a href="{{ route('quizzes.quiz_attempts.index', $quiz) }}" class="btn dashboard-btn dashboard-btn--ghost">
-                        <i class="fas fa-arrow-left me-2"></i>{{ __('quizzes.back_to_list_stats') }}
-                    </a>
-                    <a href="{{ route('quiz_attempts.question_stats_export', $quiz) }}" class="btn dashboard-btn dashboard-btn--primary">
-                        <i class="fas fa-file-excel me-2"></i>{{ __('quizzes.export_excel') }}
-                    </a>
-                </div>
             </div>
 
             @if (empty($stats))
@@ -61,6 +52,15 @@
                     @endforeach
                 </div>
             @endif
+
+            <div class="dashboard-form-actions mt-4">
+                <a href="{{ route('quizzes.quiz_attempts.index', $quiz) }}" class="btn dashboard-btn dashboard-btn--ghost">
+                    <i class="fas fa-arrow-left me-2"></i>{{ __('quizzes.back_to_list_stats') }}
+                </a>
+                <a href="{{ route('quiz_attempts.question_stats_export', $quiz) }}" class="btn dashboard-btn dashboard-btn--primary">
+                    <i class="fas fa-file-excel me-2"></i>{{ __('quizzes.export_excel') }}
+                </a>
+            </div>
         </section>
     </div>
 </div>

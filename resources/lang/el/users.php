@@ -23,7 +23,7 @@ return [
 
     'limits' => 'Όρια Χρήσης',
     'limits_text' => 'Οι τιμές αυτές ορίζουν πόσα quizzes, ερωτήσεις, απαντήσεις και εξεταζόμενους μπορεί να διαχειριστεί ο χρήστης.',
-    'max_quizzes' => 'Μέγιστα Quizzes',
+    'max_quizzes' => 'Μέγιστα Quizzes ανά Χρήστη',
     'max_questions_per_quiz' => 'Μέγιστες Ερωτήσεις ανά Quiz',
     'max_answers_per_question' => 'Μέγιστες Απαντήσεις ανά Ερώτηση',
     'max_students_per_quiz' => 'Μέγιστοι Εξεταζόμενοι ανά Quiz',

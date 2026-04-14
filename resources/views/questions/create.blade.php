@@ -12,10 +12,6 @@
                     </span>
                     <h1 class="dashboard-page-header__title">{{ $quiz->title }}</h1>
                 </div>
-
-                <a href="{{ route('quizzes.questions.index', $quiz) }}" class="btn dashboard-btn dashboard-btn--ghost">
-                    <i class="fas fa-arrow-left me-2"></i>{{ __('quizzes_cards.cancel') }}
-                </a>
             </div>
 
             @include('questions._form', [

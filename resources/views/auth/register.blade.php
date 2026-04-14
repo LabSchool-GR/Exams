@@ -8,12 +8,21 @@
                 <div class="dashboard-hero__panel h-100">
                     <div class="dashboard-hero__surface h-100 d-flex flex-column justify-content-center">
                         <span class="dashboard-eyebrow">
-                            <i class="fas fa-user-graduate"></i>
-                            {{ __('auth.register_button') }}
+                            <i class="fas fa-graduation-cap"></i>
+                            {{ __('navigation.app_name') }}
                         </span>
 
                         <div class="dashboard-hero__content px-0">
-                            <h1 class="dashboard-hero__title">{{ __('auth.login_panel_title') }}</h1>
+                            <h1 class="dashboard-hero__title d-flex align-items-center gap-3">
+                                <span class="d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width: clamp(5rem, 9vw, 6.4rem); height: clamp(5rem, 9vw, 6.4rem);">
+                                    <img
+                                        src="{{ asset('images/login-hero-badge.svg') }}"
+                                        alt="{{ __('navigation.app_name') }}"
+                                        style="width: 100%; height: 100%; object-fit: contain;"
+                                    >
+                                </span>
+                                <span>{{ __('auth.login_panel_title') }}</span>
+                            </h1>
                             <p class="dashboard-hero__text">{{ __('auth.login_panel_description') }}</p>
                             <p class="dashboard-hero__text">{{ __('auth.login_panel_access_note', ['domains' => config('security.registration.allowed_email_domains_display')]) }}</p>
                             <p class="dashboard-hero__text">{{ __('auth.login_panel_disclaimer') }}</p>

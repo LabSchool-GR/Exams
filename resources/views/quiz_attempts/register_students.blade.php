@@ -15,7 +15,7 @@
                 </div>
 
                 <a href="{{ route('quizzes.index') }}" class="btn dashboard-btn dashboard-btn--ghost">
-                    <i class="fas fa-arrow-left me-2"></i>{{ __('quizzes.back_to_list') }}
+                    <i class="fas fa-arrow-left me-2"></i>{{ __('quizzes.collection') }}
                 </a>
             </div>
 

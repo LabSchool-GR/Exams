@@ -1,0 +1,27 @@
+<svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LabSchool Exams badge">
+  <defs>
+    <linearGradient id="bg" x1="22" y1="18" x2="140" y2="142" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EDF6FB"/>
+      <stop offset="1" stop-color="#DCEEF8"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="45" y1="36" x2="101" y2="98" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1576A2"/>
+      <stop offset="1" stop-color="#0F5F80"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="10" y="10" width="140" height="140" rx="32" fill="url(#bg)"/>
+  <rect x="10" y="10" width="140" height="140" rx="32" stroke="#B8D3E2" stroke-width="2"/>
+
+  <rect x="40" y="30" width="80" height="94" rx="12" fill="white" stroke="#AEC9D8" stroke-width="3"/>
+  <rect x="60" y="22" width="40" height="18" rx="7" fill="url(#accent)"/>
+
+  <rect x="54" y="56" width="52" height="6" rx="3" fill="#95B8CB"/>
+  <rect x="54" y="71" width="52" height="6" rx="3" fill="#95B8CB"/>
+  <rect x="54" y="86" width="35" height="6" rx="3" fill="#95B8CB"/>
+
+  <circle cx="104" cy="100" r="20" fill="#E7F6EE" stroke="#8BC4A7" stroke-width="3"/>
+  <path d="M95 100L102 107L114 93" stroke="#1E8A5B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <path d="M30 62L42 70L58 50" stroke="#0F5F80" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+</svg>

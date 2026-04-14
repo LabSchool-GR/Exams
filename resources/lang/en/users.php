@@ -23,7 +23,7 @@ return [
 
     'limits' => 'Usage Limits',
     'limits_text' => 'These values define how many quizzes, questions, answers, and students the user can manage.',
-    'max_quizzes' => 'Maximum Quizzes',
+    'max_quizzes' => 'Maximum Quizzes per User',
     'max_questions_per_quiz' => 'Maximum Questions per Quiz',
     'max_answers_per_question' => 'Maximum Answers per Question',
     'max_students_per_quiz' => 'Maximum Students per Quiz',

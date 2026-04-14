@@ -4,19 +4,20 @@
 <div class="dashboard-shell dashboard-page-shell">
     <div class="container py-4 py-lg-5">
         <section class="dashboard-section-card dashboard-section-card--wide">
-            <div class="dashboard-page-header">
+            <div class="dashboard-page-header mb-0">
                 <div>
                     <span class="dashboard-page-header__eyebrow">
                         <i class="fas fa-folder-tree"></i>
                         {{ __('quizzes.category_description') }}
                     </span>
                     <h1 class="dashboard-page-header__title">{{ __('quizzes.category_list') }}</h1>
-                    <p class="dashboard-page-header__subtitle">{{ __('quizzes.category_help_text') }}</p>
                 </div>
                 <a href="{{ route('categories.create') }}" class="dashboard-primary-button">
                     <i class="fas fa-plus me-2"></i>{{ __('quizzes_cards.create_category') }}
                 </a>
             </div>
+
+            <p class="dashboard-page-header__subtitle mb-4 mw-100">{{ __('quizzes.category_help_text') }}</p>
 
             @if(session('success'))
                 <div class="dashboard-status-card dashboard-status-card--success">

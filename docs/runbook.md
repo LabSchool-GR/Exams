@@ -18,7 +18,8 @@ composer install --no-dev --prefer-dist --optimize-autoloader
 npm ci
 npm run build
 php artisan migrate --force
-php artisan user:ensure-initial-admin
+php artisan app:setup-admin
+php artisan db:seed
 php artisan storage:link
 php artisan config:cache
 php artisan route:cache

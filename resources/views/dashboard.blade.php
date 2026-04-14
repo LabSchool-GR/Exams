@@ -105,7 +105,7 @@
                 </div>
 
                 <a href="{{ route('quizzes.index') }}" class="dashboard-inline-link">
-                    {{ __('dashboard.back') }}
+                    {{ __('dashboard.go_to') }}
                     <i class="fas fa-arrow-right ms-1"></i>
                 </a>
             </div>

@@ -7,6 +7,7 @@
 
 return [
     'index_title' => 'My Quiz Collection',
+    'collection' => 'Collection',
     'no_quizzes' => 'There are no available quizzes at the moment.',
     'title' => 'Title',
     'category' => 'Category',

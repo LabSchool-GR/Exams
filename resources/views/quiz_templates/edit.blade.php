@@ -13,9 +13,6 @@
                     <h1 class="dashboard-page-header__title">{{ $quizTemplate->name }}</h1>
                     <p class="dashboard-page-header__subtitle">{{ __('templates.edit_text') }}</p>
                 </div>
-                <a href="{{ route('quiz_templates.index') }}" class="dashboard-secondary-button">
-                    <i class="fas fa-arrow-left me-2"></i>{{ __('common.back') }}
-                </a>
             </div>
 
             @if($errors->any())
@@ -49,8 +46,10 @@
 
                 <div class="form-check dashboard-switch-card dashboard-form-field--full">
                     <input class="form-check-input" type="checkbox" name="is_common" id="is_common" value="1" @checked(old('is_common', $quizTemplate->is_common)) data-visibility-toggle data-visibility-toggle-target="users-select-wrapper">
-                    <label class="form-check-label" for="is_common">{{ __('templates.is_common') }}</label>
-                    <div class="form-text">{{ __('templates.common_template_help') }}</div>
+                    <div class="d-flex flex-column">
+                        <label class="form-check-label" for="is_common">{{ __('templates.is_common') }}</label>
+                        <div class="form-text mt-2">{{ __('templates.common_template_help') }}</div>
+                    </div>
                 </div>
 
                 <div id="users-select-wrapper" class="dashboard-form-field dashboard-form-field--full">
@@ -63,7 +62,11 @@
                     </select>
                 </div>
 
-                <div class="dashboard-form-actions">
+                <div class="dashboard-form-actions dashboard-form-field--full">
+                    <a href="{{ route('quiz_templates.index') }}" class="dashboard-secondary-button">
+                        <i class="fas fa-arrow-left me-2"></i>{{ __('common.back') }}
+                    </a>
+
                     <button type="submit" class="dashboard-primary-button">
                         <i class="fas fa-save me-2"></i>{{ __('templates.update') }}
                     </button>

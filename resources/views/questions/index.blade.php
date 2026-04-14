@@ -17,18 +17,18 @@
                 <div class="dashboard-page-header__actions">
                     @if ($canAddQuestion ?? true)
                         <a href="{{ route('quizzes.index') }}" class="btn dashboard-btn dashboard-btn--ghost dashboard-btn--header-compact">
-                            <i class="fas fa-arrow-left me-2"></i>{{ __('dashboard.back') }}
+                            <i class="fas fa-arrow-left me-2"></i>{{ __('quizzes.collection') }}
                         </a>
                         <a href="{{ route('quizzes.questions.create', $quiz) }}" class="btn dashboard-btn dashboard-btn--primary dashboard-btn--header-compact">
                             <i class="fas fa-plus-circle me-2"></i>{{ __('quizzes.add_question') }}
                         </a>
                     @elseif ($isContentLocked ?? false)
                         <a href="{{ route('quizzes.index') }}" class="btn dashboard-btn dashboard-btn--ghost dashboard-btn--header-compact">
-                            <i class="fas fa-arrow-left me-2"></i>{{ __('dashboard.back') }}
+                            <i class="fas fa-arrow-left me-2"></i>{{ __('quizzes.collection') }}
                         </a>
                     @else
                         <a href="{{ route('quizzes.index') }}" class="btn dashboard-btn dashboard-btn--ghost dashboard-btn--header-compact">
-                            <i class="fas fa-arrow-left me-2"></i>{{ __('dashboard.back') }}
+                            <i class="fas fa-arrow-left me-2"></i>{{ __('quizzes.collection') }}
                         </a>
                         <form action="{{ route('quota_requests.store') }}" method="POST">
                             @csrf

@@ -13,9 +13,6 @@
                     <h1 class="dashboard-page-header__title">{{ __('users.create_user') }}</h1>
                     <p class="dashboard-page-header__subtitle">{{ __('users.create_user_text') }}</p>
                 </div>
-                <a href="{{ route('users.index') }}" class="dashboard-secondary-button">
-                    <i class="fas fa-arrow-left me-2"></i>{{ __('common.back') }}
-                </a>
             </div>
 
             @if($errors->any())
@@ -41,7 +38,7 @@
                     <input id="email" type="email" name="email" value="{{ old('email') }}" required class="dashboard-input">
                 </div>
 
-                <div class="dashboard-form-field">
+                <div class="dashboard-form-field dashboard-form-field--full">
                     <label class="dashboard-form-label" for="role">{{ __('users.role') }}</label>
                     <select id="role" name="role" class="dashboard-select" required>
                         <option value="teacher" @selected(old('role') === 'teacher')>{{ __('users.teacher') }}</option>
@@ -49,9 +46,19 @@
                     </select>
                 </div>
 
-                <div class="dashboard-form-panel">
+                <div class="dashboard-form-field">
+                    <label class="dashboard-form-label" for="password">{{ __('users.password') }}</label>
+                    <input id="password" type="password" name="password" required class="dashboard-input">
+                </div>
+
+                <div class="dashboard-form-field">
+                    <label class="dashboard-form-label" for="password_confirmation">{{ __('users.confirm_password') }}</label>
+                    <input id="password_confirmation" type="password" name="password_confirmation" required class="dashboard-input">
+                </div>
+
+                <div class="dashboard-form-panel dashboard-form-field--full">
                     <h2 class="dashboard-form-panel__title">{{ __('users.limits') }}</h2>
-                    <p class="dashboard-page-header__text">{{ __('users.limits_text') }}</p>
+                    <p class="dashboard-page-header__text mw-100">{{ __('users.limits_text') }}</p>
                     <div class="dashboard-form-grid dashboard-form-grid--compact">
                         <div class="dashboard-form-field">
                             <label class="dashboard-form-label" for="max_quizzes">{{ __('users.max_quizzes') }}</label>
@@ -75,17 +82,11 @@
                     </div>
                 </div>
 
-                <div class="dashboard-form-field">
-                    <label class="dashboard-form-label" for="password">{{ __('users.password') }}</label>
-                    <input id="password" type="password" name="password" required class="dashboard-input">
-                </div>
+                <div class="dashboard-form-actions dashboard-form-field--full">
+                    <a href="{{ route('users.index') }}" class="dashboard-secondary-button">
+                        <i class="fas fa-arrow-left me-2"></i>{{ __('common.back') }}
+                    </a>
 
-                <div class="dashboard-form-field">
-                    <label class="dashboard-form-label" for="password_confirmation">{{ __('users.confirm_password') }}</label>
-                    <input id="password_confirmation" type="password" name="password_confirmation" required class="dashboard-input">
-                </div>
-
-                <div class="dashboard-form-actions">
                     <button type="submit" class="dashboard-primary-button">
                         <i class="fas fa-save me-2"></i>{{ __('users.create_user') }}
                     </button>

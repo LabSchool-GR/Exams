@@ -11,15 +11,14 @@
                         {{ __('catalogue.shared_quizzes') }}
                     </span>
                     <h1 class="dashboard-page-header__title">{{ __('catalogue.available_quizzes') }}</h1>
-                    <p class="dashboard-page-header__text">{{ __('catalogue.catalogue_intro') }}</p>
+                    <p class="dashboard-page-header__text mw-100">{{ __('catalogue.catalogue_intro') }}</p>
                 </div>
             </div>
 
             <form method="GET" class="dashboard-form-panel mb-4">
                 <div class="dashboard-form-grid">
                     <div class="dashboard-form-field">
-                        <label for="category_id" class="dashboard-form-label">{{ __('catalogue.filter_by_category') }}</label>
-                        <select name="category_id" id="category_id" class="dashboard-select">
+                        <select name="category_id" id="category_id" class="dashboard-select dashboard-select--compact" aria-label="{{ __('catalogue.filter_by_category') }}">
                             <option value="">{{ __('catalogue.all_categories') }}</option>
                             @foreach ($categories as $cat)
                                 <option value="{{ $cat->id }}" @selected((string) $categoryId === (string) $cat->id)>
@@ -77,18 +76,16 @@
                                     <span class="dashboard-collection-pill dashboard-collection-pill--muted">
                                         <i class="fas fa-calendar-alt"></i>{{ $quiz->created_at->format('d/m/Y') }}
                                     </span>
-                                </div>
-                            </div>
 
-                            <div class="dashboard-collection-card__actions dashboard-collection-card__actions--compact">
-                                <a
-                                    href="{{ $quiz->publicAccessUrl() }}"
-                                    class="dashboard-primary-button dashboard-secondary-button--compact"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    <i class="fas fa-right-to-bracket me-2"></i>{{ __('catalogue.join_quiz') }}
-                                </a>
+                                    <a
+                                        href="{{ $quiz->publicAccessUrl() }}"
+                                        class="dashboard-primary-button dashboard-secondary-button--compact dashboard-catalogue-join-button ms-lg-auto"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <i class="fas fa-right-to-bracket me-2"></i>{{ __('catalogue.join_quiz') }}
+                                    </a>
+                                </div>
                             </div>
                         </article>
                     @endforeach

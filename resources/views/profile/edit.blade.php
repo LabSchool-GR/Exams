@@ -11,12 +11,9 @@
                         {{ __('dashboard.profile_eyebrow') }}
                     </span>
                     <h1 class="dashboard-page-header__title">{{ __('quizzes_cards.title_profile') }}</h1>
-                    <p class="dashboard-page-header__text">{{ __('dashboard.limits_intro') }}</p>
+                    <p class="dashboard-page-header__text mw-100">{{ __('dashboard.limits_intro') }}</p>
                 </div>
 
-                <a href="{{ route('dashboard') }}" class="btn dashboard-btn dashboard-btn--ghost">
-                    <i class="fas fa-arrow-left me-2"></i>{{ __('dashboard.back') }}
-                </a>
             </div>
 
             <div class="dashboard-profile-grid">

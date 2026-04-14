@@ -48,6 +48,7 @@ return [
     'actions' => 'Actions',
     'save' => 'Save',
     'back' => 'Back',
+    'go_to' => 'Go to',
     'delete' => 'Delete',
     'confirm_delete' => 'Are you sure you want to delete this update?',
     'submit_feedback' => 'Would you like to send a comment or suggestion?',

@@ -68,6 +68,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Version / License
+    |--------------------------------------------------------------------------
+    |
+    | Public-facing pages may display build/version and license metadata.
+    | Keep these values in environment variables to avoid hardcoding.
+    |
+    */
+
+    'version' => env('APP_VERSION', 'dev'),
+
+    'license' => env('APP_LICENSE', 'AGPL-3.0-or-later'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |

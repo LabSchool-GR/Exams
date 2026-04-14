@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class EnsureInitialAdmin extends Command
 {
-    protected $signature = 'user:ensure-initial-admin
+    protected $signature = 'app:setup-admin
                             {--email=admin@exams.gr : The administrator email address}
                             {--name=System Administrator : The administrator display name}
                             {--password= : The administrator password}';
