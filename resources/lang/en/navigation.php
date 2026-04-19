@@ -23,6 +23,7 @@ return [
     'footer_license' => 'License:',
     'catalogue' => 'Public Quiz Collection',
     'templates' => 'Template Management',
+    'system_updates' => 'Application Updates',
     'terms' => 'Terms of Use',
     'privacy' => 'Privacy Policy',
     'source_code' => 'GitHub',

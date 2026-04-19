@@ -313,6 +313,7 @@ class QuizDisplaySessionService
         $questionOrder = $runtime['questionOrder'];
         $questions = $runtime['questions'];
         $answers = $runtime['orderedAnswers'];
+        $answerCountsByQuestionId = $this->answerCountsByQuestionId($attempt);
         $timeRemaining = $this->attemptLifecycle->secondsRemaining($attempt, $quiz);
 
         $status = $displaySession->status;
@@ -352,7 +353,7 @@ class QuizDisplaySessionService
             'progress' => [
                 'current' => count($questionOrder) > 0 ? min($currentIndex + 1, count($questionOrder)) : 0,
                 'total' => count($questionOrder),
-                'completed_questions' => $this->completedQuestionsCount($attempt, $questions),
+                'completed_questions' => $this->completedQuestionsCount($questions, $answerCountsByQuestionId),
                 'label' => __('join.question_number', [
                     'current' => count($questionOrder) > 0 ? min($currentIndex + 1, count($questionOrder)) : 0,
                     'total' => count($questionOrder),
@@ -384,13 +385,14 @@ class QuizDisplaySessionService
                     && $currentIndex < (count($questionOrder) - 1)
                     && count($selectedAnswerIds) === (int) ($question->correct_answers_count ?? 0)
                     && $attempt->isInProgress(),
-                'can_submit' => $attempt->isInProgress() && $this->canSubmitAttempt($attempt, $questions),
+                'can_submit' => $attempt->isInProgress() && $this->canSubmitAttempt($attempt, $questions, $answerCountsByQuestionId),
                 'submit_label' => __('join.submit_quiz'),
                 'previous_label' => __('quizzes.previous_question'),
                 'next_label' => __('quizzes.next_question'),
                 'helper_text' => $this->actionHelperText(
                     $attempt,
                     $questions,
+                    $answerCountsByQuestionId,
                     $question,
                     $currentIndex,
                     $questionOrder,
@@ -709,26 +711,30 @@ class QuizDisplaySessionService
         }
     }
 
-    private function completedQuestionsCount(QuizAttempt $attempt, Collection $questions): int
+    private function answerCountsByQuestionId(QuizAttempt $attempt): array
     {
-        return $questions->filter(function (Question $question) use ($attempt): bool {
-            return $attempt->answers()
-                ->where('question_id', $question->id)
-                ->count() === (int) $question->correct_answers_count;
-        })->count();
+        return $attempt->answers
+            ->groupBy('question_id')
+            ->mapWithKeys(fn (Collection $answers, $questionId): array => [(int) $questionId => $answers->count()])
+            ->all();
     }
 
-    private function canSubmitAttempt(QuizAttempt $attempt, Collection $questions): bool
+    private function completedQuestionsCount(Collection $questions, array $answerCountsByQuestionId): int
+    {
+        return $questions->filter(
+            fn (Question $question): bool => ($answerCountsByQuestionId[$question->id] ?? 0) === (int) $question->correct_answers_count
+        )->count();
+    }
+
+    private function canSubmitAttempt(QuizAttempt $attempt, Collection $questions, array $answerCountsByQuestionId): bool
     {
         if (!$attempt->isInProgress()) {
             return false;
         }
 
-        return $questions->every(function (Question $question) use ($attempt): bool {
-            return $attempt->answers()
-                ->where('question_id', $question->id)
-                ->count() === (int) $question->correct_answers_count;
-        });
+        return $questions->every(
+            fn (Question $question): bool => ($answerCountsByQuestionId[$question->id] ?? 0) === (int) $question->correct_answers_count
+        );
     }
 
     private function resultPdfUrl(Quiz $quiz, QuizAttempt $attempt): ?string
@@ -747,6 +753,7 @@ class QuizDisplaySessionService
     private function actionHelperText(
         QuizAttempt $attempt,
         Collection $questions,
+        array $answerCountsByQuestionId,
         ?Question $question,
         int $currentIndex,
         array $questionOrder,
@@ -766,7 +773,7 @@ class QuizDisplaySessionService
             ]);
         }
 
-        if ($isLastQuestion && !$this->canSubmitAttempt($attempt, $questions)) {
+        if ($isLastQuestion && !$this->canSubmitAttempt($attempt, $questions, $answerCountsByQuestionId)) {
             return __('display.action_helper_complete_all');
         }
 

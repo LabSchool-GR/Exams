@@ -81,14 +81,7 @@
         </div>
     </aside>
 
-    <footer class="text-center text-muted small mt-4 mb-3">
-        <p class="mb-0">
-            <a href="{{ route('terms') }}" class="text-decoration-none text-muted">{{ __('navigation.terms') }}</a>
-            |
-            <a href="{{ route('privacy') }}" class="text-decoration-none text-muted">{{ __('navigation.privacy') }}</a>
-            @include('layouts.partials.source_code_link')
-        </p>
-    </footer>
+    @include('layouts.partials.app_footer')
 </body>
 
 </html>

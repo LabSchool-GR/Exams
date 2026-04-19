@@ -30,12 +30,13 @@ class SharedExampleQuizSeeder extends Seeder
             'name' => 'Τέχνη και Πολιτισμός',
         ]);
 
-        $quiz = Quiz::firstOrCreate(
-            ['system_key' => self::SYSTEM_KEY],
-            [
-                'quiz_code' => $this->generateUniqueQuizCode(),
-            ]
-        );
+        $quiz = Quiz::firstOrNew([
+            'system_key' => self::SYSTEM_KEY,
+        ]);
+
+        if (!$quiz->exists) {
+            $quiz->quiz_code = $this->generateUniqueQuizCode();
+        }
 
         $quiz->fill([
             'title' => 'Ταξίδι στην Τέχνη: Από την Αναγέννηση στον Σουρεαλισμό',

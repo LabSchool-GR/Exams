@@ -269,7 +269,7 @@
                 <form action="{{ route('quiz_attempts.store_student', $quiz) }}" method="POST" class="dashboard-form-stack">
                     @csrf
 
-                    <div class="dashboard-form-grid">
+                    <div class="dashboard-form-grid dashboard-form-grid--student-registration">
                         <div class="dashboard-form-group">
                             <label for="student_name" class="dashboard-form-label">
                                 <i class="fas fa-user text-muted"></i>{{ __('quizzes.student_name_attempts') }}

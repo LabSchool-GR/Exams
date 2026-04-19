@@ -55,11 +55,7 @@
     {{-- Keep the footer limited to authenticated staff-facing areas --}}
     @auth
         @if(auth()->user()->role === 'admin' || auth()->user()->role === 'teacher')
-            <footer class="text-center text-muted small py-3 mt-auto app-footer-subtle">
-                <hr class="mb-2">
-                <i class="fas fa-school me-1"></i> {{ __('footer.labschool_credit') }}
-                @include('layouts.partials.source_code_link')
-            </footer>
+            @include('layouts.partials.app_footer')
         @endif
     @endauth
 </body>

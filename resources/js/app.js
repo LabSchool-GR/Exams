@@ -1170,6 +1170,35 @@ function renderDisplayTimer(target, seconds) {
     target.textContent = formatMinutesSeconds(Math.max(0, seconds));
 }
 
+function createTimerRenderer(target) {
+    let timerSnapshot = null;
+
+    const renderCurrent = () => {
+        if (!timerSnapshot) {
+            renderDisplayTimer(target, null);
+            return;
+        }
+
+        const elapsedSeconds = Math.floor((Date.now() - timerSnapshot.capturedAt) / 1000);
+        renderDisplayTimer(target, Math.max(0, timerSnapshot.seconds - elapsedSeconds));
+    };
+
+    window.setInterval(renderCurrent, 1000);
+
+    return {
+        sync(seconds) {
+            timerSnapshot = typeof seconds === 'number'
+                ? {
+                    seconds: Math.max(0, Math.floor(seconds)),
+                    capturedAt: Date.now(),
+                }
+                : null;
+
+            renderCurrent();
+        },
+    };
+}
+
 function initQuizDisplayScreen() {
     document.querySelectorAll('[data-quiz-display-screen]').forEach((container) => {
         if (container.dataset.displayScreenBound === 'true') {
@@ -1177,7 +1206,7 @@ function initQuizDisplayScreen() {
         }
 
         const stateUrl = container.dataset.stateUrl;
-        const pollInterval = Number(container.dataset.pollInterval ?? '800');
+        const pollInterval = Number(container.dataset.pollInterval ?? '1500');
         const expiredStatusLabel = container.dataset.expiredStatusLabel ?? 'Expired';
         const expiredMessage = container.dataset.expiredMessage ?? 'This display session is no longer available.';
         const studentTarget = container.querySelector('[data-display-student]');
@@ -1203,6 +1232,7 @@ function initQuizDisplayScreen() {
         let pollHandle = null;
         let previousMode = '';
         let connectionAnimationHandle = null;
+        const timerRenderer = createTimerRenderer(timerTarget);
 
         const animateConnectionEstablished = () => {
             if (!questionCard) {
@@ -1240,7 +1270,7 @@ function initQuizDisplayScreen() {
                 progressTarget.textContent = `${state.progress.current} / ${state.progress.total}`;
             }
 
-            renderDisplayTimer(timerTarget, state.attempt.time_remaining_seconds);
+            timerRenderer.sync(state.attempt.time_remaining_seconds);
 
             if (nextMode === 'result') {
                 container.dataset.screenMode = 'result';
@@ -1384,7 +1414,7 @@ function initQuizDisplayController() {
         const navigateUrl = container.dataset.navigateUrl;
         const submitUrl = container.dataset.submitUrl;
         const csrfToken = container.dataset.csrfToken;
-        const pollInterval = Number(container.dataset.pollInterval ?? '800');
+        const pollInterval = Number(container.dataset.pollInterval ?? '1500');
         const expiredStatusLabel = container.dataset.expiredStatusLabel ?? 'Expired';
 
         const studentTarget = container.querySelector('[data-controller-student]');
@@ -1414,6 +1444,7 @@ function initQuizDisplayController() {
         let currentState = null;
         let pollHandle = null;
         let requestInFlight = false;
+        const timerRenderer = createTimerRenderer(timerTarget);
 
         const renderState = (state) => {
             currentVersion = state.session.state_version;
@@ -1432,7 +1463,7 @@ function initQuizDisplayController() {
                 statusTarget.textContent = state.session.status_label;
             }
 
-            renderDisplayTimer(timerTarget, state.attempt.time_remaining_seconds);
+            timerRenderer.sync(state.attempt.time_remaining_seconds);
 
             if (state.session.status === 'submitted' || state.session.status === 'expired' || state.session.status === 'revoked') {
                 placeholder?.classList.add('d-none');

@@ -1,0 +1,107 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, dom, fileinfo, gd, intl, pdo_sqlite, sqlite3, zip
+          coverage: none
+
+      - name: Validate Composer files
+        run: composer validate --strict
+
+      - name: Install production dependencies
+        run: composer install --no-dev --no-interaction --prefer-dist --no-progress --optimize-autoloader
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Build frontend assets
+        run: npm run build
+
+      - name: Build release notes from changelog
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: php scripts/build-release-notes.php "${RELEASE_TAG}" "${RUNNER_TEMP}/release-notes.md"
+
+      - name: Build update manifest asset
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+          REPOSITORY_SLUG: ${{ github.repository }}
+        run: |
+          PACKAGE_NAME="labschool-exams-${RELEASE_TAG}.zip"
+          RELEASE_URL="https://github.com/${REPOSITORY_SLUG}/releases/tag/${RELEASE_TAG}"
+          DOWNLOAD_URL="https://github.com/${REPOSITORY_SLUG}/releases/download/${RELEASE_TAG}/${PACKAGE_NAME}"
+          php scripts/build-update-manifest.php \
+            "${RELEASE_TAG}" \
+            "${RUNNER_TEMP}/release-notes.md" \
+            "${RUNNER_TEMP}/update.json" \
+            "${RELEASE_URL}" \
+            "${DOWNLOAD_URL}" \
+            "${PACKAGE_NAME}"
+
+      - name: Create release package
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          PACKAGE_ROOT="labschool-exams-${RELEASE_TAG}"
+          RELEASE_DIR="${RUNNER_TEMP}/release"
+          mkdir -p "${RELEASE_DIR}/${PACKAGE_ROOT}"
+
+          rsync -a ./ "${RELEASE_DIR}/${PACKAGE_ROOT}/" \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude 'node_modules' \
+            --exclude 'tests' \
+            --exclude '.env' \
+            --exclude 'storage/logs/*' \
+            --exclude 'storage/framework/cache/*' \
+            --exclude 'storage/framework/sessions/*' \
+            --exclude 'storage/framework/views/*' \
+            --exclude 'storage/debugbar/*' \
+            --exclude 'exams_local.sql'
+
+          printf '%s\n' "${RELEASE_TAG}" > "${RELEASE_DIR}/${PACKAGE_ROOT}/VERSION"
+
+          cd "${RELEASE_DIR}"
+          zip -r "${PACKAGE_ROOT}.zip" "${PACKAGE_ROOT}"
+          sha256sum "${PACKAGE_ROOT}.zip" > "${PACKAGE_ROOT}.zip.sha256"
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: LabSchool Exams ${{ github.ref_name }}
+          body_path: ${{ runner.temp }}/release-notes.md
+          files: |
+            ${{ runner.temp }}/release/labschool-exams-${{ github.ref_name }}.zip
+            ${{ runner.temp }}/release/labschool-exams-${{ github.ref_name }}.zip.sha256
+            ${{ runner.temp }}/update.json

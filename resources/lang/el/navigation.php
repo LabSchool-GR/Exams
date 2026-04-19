@@ -25,5 +25,6 @@ return [
     'templates' => 'Διαχείριση Templates',
     'terms' => 'Όροι Χρήσης',
     'privacy' => 'Πολιτική Απορρήτου',
+    'system_updates' => 'Ενημέρωση Εφαρμογής',
     'source_code' => 'GitHub',
 ];

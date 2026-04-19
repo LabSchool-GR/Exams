@@ -22,6 +22,7 @@ use App\Http\Controllers\{
     QuizDisplaySessionController,
     QuizParticipantController,
     QuizController,
+    SystemUpdateController,
     UpdateController,
     UserController,
     QuizTemplateController
@@ -70,7 +71,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Feedback
     Route::get('/feedback', [FeedbackController::class, 'create'])->name('feedback.create');
-    Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
+    Route::post('/feedback', [FeedbackController::class, 'store'])
+        ->middleware('throttle:' . config('security.throttle.feedback_attempts', '3,10'))
+        ->name('feedback.store');
     Route::post('/quota-requests', [QuotaRequestController::class, 'store'])->name('quota_requests.store');
 
     // Profile
@@ -123,6 +126,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Updates - only for admin
     Route::middleware('can:manage-updates')->group(function () {
         Route::resource('updates', UpdateController::class)->only(['create', 'store', 'destroy']);
+        Route::get('system-updates', [SystemUpdateController::class, 'index'])->name('system_updates.index');
     });
 
     // Templates - only for admin

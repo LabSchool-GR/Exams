@@ -84,7 +84,7 @@ class QuizDisplaySessionController extends Controller
             'stateUrl' => $quizDisplaySession->screenStateUrl(),
             'pairUrl' => $pairUrl,
             'qrSvg' => $qrSvg,
-            'pollIntervalMs' => 800,
+            'pollIntervalMs' => (int) config('security.display.poll_interval_ms', 1500),
         ]);
     }
 
@@ -132,7 +132,7 @@ class QuizDisplaySessionController extends Controller
             'answerUrl' => route('quiz_display.answer', $quizDisplaySession),
             'navigateUrl' => route('quiz_display.navigate', $quizDisplaySession),
             'submitUrl' => route('quiz_display.submit', $quizDisplaySession),
-            'pollIntervalMs' => 800,
+            'pollIntervalMs' => (int) config('security.display.poll_interval_ms', 1500),
         ]);
     }
 
@@ -142,13 +142,12 @@ class QuizDisplaySessionController extends Controller
         $this->authorizeControllerSession($request, $quizDisplaySession);
 
         $quizDisplaySession = $this->displaySessions->touchController($quizDisplaySession);
-        $state = $this->displaySessions->buildState($quizDisplaySession);
 
-        if ((int) $request->integer('since', 0) === (int) data_get($state, 'session.state_version')) {
+        if ((int) $request->integer('since', 0) === (int) $quizDisplaySession->state_version) {
             return response()->noContent();
         }
 
-        return response()->json($state);
+        return response()->json($this->displaySessions->buildState($quizDisplaySession));
     }
 
     public function saveAnswer(Request $request, QuizDisplaySession $quizDisplaySession): JsonResponse

@@ -289,6 +289,37 @@ it('keeps the screen state endpoint available long enough to render an expired s
         ->assertJsonPath('attempt.status', QuizAttempt::STATUS_EXPIRED);
 });
 
+it('returns no content when second-screen state version has not changed', function () {
+    [$owner, $quiz, $student] = makeSecondScreenQuiz();
+
+    $this->actingAs($owner)
+        ->post(route('quiz_display.launch', [$quiz, $student]))
+        ->assertStatus(302);
+
+    $displaySession = QuizDisplaySession::query()
+        ->where('quiz_student_id', $student->id)
+        ->latest('id')
+        ->firstOrFail();
+
+    $pairUrl = $displaySession->pairUrl();
+    $sessionCookie = config('session.cookie');
+    $controllerCookie = Str::random(40);
+
+    $this->withCookie($sessionCookie, $controllerCookie)
+        ->get($pairUrl)
+        ->assertRedirect(route('quiz_display.controller', $displaySession));
+
+    $controllerState = $this->withCookie($sessionCookie, $controllerCookie)
+        ->get(route('quiz_display.controller_state', $displaySession))
+        ->assertOk();
+
+    $controllerVersion = (int) $controllerState->json('session.state_version');
+
+    $this->withCookie($sessionCookie, $controllerCookie)
+        ->get(route('quiz_display.controller_state', $displaySession, false) . '?since=' . $controllerVersion)
+        ->assertNoContent();
+});
+
 it('allows an admin to terminate tv mode and exposes a signed result pdf url', function () {
     [$owner, $quiz, $student] = makeSecondScreenQuiz();
 

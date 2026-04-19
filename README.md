@@ -11,7 +11,7 @@ Educational quiz and assessment platform built with Laravel for schools, trainin
 ## Quick Start (60 sec)
 
 ```bash
-composer install ; npm install ; cp .env.example .env ; php artisan key:generate ; php artisan migrate ; php artisan app:setup-admin ; php artisan db:seed ; php artisan storage:link ; npm run build ; php artisan serve
+composer install ; npm install ; cp .env.example .env ; php artisan app:install ; npm run build ; php artisan serve
 ```
 
 Open `http://127.0.0.1:8000` and sign in with your admin account.
@@ -155,11 +155,7 @@ The platform supports both closed educational workflows (accounts and participan
 composer install
 npm install
 cp .env.example .env
-php artisan key:generate
-php artisan migrate
-php artisan app:setup-admin
-php artisan db:seed
-php artisan storage:link
+php artisan app:install
 npm run build
 php artisan serve
 ```
@@ -167,11 +163,32 @@ php artisan serve
 ### Προαιρετικά Seeds για demo/dev / Optional demo/dev seed layers
 
 ```bash
-# Demo dataset (safe for repeatable previews if an admin already exists)
-APP_SEED_DEMO=true php artisan db:seed
+# Demo dataset (shared example quiz)
+php artisan app:install --demo
 
 # Local-only dev helpers
-APP_SEED_DEV=true php artisan db:seed
+php artisan app:install --dev
+```
+
+### Single Install Flow
+
+Use the same installer command for clean local setup and first-time server bootstrap:
+
+```bash
+php artisan app:install
+```
+
+The installer:
+
+- runs migrations
+- seeds only the core baseline dataset
+- creates or updates the initial admin account
+- creates the public storage link when needed
+
+You can combine optional datasets when needed:
+
+```bash
+php artisan app:install --demo --dev
 ```
 
 ### Frontend Development Mode
@@ -179,6 +196,16 @@ APP_SEED_DEV=true php artisan db:seed
 ```bash
 npm run dev
 ```
+
+### Schema Dump Workflow
+
+For cleaner fresh installs without removing the historical migration files:
+
+```bash
+php artisan app:schema-dump
+```
+
+Strategy notes: [docs/schema-dump-strategy.md](docs/schema-dump-strategy.md)
 
 ## Testing and Quality
 
@@ -194,6 +221,33 @@ php artisan test
 - [docs/quiz-template-smoke-checklist.md](docs/quiz-template-smoke-checklist.md)
 
 CI test workflow: [.github/workflows/tests.yml](.github/workflows/tests.yml)
+
+### Release packages
+
+The project also includes a tag-based GitHub Release workflow:
+
+- [.github/workflows/release.yml](.github/workflows/release.yml)
+- [docs/release-workflow.md](docs/release-workflow.md)
+- [docs/release-checklist.md](docs/release-checklist.md)
+- [docs/changelog-policy.md](docs/changelog-policy.md)
+
+Push a tag such as `v1.2.0` to generate:
+
+- a GitHub Release with generated release notes
+- a downloadable zip package for the in-app Update Center
+- a SHA-256 checksum file for the package
+
+Release packages include built frontend assets, production Composer dependencies, and a `VERSION` file so zip-based installations can report the correct application version.
+
+Release notes can be curated through [CHANGELOG.md](CHANGELOG.md), which also feeds cleaner GitHub Release bodies for the in-app Update Center.
+
+For day-to-day changelog drafting, use:
+
+- [docs/changelog-policy.md](docs/changelog-policy.md)
+- [docs/unreleased-template.md](docs/unreleased-template.md)
+- [docs/update-manifest.md](docs/update-manifest.md)
+
+Note: while the canonical GitHub repository remains private, the in-app Update Center cannot fetch latest release metadata anonymously from GitHub. The release workflow and changelog process still work, but the live release check is intended to become fully effective once the repository is public or a separate update metadata endpoint is introduced.
 
 ## Λειτουργία Παραγωγής / Production Operations
 
@@ -213,10 +267,7 @@ CI test workflow: [.github/workflows/tests.yml](.github/workflows/tests.yml)
 composer install --no-dev --prefer-dist --optimize-autoloader
 npm ci
 npm run build
-php artisan migrate --force
-php artisan app:setup-admin
-php artisan db:seed
-php artisan storage:link
+php artisan app:install --force
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache

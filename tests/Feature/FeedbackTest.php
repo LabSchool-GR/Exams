@@ -68,3 +68,28 @@ test('feedback reports a friendly error when queue dispatch fails', function () 
     $response->assertRedirect(route('feedback.create'));
     $response->assertSessionHas('error', __('controllers.feedback_send_failed'));
 });
+
+test('feedback is rate limited after repeated submissions', function () {
+    Mail::fake();
+
+    $sender = User::factory()->create([
+        'role' => 'teacher',
+    ]);
+
+    User::factory()->create([
+        'role' => 'admin',
+        'email' => 'admin@sch.gr',
+    ]);
+
+    foreach (range(1, 3) as $attempt) {
+        $this->actingAs($sender)->post(route('feedback.store'), [
+            'title' => 'Feedback Title ' . $attempt,
+            'message' => 'Feedback body for admins.',
+        ])->assertRedirect(route('dashboard'));
+    }
+
+    $this->actingAs($sender)->post(route('feedback.store'), [
+        'title' => 'Feedback Title 4',
+        'message' => 'Feedback body for admins.',
+    ])->assertStatus(429);
+});

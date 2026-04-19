@@ -20,6 +20,7 @@ return [
 
     'throttle' => [
         'registration_attempts' => env('SECURITY_REGISTRATION_THROTTLE', '5,1'),
+        'feedback_attempts' => env('SECURITY_FEEDBACK_THROTTLE', '3,10'),
         'quiz_code_attempts' => env('SECURITY_QUIZ_CODE_THROTTLE', '10,1'),
         'student_code_attempts' => env('SECURITY_STUDENT_CODE_THROTTLE', '5,1'),
     ],
@@ -40,6 +41,10 @@ return [
         'anonymize_attempts_after_days' => (int) env('SECURITY_ANONYMIZE_ATTEMPTS_AFTER_DAYS', 180),
         'prune_students_after_days' => (int) env('SECURITY_PRUNE_STUDENTS_AFTER_DAYS', 180),
         'prune_display_sessions_after_hours' => (int) env('SECURITY_PRUNE_DISPLAY_SESSIONS_AFTER_HOURS', 48),
+    ],
+
+    'display' => [
+        'poll_interval_ms' => max(1000, (int) env('SECURITY_DISPLAY_POLL_INTERVAL_MS', 1500)),
     ],
 
     'csp' => [
