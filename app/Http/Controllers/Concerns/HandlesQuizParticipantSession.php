@@ -14,7 +14,7 @@ trait HandlesQuizParticipantSession
 {
     private function ensureQuizRouteToken(Quiz $quiz): string
     {
-        if (Session::get('quiz_route_quiz_id') !== $quiz->id || !Session::has('quiz_route_token')) {
+        if (Session::get('quiz_route_quiz_id') !== $quiz->id || ! Session::has('quiz_route_token')) {
             Session::put('quiz_route_quiz_id', $quiz->id);
             Session::put('quiz_route_token', Str::random(24));
         }
@@ -135,7 +135,7 @@ trait HandlesQuizParticipantSession
     {
         Session::put('attempt_id', $attempt->id);
 
-        if (is_array($attempt->question_order) && !empty($attempt->question_order)) {
+        if (is_array($attempt->question_order) && ! empty($attempt->question_order)) {
             Session::put('question_order', $attempt->question_order);
         }
 
@@ -273,7 +273,7 @@ trait HandlesQuizParticipantSession
         )));
 
         if ($markSkipped) {
-            if (!in_array($currentQuestionId, $skippedQuestions, true)) {
+            if (! in_array($currentQuestionId, $skippedQuestions, true)) {
                 $skippedQuestions[] = $currentQuestionId;
             }
         } else {
@@ -300,18 +300,18 @@ trait HandlesQuizParticipantSession
         $sessionQuizToken = Session::get('quiz_route_token');
         $sessionQuizRouteId = Session::get('quiz_route_quiz_id');
 
-        if (!$sessionQuizId || !$sessionQuizToken || !$sessionQuizRouteId) {
+        if (! $sessionQuizId || ! $sessionQuizToken || ! $sessionQuizRouteId) {
             return redirect()->route('quiz.join')
                 ->with('error', __('join.no_session'));
         }
 
-        if (!hash_equals($sessionQuizToken, $quizKey) || (int) $sessionQuizRouteId !== (int) $sessionQuizId) {
+        if (! hash_equals($sessionQuizToken, $quizKey) || (int) $sessionQuizRouteId !== (int) $sessionQuizId) {
             return redirect()->route('quiz.session_conflict');
         }
 
         $quiz = Quiz::find($sessionQuizId);
 
-        if (!$quiz) {
+        if (! $quiz) {
             $this->resetQuizRuntimeState();
 
             return redirect()->route('quiz.join')
@@ -356,7 +356,7 @@ trait HandlesQuizParticipantSession
     {
         $questionId = Session::get('question_route_map', [])[$questionKey] ?? null;
 
-        if (!$questionId) {
+        if (! $questionId) {
             abort(404);
         }
 
@@ -375,7 +375,7 @@ trait HandlesQuizParticipantSession
             ? $question->answers->values()
             : $question->answers()->get()->values();
 
-        if (!$quiz->is_random_answers_order) {
+        if (! $quiz->is_random_answers_order) {
             return $answers;
         }
 
@@ -384,7 +384,7 @@ trait HandlesQuizParticipantSession
         $storedAnswerIds = $answerOrderMap[$question->id] ?? null;
 
         if (
-            !is_array($storedAnswerIds) ||
+            ! is_array($storedAnswerIds) ||
             count($storedAnswerIds) !== count($currentAnswerIds) ||
             array_diff($storedAnswerIds, $currentAnswerIds) ||
             array_diff($currentAnswerIds, $storedAnswerIds)
@@ -413,8 +413,7 @@ trait HandlesQuizParticipantSession
         int $correct,
         float $score,
         array $extraViewData = []
-    ): View
-    {
+    ): View {
         $viewName = $this->resolveParticipantView($quiz, 'result');
 
         $remainingAttempts = null;

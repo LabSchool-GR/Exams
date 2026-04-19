@@ -9,12 +9,12 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-	public function up()
-	{
-		Schema::table('quizzes', function (Blueprint $table) {
-		$table->boolean('allow_guest')->default(false)->after('status');
-	});
-	}
+    public function up()
+    {
+        Schema::table('quizzes', function (Blueprint $table) {
+            $table->boolean('allow_guest')->default(false)->after('status');
+        });
+    }
 
     /**
      * Reverse the migrations.
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('quizzes', function (Blueprint $table) {
-		$table->dropColumn('allow_guest');
-	});
+            $table->dropColumn('allow_guest');
+        });
     }
 };

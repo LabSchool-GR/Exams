@@ -7,25 +7,23 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\QuizAttemptController;
+use App\Http\Controllers\QuizController;
+use App\Http\Controllers\QuizDisplaySessionController;
+use App\Http\Controllers\QuizParticipantController;
+use App\Http\Controllers\QuizTemplateController;
+use App\Http\Controllers\QuotaRequestController;
+use App\Http\Controllers\SystemUpdateController;
+use App\Http\Controllers\UpdateController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{
-    AnswerController,
-    CategoryController,
-    DashboardController,
-    FeedbackController,
-    LocaleController,
-    ProfileController,
-    QuotaRequestController,
-    QuestionController,
-    QuizAttemptController,
-    QuizDisplaySessionController,
-    QuizParticipantController,
-    QuizController,
-    SystemUpdateController,
-    UpdateController,
-    UserController,
-    QuizTemplateController
-};
 
 // Public entry points that do not require an authenticated teacher session.
 Route::get('/', [QuizParticipantController::class, 'showJoinForm'])->name('home');
@@ -64,7 +62,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Feedback
     Route::get('/feedback', [FeedbackController::class, 'create'])->name('feedback.create');
     Route::post('/feedback', [FeedbackController::class, 'store'])
-        ->middleware('throttle:' . config('security.throttle.feedback_attempts', '3,10'))
+        ->middleware('throttle:'.config('security.throttle.feedback_attempts', '3,10'))
         ->name('feedback.store');
     Route::post('/quota-requests', [QuotaRequestController::class, 'store'])->name('quota_requests.store');
 
@@ -155,11 +153,11 @@ Route::prefix('quiz')->name('quiz.')->group(function () {
     Route::get('/join', [QuizParticipantController::class, 'showJoinForm'])->name('join');
     Route::get('/session-conflict', [QuizParticipantController::class, 'showSessionConflict'])->name('session_conflict');
     Route::post('/join', [QuizParticipantController::class, 'validateQuizCode'])
-        ->middleware('throttle:' . config('security.throttle.quiz_code_attempts', '10,1'))
+        ->middleware('throttle:'.config('security.throttle.quiz_code_attempts', '10,1'))
         ->name('validate_code');
     Route::get('/join/student', [QuizParticipantController::class, 'showStudentForm'])->name('join_student');
     Route::post('/join/student', [QuizParticipantController::class, 'validateStudentCode'])
-        ->middleware('throttle:' . config('security.throttle.student_code_attempts', '5,1'))
+        ->middleware('throttle:'.config('security.throttle.student_code_attempts', '5,1'))
         ->name('validate_student');
     Route::get('/start', [QuizParticipantController::class, 'start'])->name('start');
     Route::get('/{quizKey}/start-question', [QuizParticipantController::class, 'startQuestion'])->name('start_question');
@@ -173,4 +171,4 @@ Route::prefix('quiz')->name('quiz.')->group(function () {
 });
 
 // Keep framework auth routes in a dedicated file so application routes stay readable.
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

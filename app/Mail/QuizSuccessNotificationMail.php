@@ -15,8 +15,7 @@ class QuizSuccessNotificationMail extends Mailable implements ShouldQueue
         public readonly string $studentName,
         public readonly string $quizTitle,
         public readonly float $score
-    ) {
-    }
+    ) {}
 
     public function build(): self
     {

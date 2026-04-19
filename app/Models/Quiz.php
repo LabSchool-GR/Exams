@@ -25,7 +25,9 @@ class Quiz extends Model
     use HasFactory;
 
     public const STUDENT_ACCESS_POLICY_PIN_AND_LINKS = 'pin_and_links';
+
     public const STUDENT_ACCESS_POLICY_PIN_ONLY = 'pin_only';
+
     public const STUDENT_ACCESS_POLICY_LINKS_ONLY = 'links_only';
 
     protected $fillable = [
@@ -105,7 +107,7 @@ class Quiz extends Model
      */
     public function publicLinkFingerprint(): ?string
     {
-        if (!$this->is_public || (!$this->allow_guest && !$this->is_public_anonymous_pool_mode)) {
+        if (! $this->is_public || (! $this->allow_guest && ! $this->is_public_anonymous_pool_mode)) {
             return null;
         }
 

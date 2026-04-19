@@ -7,7 +7,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-
 use App\Models\User;
 
 test('login screen can be rendered', function () {

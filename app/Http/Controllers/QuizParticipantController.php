@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\QuizSuccessNotificationMail;
 use App\Http\Controllers\Concerns\HandlesQuizParticipantAccess;
 use App\Http\Controllers\Concerns\HandlesQuizParticipantPublicPool;
 use App\Http\Controllers\Concerns\HandlesQuizParticipantSession;
+use App\Mail\QuizSuccessNotificationMail;
 use App\Models\Category;
 use App\Models\Quiz;
 use App\Models\QuizAttempt;
@@ -28,8 +28,7 @@ class QuizParticipantController extends Controller
 
     public function __construct(
         private readonly AttemptLifecycleService $attemptLifecycle
-    ) {
-    }
+    ) {}
 
     /**
      * Show the form where the student can enter a quiz code.
@@ -64,14 +63,14 @@ class QuizParticipantController extends Controller
      */
     public function showStudentForm(): View|RedirectResponse
     {
-        if (!Session::has('quiz_id')) {
+        if (! Session::has('quiz_id')) {
             return redirect()->route('quiz.join')
                 ->with('error', __('join.missing_code'));
         }
 
         $quiz = Quiz::find(Session::get('quiz_id'));
 
-        if (!$quiz) {
+        if (! $quiz) {
             return redirect()->route('quiz.join')
                 ->with('error', __('join.quiz_not_found'));
         }
@@ -107,7 +106,7 @@ class QuizParticipantController extends Controller
 
         $quiz = Quiz::where('quiz_code', $request->quiz_code)->first();
 
-        if (!$quiz || $quiz->status !== 'active') {
+        if (! $quiz || $quiz->status !== 'active') {
             return redirect()->route('quiz.join')
                 ->with('error', __('join.quiz_code_error'));
         }
@@ -137,7 +136,7 @@ class QuizParticipantController extends Controller
 
         $quiz = Quiz::find(Session::get('quiz_id'));
 
-        if (!$quiz) {
+        if (! $quiz) {
             return redirect()->route('quiz.join')
                 ->with('error', __('join.quiz_not_found'));
         }
@@ -151,7 +150,7 @@ class QuizParticipantController extends Controller
         $this->ensureQuizRouteToken($quiz);
 
         if ($request->student_code === '0000') {
-            if (!$quiz->allow_guest) {
+            if (! $quiz->allow_guest) {
                 return redirect()->route('quiz.join')
                     ->with('error', __('join.guests_not_allowed'));
             }
@@ -183,7 +182,7 @@ class QuizParticipantController extends Controller
             ->where('student_code', $request->student_code)
             ->first();
 
-        if (!$student) {
+        if (! $student) {
             return redirect()->route('quiz.join')
                 ->with('error', __('join.student_not_found'));
         }
@@ -212,12 +211,12 @@ class QuizParticipantController extends Controller
         if ($ongoing) {
             $ongoing = $this->attemptLifecycle->expireIfNeeded($ongoing, $quiz);
 
-            if (!$ongoing->isInProgress()) {
+            if (! $ongoing->isInProgress()) {
                 $ongoing = null;
             }
         }
 
-        if ($ongoing && !$quiz->allow_resume) {
+        if ($ongoing && ! $quiz->allow_resume) {
             $ongoing->answers()->delete();
             $this->attemptLifecycle->abandon($ongoing, true);
             $ongoing = null;
@@ -261,14 +260,14 @@ class QuizParticipantController extends Controller
      */
     public function start(): View|RedirectResponse
     {
-        if (!Session::has('attempt_id') || !Session::has('student_name')) {
+        if (! Session::has('attempt_id') || ! Session::has('student_name')) {
             return redirect()->route('quiz.join')
                 ->with('error', __('join.no_session'));
         }
 
         $quiz = Quiz::find(Session::get('quiz_id'));
 
-        if (!$quiz) {
+        if (! $quiz) {
             return redirect()->route('quiz.join')
                 ->with('error', __('join.quiz_not_found'));
         }
@@ -295,7 +294,7 @@ class QuizParticipantController extends Controller
             return $quiz;
         }
 
-        if (!Session::has('attempt_id')) {
+        if (! Session::has('attempt_id')) {
             return redirect()->route('quiz.join')->with('error', __('join.no_session'));
         }
 
@@ -313,13 +312,13 @@ class QuizParticipantController extends Controller
         $attempt = $attemptId === 'guest' ? null : QuizAttempt::find($attemptId);
 
         if ($attemptId !== 'guest') {
-            if (!$attempt || $attempt->quiz_id !== $quiz->id) {
+            if (! $attempt || $attempt->quiz_id !== $quiz->id) {
                 return redirect()->route('quiz.join')->with('error', __('join.attempt_not_found'));
             }
 
             $attempt = $this->attemptLifecycle->expireIfNeeded($attempt, $quiz);
 
-            if (!$attempt->isInProgress()) {
+            if (! $attempt->isInProgress()) {
                 $this->syncSessionFromAttempt($attempt);
 
                 return redirect()->route('quiz.end', ['quizKey' => $this->ensureQuizRouteToken($quiz)])
@@ -327,7 +326,7 @@ class QuizParticipantController extends Controller
             }
         }
 
-        if (!$quiz->allow_resume && Session::has('quiz_end_time')) {
+        if (! $quiz->allow_resume && Session::has('quiz_end_time')) {
             Session::forget([
                 'attempt_id',
                 'question_order',
@@ -358,7 +357,7 @@ class QuizParticipantController extends Controller
                     ->with('error', __('join.previous_attempt_expired'));
             }
 
-            if (!Session::has('quiz_end_time')) {
+            if (! Session::has('quiz_end_time')) {
                 $endTime = $attemptId === 'guest'
                     ? now()->addSeconds($quiz->time_limit)->timestamp
                     : optional($attempt?->expires_at)?->timestamp;
@@ -369,12 +368,12 @@ class QuizParticipantController extends Controller
             }
         }
 
-        if (!Session::has('question_order')) {
-            $questions = $attempt && is_array($attempt->question_order) && !empty($attempt->question_order)
+        if (! Session::has('question_order')) {
+            $questions = $attempt && is_array($attempt->question_order) && ! empty($attempt->question_order)
                 ? $attempt->question_order
                 : $quiz->questions()->pluck('id')->toArray();
 
-            if ($quiz->is_random_order && (!$attempt || empty($attempt->question_order))) {
+            if ($quiz->is_random_order && (! $attempt || empty($attempt->question_order))) {
                 shuffle($questions);
 
                 if ($quiz->questions_limit && $quiz->questions_limit < count($questions)) {
@@ -389,11 +388,11 @@ class QuizParticipantController extends Controller
         if ($attempt) {
             $attempt = $this->attemptLifecycle->beginAttempt($attempt, $quiz, Session::get('question_order', []));
             $this->syncSessionFromAttempt($attempt);
-        } elseif (!Session::has('current_question_index')) {
+        } elseif (! Session::has('current_question_index')) {
             $this->setCurrentQuestionIndex(0);
         }
 
-        if (!Session::has('current_question_index')) {
+        if (! Session::has('current_question_index')) {
             $this->setCurrentQuestionIndex(0);
         }
 
@@ -401,7 +400,7 @@ class QuizParticipantController extends Controller
 
         $firstQuestionId = $this->getExpectedQuestionId(Session::get('question_order', []));
 
-        if (!$firstQuestionId) {
+        if (! $firstQuestionId) {
             return redirect()->route('quiz.join')
                 ->with('error', __('join.no_questions'));
         }
@@ -423,7 +422,7 @@ class QuizParticipantController extends Controller
         }
         $question = $this->resolveQuestionFromRoute($questionKey, $quiz);
 
-        if (!Session::has('attempt_id') || !Session::has('question_order')) {
+        if (! Session::has('attempt_id') || ! Session::has('question_order')) {
             return redirect()->route('quiz.join')
                 ->with('error', __('join.no_session'));
         }
@@ -443,14 +442,14 @@ class QuizParticipantController extends Controller
 
         if ($attemptId !== 'guest') {
             $attempt = QuizAttempt::find($attemptId);
-            if (!$attempt) {
+            if (! $attempt) {
                 return redirect()->route('quiz.join')->with('error', __('join.attempt_not_found'));
             }
 
             $attempt = $this->attemptLifecycle->expireIfNeeded($attempt, $quiz);
             $this->syncSessionFromAttempt($attempt);
 
-            if (!$attempt->isInProgress()) {
+            if (! $attempt->isInProgress()) {
                 return redirect()->route('quiz.end', ['quizKey' => $this->ensureQuizRouteToken($quiz)]);
             }
         }
@@ -479,7 +478,7 @@ class QuizParticipantController extends Controller
         }
         $question = $this->resolveQuestionFromRoute($questionKey, $quiz);
 
-        if (!Session::has('attempt_id') || !Session::has('question_order')) {
+        if (! Session::has('attempt_id') || ! Session::has('question_order')) {
             return redirect()->route('quiz.join')->with('error', __('join.no_session'));
         }
 
@@ -549,7 +548,7 @@ class QuizParticipantController extends Controller
         }
 
         $attempt = QuizAttempt::find($attemptId);
-        if (!$attempt) {
+        if (! $attempt) {
             return redirect()->route('quiz.join')->with('error', __('join.attempt_not_found'));
         }
 
@@ -557,7 +556,7 @@ class QuizParticipantController extends Controller
         $this->syncSessionFromAttempt($attempt);
         $questionOrder = Session::get('question_order', []);
 
-        if (!$attempt->isInProgress()) {
+        if (! $attempt->isInProgress()) {
             return redirect()->route('quiz.end', ['quizKey' => $this->ensureQuizRouteToken($quiz)]);
         }
 
@@ -593,7 +592,7 @@ class QuizParticipantController extends Controller
      */
     public function showQuestion(string $quizKey, string $questionKey): View|RedirectResponse
     {
-        if (!Session::has('attempt_id') || !Session::has('question_order')) {
+        if (! Session::has('attempt_id') || ! Session::has('question_order')) {
             return redirect()->route('quiz.join')->with('error', __('join.no_session'));
         }
 
@@ -676,7 +675,7 @@ class QuizParticipantController extends Controller
         }
 
         $attempt = QuizAttempt::find($attemptId);
-        if (!$attempt) {
+        if (! $attempt) {
             return redirect()->route('quiz.join')->with('error', __('join.attempt_not_found'));
         }
 
@@ -686,7 +685,7 @@ class QuizParticipantController extends Controller
         $questionOrder = Session::get('question_order', []);
         $currentIndex = $this->getCurrentQuestionIndex();
 
-        if (!$attempt->isInProgress()) {
+        if (! $attempt->isInProgress()) {
             return redirect()->route('quiz.end', ['quizKey' => $this->ensureQuizRouteToken($attemptQuiz)]);
         }
 
@@ -758,7 +757,7 @@ class QuizParticipantController extends Controller
         }
         $currentQuestion = $this->resolveQuestionFromRoute($currentQuestionKey, $quiz);
 
-        if (!Session::has('attempt_id') || !Session::has('question_order')) {
+        if (! Session::has('attempt_id') || ! Session::has('question_order')) {
             return redirect()->route('quiz.join')
                 ->with('error', __('join.no_session'));
         }
@@ -781,14 +780,14 @@ class QuizParticipantController extends Controller
         $attemptId = Session::get('attempt_id');
         if ($attemptId !== 'guest') {
             $attempt = QuizAttempt::find($attemptId);
-            if (!$attempt) {
+            if (! $attempt) {
                 return redirect()->route('quiz.join')->with('error', __('join.attempt_not_found'));
             }
 
             $attempt = $this->attemptLifecycle->expireIfNeeded($attempt, $quiz);
             $this->syncSessionFromAttempt($attempt);
 
-            if (!$attempt->isInProgress()) {
+            if (! $attempt->isInProgress()) {
                 return redirect()->route('quiz.end', ['quizKey' => $this->ensureQuizRouteToken($quiz)]);
             }
         } elseif (
@@ -819,7 +818,7 @@ class QuizParticipantController extends Controller
             return $quiz;
         }
 
-        if (!Session::has('attempt_id') || !Session::has('question_order')) {
+        if (! Session::has('attempt_id') || ! Session::has('question_order')) {
             return redirect()->route('quiz.join')->with('error', __('join.no_session'));
         }
 
@@ -906,14 +905,14 @@ class QuizParticipantController extends Controller
                 $this->advanceAttemptQuestionIndex(null, $question->id);
             } else {
                 $attempt = QuizAttempt::find($attemptId);
-                if (!$attempt) {
+                if (! $attempt) {
                     return redirect()->route('quiz.join')->with('error', __('join.attempt_not_found'));
                 }
 
                 $attempt = $this->attemptLifecycle->expireIfNeeded($attempt, $quiz);
                 $this->syncSessionFromAttempt($attempt);
 
-                if (!$attempt->isInProgress()) {
+                if (! $attempt->isInProgress()) {
                     return redirect()->route('quiz.end', ['quizKey' => $this->ensureQuizRouteToken($quiz)]);
                 }
 
@@ -943,7 +942,7 @@ class QuizParticipantController extends Controller
             if ($this->sessionUsesPublicAnonymousPool($quiz)) {
                 $persistedAttempt = $this->persistPublicAnonymousPoolSubmission($quiz);
 
-                if (!$persistedAttempt) {
+                if (! $persistedAttempt) {
                     $this->resetQuizRuntimeState();
 
                     return redirect()->route('quiz.join')
@@ -967,14 +966,14 @@ class QuizParticipantController extends Controller
         }
 
         $attempt = QuizAttempt::find($attemptId);
-        if (!$attempt) {
+        if (! $attempt) {
             return redirect()->route('quiz.join')->with('error', __('join.attempt_not_found'));
         }
 
         $attempt = $this->attemptLifecycle->expireIfNeeded($attempt, $quiz);
         $this->syncSessionFromAttempt($attempt);
 
-        if (!$attempt->isInProgress()) {
+        if (! $attempt->isInProgress()) {
             return redirect()->route('quiz.end', ['quizKey' => $this->ensureQuizRouteToken($quiz)]);
         }
 
@@ -989,7 +988,7 @@ class QuizParticipantController extends Controller
      */
     public function endQuiz(string $quizKey): View|RedirectResponse
     {
-        if (!Session::has('attempt_id')) {
+        if (! Session::has('attempt_id')) {
             return redirect()->route('quiz.join')->with('error', __('join.no_session'));
         }
 
@@ -1044,7 +1043,7 @@ class QuizParticipantController extends Controller
                     ->all();
 
                 if (
-                    !empty($question) &&
+                    ! empty($question) &&
                     count($correctAnswerIds) === count($studentAnswerIds) &&
                     empty(array_diff($correctAnswerIds, $studentAnswerIds))
                 ) {
@@ -1065,7 +1064,7 @@ class QuizParticipantController extends Controller
         }
 
         $attempt = QuizAttempt::find($attemptId);
-        if (!$attempt) {
+        if (! $attempt) {
             return redirect()->route('quiz.join')->with('error', __('join.attempt_not_found'));
         }
 
@@ -1079,7 +1078,7 @@ class QuizParticipantController extends Controller
 
         foreach ($questionOrder as $questionId) {
             $question = $questions[$questionId] ?? null;
-            if (!$question) {
+            if (! $question) {
                 continue;
             }
 
@@ -1092,7 +1091,7 @@ class QuizParticipantController extends Controller
                 ->all();
 
             if (
-                !empty($studentIds) &&
+                ! empty($studentIds) &&
                 count($correctIds) === count($studentIds) &&
                 empty(array_diff($correctIds, $studentIds))
             ) {
@@ -1130,7 +1129,7 @@ class QuizParticipantController extends Controller
      */
     public function studentLink(Request $request, QuizStudent $student): View|RedirectResponse
     {
-        if (!$student->matchesAccessLinkFingerprint((string) $request->query('key'))) {
+        if (! $student->matchesAccessLinkFingerprint((string) $request->query('key'))) {
             abort(404);
         }
 
@@ -1186,12 +1185,12 @@ class QuizParticipantController extends Controller
         if ($existing) {
             $existing = $this->attemptLifecycle->expireIfNeeded($existing, $quiz);
 
-            if (!$existing->isInProgress()) {
+            if (! $existing->isInProgress()) {
                 $existing = null;
             }
         }
 
-        if ($existing && !$quiz->allow_resume) {
+        if ($existing && ! $quiz->allow_resume) {
             $existing->answers()->delete();
             $this->attemptLifecycle->abandon($existing, true);
             $existing = null;
@@ -1235,13 +1234,13 @@ class QuizParticipantController extends Controller
      */
     public function publicStart(Request $request, Quiz $quiz): View|RedirectResponse
     {
-        if (!$quiz->matchesPublicLinkFingerprint((string) $request->query('key'))) {
+        if (! $quiz->matchesPublicLinkFingerprint((string) $request->query('key'))) {
             abort(404);
         }
 
         $isPublicAnonymousPoolMode = $this->quizUsesPublicAnonymousPool($quiz);
 
-        if (!$quiz->is_public || (!$quiz->allow_guest && !$isPublicAnonymousPoolMode) || $quiz->status !== 'active') {
+        if (! $quiz->is_public || (! $quiz->allow_guest && ! $isPublicAnonymousPoolMode) || $quiz->status !== 'active') {
             abort(404);
         }
 
@@ -1266,7 +1265,7 @@ class QuizParticipantController extends Controller
         if ($isPublicAnonymousPoolMode) {
             $reservation = $this->claimPublicAnonymousPoolReservation($quiz, $request);
 
-            if (!$reservation) {
+            if (! $reservation) {
                 return redirect()->route('quiz.join')
                     ->with('error', __('join.public_pool_full'));
             }

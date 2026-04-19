@@ -12,7 +12,7 @@ function makeSystemExampleQuiz(array $quizOverrides = []): array
     ]);
 
     $category = Category::create([
-        'name' => 'System Example Category ' . uniqid(),
+        'name' => 'System Example Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create(array_merge([
@@ -38,7 +38,7 @@ function makeSystemExampleQuiz(array $quizOverrides = []): array
         'public_token_hash' => Quiz::generateLinkTokenHash(),
         'language' => 'el',
         'is_system_example' => true,
-        'system_key' => 'test_example_' . uniqid(),
+        'system_key' => 'test_example_'.uniqid(),
     ], $quizOverrides));
 
     $question = Question::create([
@@ -65,7 +65,7 @@ it('shows shared example quizzes in the management index for teachers', function
     [, $exampleQuiz] = makeSystemExampleQuiz();
 
     $ownedCategory = Category::create([
-        'name' => 'Owned Category ' . uniqid(),
+        'name' => 'Owned Category '.uniqid(),
     ]);
 
     Quiz::create([

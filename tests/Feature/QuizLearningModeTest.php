@@ -13,7 +13,7 @@ function makeLearningModeQuiz(array $overrides = []): Quiz
     ]);
 
     $category = Category::create([
-        'name' => 'Learning Mode Category ' . uniqid(),
+        'name' => 'Learning Mode Category '.uniqid(),
     ]);
 
     return Quiz::create(array_merge([

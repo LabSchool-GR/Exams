@@ -9,18 +9,17 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   public function up(): void
-{
-    Schema::table('quiz_attempts', function (Blueprint $table) {
-        $table->integer('max_attempts')->default(1)->after('student_name');
-    });
-}
+    public function up(): void
+    {
+        Schema::table('quiz_attempts', function (Blueprint $table) {
+            $table->integer('max_attempts')->default(1)->after('student_name');
+        });
+    }
 
-public function down(): void
-{
-    Schema::table('quiz_attempts', function (Blueprint $table) {
-        $table->dropColumn('max_attempts');
-    });
-}
-
+    public function down(): void
+    {
+        Schema::table('quiz_attempts', function (Blueprint $table) {
+            $table->dropColumn('max_attempts');
+        });
+    }
 };

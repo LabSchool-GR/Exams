@@ -173,8 +173,8 @@ test('registration notifies only admins without personal data in the email body'
         $rendered = $mail->render();
 
         return $mail->hasTo($admin->email)
-            && !str_contains($rendered, 'Test User')
-            && !str_contains($rendered, 'test@sch.gr')
+            && ! str_contains($rendered, 'Test User')
+            && ! str_contains($rendered, 'test@sch.gr')
             && str_contains($rendered, route('users.index'));
     });
 
@@ -200,4 +200,3 @@ test('registration is rate limited after repeated attempts', function () {
         'password_confirmation' => 'password',
     ])->assertStatus(429);
 });
-

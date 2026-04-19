@@ -13,7 +13,7 @@ trait AuthorizesQuizOwnership
     {
         $user = auth()->user();
 
-        if (!$user) {
+        if (! $user) {
             abort(403, 'Not authenticated.');
         }
 
@@ -31,11 +31,11 @@ trait AuthorizesQuizOwnership
     {
         $user = auth()->user();
 
-        if (!$user) {
+        if (! $user) {
             abort(403, 'Not authenticated.');
         }
 
-        if (!$user->isAdmin() && $quiz->creator_id !== $user->id) {
+        if (! $user->isAdmin() && $quiz->creator_id !== $user->id) {
             abort(403, 'Δεν έχετε δικαίωμα πρόσβασης σε αυτό το quiz.');
         }
     }

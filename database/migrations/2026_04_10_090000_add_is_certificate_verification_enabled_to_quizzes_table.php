@@ -21,7 +21,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        if (!Schema::hasColumn('quizzes', 'is_certificate_verification_enabled')) {
+        if (! Schema::hasColumn('quizzes', 'is_certificate_verification_enabled')) {
             return;
         }
 

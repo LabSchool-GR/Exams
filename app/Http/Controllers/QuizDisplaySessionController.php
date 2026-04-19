@@ -28,8 +28,7 @@ class QuizDisplaySessionController extends Controller
 
     public function __construct(
         private readonly QuizDisplaySessionService $displaySessions
-    ) {
-    }
+    ) {}
 
     public function launch(Quiz $quiz, QuizStudent $student): RedirectResponse
     {
@@ -69,7 +68,7 @@ class QuizDisplaySessionController extends Controller
         abort_unless($request->hasValidSignature(), 403);
 
         $quiz = $quizDisplaySession->quiz;
-        if (!$quiz) {
+        if (! $quiz) {
             abort(404);
         }
 
@@ -94,6 +93,7 @@ class QuizDisplaySessionController extends Controller
 
         $this->setQuizLocale($quizDisplaySession);
         $quizDisplaySession = $this->displaySessions->touchScreen($quizDisplaySession);
+
         return response()->json($this->displaySessions->buildState($quizDisplaySession, true));
     }
 
@@ -213,7 +213,7 @@ class QuizDisplaySessionController extends Controller
 
     private function authorizeControllerSession(Request $request, QuizDisplaySession $displaySession): void
     {
-        if (!$displaySession->isClaimedBySessionId($request->session()->getId())) {
+        if (! $displaySession->isClaimedBySessionId($request->session()->getId())) {
             abort(403);
         }
     }

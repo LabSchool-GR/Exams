@@ -7,7 +7,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-
 use App\Models\Category;
 use App\Models\Quiz;
 use App\Models\QuizAttempt;
@@ -22,7 +21,7 @@ function makeQuizForAuthorization(array $ownerOverrides = [], array $quizOverrid
     ], $ownerOverrides));
 
     $category = Category::create([
-        'name' => 'Quiz Auth Category ' . uniqid(),
+        'name' => 'Quiz Auth Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create(array_merge([
@@ -133,7 +132,7 @@ it('shows the localized image max validation message when creating a quiz', func
     ]);
 
     $category = Category::create([
-        'name' => 'Create Validation Category ' . uniqid(),
+        'name' => 'Create Validation Category '.uniqid(),
     ]);
 
     $this->actingAs($owner)
@@ -232,7 +231,7 @@ it('allows the quiz creator to disable pass notifications when creating a quiz',
     ]);
 
     $category = Category::create([
-        'name' => 'Pass Notification Category ' . uniqid(),
+        'name' => 'Pass Notification Category '.uniqid(),
     ]);
 
     $this->actingAs($owner)
@@ -261,7 +260,7 @@ it('stores a public quiz on creation when guest access is enabled', function () 
     ]);
 
     $category = Category::create([
-        'name' => 'Public Quiz Category ' . uniqid(),
+        'name' => 'Public Quiz Category '.uniqid(),
     ]);
 
     $this->actingAs($owner)
@@ -295,7 +294,7 @@ it('forces guest and public access off when anonymous bulk mode is enabled', fun
     ]);
 
     $category = Category::create([
-        'name' => 'Anonymous Bulk Category ' . uniqid(),
+        'name' => 'Anonymous Bulk Category '.uniqid(),
     ]);
 
     $this->actingAs($owner)
@@ -329,7 +328,7 @@ it('allows only admins to activate special anonymous modes', function () {
     ]);
 
     $category = Category::create([
-        'name' => 'Teacher Special Mode Category ' . uniqid(),
+        'name' => 'Teacher Special Mode Category '.uniqid(),
     ]);
 
     $this->actingAs($teacher)
@@ -362,7 +361,7 @@ it('forces public anonymous pool settings when enabled by an admin', function ()
     ]);
 
     $category = Category::create([
-        'name' => 'Public Pool Category ' . uniqid(),
+        'name' => 'Public Pool Category '.uniqid(),
     ]);
 
     $this->actingAs($owner)
@@ -399,7 +398,7 @@ it('stores learning mode on quiz creation', function () {
     ]);
 
     $category = Category::create([
-        'name' => 'Learning Mode Category ' . uniqid(),
+        'name' => 'Learning Mode Category '.uniqid(),
     ]);
 
     $this->actingAs($owner)
@@ -428,7 +427,7 @@ it('stores certificate verification only when created by an admin', function () 
     ]);
 
     $category = Category::create([
-        'name' => 'Certificate Verification Category ' . uniqid(),
+        'name' => 'Certificate Verification Category '.uniqid(),
     ]);
 
     $this->actingAs($owner)
@@ -457,7 +456,7 @@ it('ignores certificate verification when a teacher tries to enable it', functio
     ]);
 
     $category = Category::create([
-        'name' => 'Teacher Certificate Verification Category ' . uniqid(),
+        'name' => 'Teacher Certificate Verification Category '.uniqid(),
     ]);
 
     $this->actingAs($owner)
@@ -486,7 +485,7 @@ it('rejects learning mode when combined with public anonymous pool mode', functi
     ]);
 
     $category = Category::create([
-        'name' => 'Learning Mode Conflict Category ' . uniqid(),
+        'name' => 'Learning Mode Conflict Category '.uniqid(),
     ]);
 
     $this->actingAs($owner)
@@ -514,7 +513,7 @@ it('stores the selected registered student access policy on quiz creation', func
     ]);
 
     $category = Category::create([
-        'name' => 'Access Policy Category ' . uniqid(),
+        'name' => 'Access Policy Category '.uniqid(),
     ]);
 
     $this->actingAs($owner)
@@ -547,7 +546,7 @@ it('rejects quiz creation when the selected template is not available to the tea
     ]);
 
     $privateTemplate = QuizTemplate::create([
-        'code' => 'private_template_' . uniqid(),
+        'code' => 'private_template_'.uniqid(),
         'name' => 'Private Template',
         'description' => 'Not assigned to the acting teacher',
         'is_common' => false,
@@ -555,7 +554,7 @@ it('rejects quiz creation when the selected template is not available to the tea
     $privateTemplate->users()->sync([$otherTeacher->id]);
 
     $category = Category::create([
-        'name' => 'Template Validation Category ' . uniqid(),
+        'name' => 'Template Validation Category '.uniqid(),
     ]);
 
     $this->actingAs($owner)
@@ -580,7 +579,7 @@ it('falls back to the default participant template when the configured template 
     ]);
 
     $category = Category::create([
-        'name' => 'Fallback Template Category ' . uniqid(),
+        'name' => 'Fallback Template Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([

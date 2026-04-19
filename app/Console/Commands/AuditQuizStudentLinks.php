@@ -16,7 +16,7 @@ class AuditQuizStudentLinks extends Command
     {
         $this->components->info('Running quiz student link audit...');
 
-        if (!Schema::hasColumn('quiz_attempts', 'quiz_student_id')) {
+        if (! Schema::hasColumn('quiz_attempts', 'quiz_student_id')) {
             $this->newLine();
             $this->components->warn('The quiz_student_id column does not exist yet. Run the related migration before using this audit.');
 

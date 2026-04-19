@@ -21,12 +21,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define('manage-users', fn(User $user): bool => $user->role === 'admin');
+        Gate::define('manage-users', fn (User $user): bool => $user->role === 'admin');
 
-        Gate::define('manage-updates', fn(User $user): bool => $user->role === 'admin');
-		
-		Gate::define('manage-templates', fn(User $user): bool => $user->role === 'admin');
+        Gate::define('manage-updates', fn (User $user): bool => $user->role === 'admin');
 
-        Gate::define('manage-categories', fn(User $user): bool => $user->role === 'admin');
+        Gate::define('manage-templates', fn (User $user): bool => $user->role === 'admin');
+
+        Gate::define('manage-categories', fn (User $user): bool => $user->role === 'admin');
     }
 }

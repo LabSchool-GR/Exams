@@ -66,11 +66,11 @@ trait HandlesQuizParticipantAccess
     {
         $templateCode = (string) ($quiz->question_view ?: 'default');
         $candidates = [
-            'quiz.templates.' . $templateCode . '.' . $screen,
+            'quiz.templates.'.$templateCode.'.'.$screen,
         ];
 
         if ($templateCode !== 'default') {
-            $candidates[] = 'quiz.templates.default.' . $screen;
+            $candidates[] = 'quiz.templates.default.'.$screen;
         }
 
         foreach ($candidates as $viewName) {

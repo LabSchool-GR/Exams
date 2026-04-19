@@ -7,10 +7,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-
-use App\Models\Answer;
 use App\Models\Category;
-use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\User;
 
@@ -21,7 +18,7 @@ function makeAnswerRouteDataForAuthorization(): array
     ]);
 
     $category = Category::create([
-        'name' => 'Answer Auth Category ' . uniqid(),
+        'name' => 'Answer Auth Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([

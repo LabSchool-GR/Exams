@@ -15,8 +15,7 @@ class AdminFeedbackAlert extends Mailable implements ShouldQueue
         public readonly string $titleText,
         public readonly string $messageBody,
         public readonly string $submittedAt
-    ) {
-    }
+    ) {}
 
     public function build(): self
     {

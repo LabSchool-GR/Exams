@@ -7,7 +7,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;

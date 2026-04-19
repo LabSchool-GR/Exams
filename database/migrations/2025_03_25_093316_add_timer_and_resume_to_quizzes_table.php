@@ -9,18 +9,18 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-	public function up()
-	{
-		Schema::table('quizzes', function (Blueprint $table) {
-			$table->boolean('has_timer')->default(true)->after('time_limit'); // ⏱️
-			$table->boolean('allow_resume')->default(true)->after('has_timer'); // 🔁
-		});
-	}
+    public function up()
+    {
+        Schema::table('quizzes', function (Blueprint $table) {
+            $table->boolean('has_timer')->default(true)->after('time_limit'); // ⏱️
+            $table->boolean('allow_resume')->default(true)->after('has_timer'); // 🔁
+        });
+    }
 
-	public function down()
-	{
-		Schema::table('quizzes', function (Blueprint $table) {
-			$table->dropColumn(['has_timer', 'allow_resume']);
-		});
-	}
+    public function down()
+    {
+        Schema::table('quizzes', function (Blueprint $table) {
+            $table->dropColumn(['has_timer', 'allow_resume']);
+        });
+    }
 };

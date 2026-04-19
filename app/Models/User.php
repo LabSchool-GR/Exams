@@ -11,10 +11,10 @@ namespace App\Models;
 
 use App\Notifications\CustomVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -67,14 +67,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->role === 'admin';
     }
-	
-	/**
-	 * The quiz templates available for this user.
-	 */
-	public function quizTemplates()
-	{
-		return $this->belongsToMany(QuizTemplate::class, 'quiz_template_user');
-	}
+
+    /**
+     * The quiz templates available for this user.
+     */
+    public function quizTemplates()
+    {
+        return $this->belongsToMany(QuizTemplate::class, 'quiz_template_user');
+    }
 
     /**
      * Send the custom email verification notification.
@@ -83,14 +83,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new CustomVerifyEmail);
     }
-	
-	/**
-	 * Send the custom password reset notification.
-	 */
-	public function sendPasswordResetNotification($token): void
-	{
-		$this->notify(new \App\Notifications\CustomResetPassword($token));
-	}
+
+    /**
+     * Send the custom password reset notification.
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new \App\Notifications\CustomResetPassword($token));
+    }
 
     /**
      * Route user deletion through model cleanup so child quiz assets do not remain on disk.

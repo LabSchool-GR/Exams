@@ -48,13 +48,13 @@ class QuizController extends Controller
 
     private function duplicateStoredImage(?string $sourcePath, string $directory): ?string
     {
-        if (!is_string($sourcePath) || $sourcePath === '' || !Storage::disk('public')->exists($sourcePath)) {
+        if (! is_string($sourcePath) || $sourcePath === '' || ! Storage::disk('public')->exists($sourcePath)) {
             return null;
         }
 
         $extension = pathinfo($sourcePath, PATHINFO_EXTENSION);
         $filename = (string) Str::uuid();
-        $destination = trim($directory, '/') . '/' . $filename . ($extension !== '' ? '.' . $extension : '');
+        $destination = trim($directory, '/').'/'.$filename.($extension !== '' ? '.'.$extension : '');
 
         Storage::disk('public')->copy($sourcePath, $destination);
 
@@ -65,7 +65,7 @@ class QuizController extends Controller
     {
         $user = $this->currentUser();
 
-        if (!$user) {
+        if (! $user) {
             abort(403, 'Not authenticated.');
         }
 
@@ -111,7 +111,7 @@ class QuizController extends Controller
     {
         $query = QuizTemplate::query();
 
-        if (!$user || !$user->isAdmin()) {
+        if (! $user || ! $user->isAdmin()) {
             $query->where(function ($builder) use ($user) {
                 $builder->where('is_common', true);
 
@@ -128,12 +128,12 @@ class QuizController extends Controller
 
     private function builtInTemplateViewsExist(?string $templateCode): bool
     {
-        if (!is_string($templateCode) || trim($templateCode) === '') {
+        if (! is_string($templateCode) || trim($templateCode) === '') {
             return false;
         }
 
         foreach (['start', 'student', 'question', 'result'] as $screen) {
-            if (!view()->exists('quiz.templates.' . $templateCode . '.' . $screen)) {
+            if (! view()->exists('quiz.templates.'.$templateCode.'.'.$screen)) {
                 return false;
             }
         }
@@ -169,7 +169,7 @@ class QuizController extends Controller
 
     private function userCanUseTemplateCode(?string $templateCode, ?User $user): bool
     {
-        if (!is_string($templateCode) || trim($templateCode) === '') {
+        if (! is_string($templateCode) || trim($templateCode) === '') {
             return false;
         }
 
@@ -186,7 +186,7 @@ class QuizController extends Controller
     {
         $user = $this->currentUser();
 
-        if (!$user || $user->isAdmin()) {
+        if (! $user || $user->isAdmin()) {
             return true;
         }
 
@@ -202,7 +202,7 @@ class QuizController extends Controller
     {
         $user = $this->currentUser();
 
-        if (!$user) {
+        if (! $user) {
             abort(403, 'Not authenticated.');
         }
 
@@ -227,7 +227,7 @@ class QuizController extends Controller
      */
     public function create(): View|RedirectResponse
     {
-        if (!$this->creatorCanCreateQuiz()) {
+        if (! $this->creatorCanCreateQuiz()) {
             return redirect()
                 ->route('quizzes.index')
                 ->with('error', __('controllers.quiz_limit_reached'));
@@ -259,7 +259,7 @@ class QuizController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        if (!$this->creatorCanCreateQuiz()) {
+        if (! $this->creatorCanCreateQuiz()) {
             return redirect()
                 ->route('quizzes.index')
                 ->with('error', __('controllers.quiz_limit_reached'));
@@ -293,7 +293,7 @@ class QuizController extends Controller
                 'string',
                 'max:50',
                 function (string $attribute, mixed $value, \Closure $fail): void {
-                    if (!$this->userCanUseTemplateCode((string) $value, $this->currentUser())) {
+                    if (! $this->userCanUseTemplateCode((string) $value, $this->currentUser())) {
                         $fail(__('validation.exists', ['attribute' => $attribute]));
                     }
                 },
@@ -451,7 +451,7 @@ class QuizController extends Controller
                 'string',
                 'max:50',
                 function (string $attribute, mixed $value, \Closure $fail): void {
-                    if (!$this->userCanUseTemplateCode((string) $value, $this->currentUser())) {
+                    if (! $this->userCanUseTemplateCode((string) $value, $this->currentUser())) {
                         $fail(__('validation.exists', ['attribute' => $attribute]));
                     }
                 },
@@ -632,7 +632,7 @@ class QuizController extends Controller
 
         $this->addCenteredPdfPageFooter($pdf, __('pdfexp.page_footer'));
 
-        return $pdf->download('quiz_printable_' . $quiz->id . '.pdf');
+        return $pdf->download('quiz_printable_'.$quiz->id.'.pdf');
     }
 
     /**
@@ -642,7 +642,7 @@ class QuizController extends Controller
     {
         $this->authorizeQuizDuplicationSource($quiz);
 
-        if (!$this->creatorCanCreateQuiz()) {
+        if (! $this->creatorCanCreateQuiz()) {
             return redirect()
                 ->route('quizzes.index')
                 ->with('error', __('controllers.quiz_limit_reached'));
@@ -650,7 +650,7 @@ class QuizController extends Controller
 
         $owner = $this->currentUser();
 
-        if (!$owner) {
+        if (! $owner) {
             abort(403, 'Not authenticated.');
         }
 

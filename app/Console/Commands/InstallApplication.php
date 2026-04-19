@@ -21,7 +21,7 @@ class InstallApplication extends Command
 
     public function handle(): int
     {
-        if (!$this->ensureApplicationKey()) {
+        if (! $this->ensureApplicationKey()) {
             return self::FAILURE;
         }
 
@@ -35,7 +35,7 @@ class InstallApplication extends Command
             return self::FAILURE;
         }
 
-        if (!$this->option('skip-admin')) {
+        if (! $this->option('skip-admin')) {
             if ($this->call('app:setup-admin', [
                 '--email' => (string) $this->option('admin-email'),
                 '--name' => (string) $this->option('admin-name'),
@@ -61,7 +61,7 @@ class InstallApplication extends Command
             }
         }
 
-        if (!$this->option('skip-storage-link')) {
+        if (! $this->option('skip-storage-link')) {
             $this->ensureStorageLink();
         }
 

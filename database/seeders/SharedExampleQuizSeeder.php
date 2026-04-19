@@ -22,7 +22,7 @@ class SharedExampleQuizSeeder extends Seeder
             ->orderBy('id')
             ->first();
 
-        if (!$admin) {
+        if (! $admin) {
             throw new RuntimeException('Demo seeding requires an admin user. Run "php artisan app:setup-admin" first.');
         }
 
@@ -34,7 +34,7 @@ class SharedExampleQuizSeeder extends Seeder
             'system_key' => self::SYSTEM_KEY,
         ]);
 
-        if (!$quiz->exists) {
+        if (! $quiz->exists) {
             $quiz->quiz_code = $this->generateUniqueQuizCode();
         }
 

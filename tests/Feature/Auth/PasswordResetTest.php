@@ -7,7 +7,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-
 use App\Models\User;
 use App\Notifications\CustomResetPassword;
 use Illuminate\Support\Facades\Notification;
@@ -45,7 +44,7 @@ test('reset password screen can be rendered', function () {
     $this->post('/forgot-password', ['email' => $user->email]);
 
     Notification::assertSentTo($user, CustomResetPassword::class, function ($notification) {
-        $response = $this->get('/reset-password/' . passwordResetNotificationToken($notification));
+        $response = $this->get('/reset-password/'.passwordResetNotificationToken($notification));
 
         $response->assertStatus(200);
 

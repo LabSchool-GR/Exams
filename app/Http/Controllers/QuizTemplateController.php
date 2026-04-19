@@ -48,6 +48,7 @@ class QuizTemplateController extends Controller
     public function create()
     {
         $users = User::orderBy('name')->get();
+
         return view('quiz_templates.create', compact('users'));
     }
 
@@ -57,23 +58,23 @@ class QuizTemplateController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'code'        => 'required|alpha_dash|unique:quiz_templates,code',
-            'name'        => 'required|string|max:255',
+            'code' => 'required|alpha_dash|unique:quiz_templates,code',
+            'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'is_common'   => 'boolean',
-            'users'       => 'array',
-            'users.*'     => 'integer|exists:users,id',
+            'is_common' => 'boolean',
+            'users' => 'array',
+            'users.*' => 'integer|exists:users,id',
         ]);
 
         $template = QuizTemplate::create([
-            'code'        => $data['code'],
-            'name'        => $data['name'],
+            'code' => $data['code'],
+            'name' => $data['name'],
             'description' => $data['description'] ?? null,
-            'is_common'   => $request->has('is_common') ? true : false,
+            'is_common' => $request->has('is_common') ? true : false,
         ]);
 
         // Common templates stay globally available, so user assignments only apply to private templates.
-        if(!$template->is_common && !empty($data['users'])) {
+        if (! $template->is_common && ! empty($data['users'])) {
             $template->users()->sync($data['users']);
         }
 
@@ -109,21 +110,21 @@ class QuizTemplateController extends Controller
     public function update(Request $request, QuizTemplate $quiz_template)
     {
         $data = $request->validate([
-            'name'        => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'is_common'   => 'boolean',
-            'users'       => 'array',
-            'users.*'     => 'integer|exists:users,id',
+            'is_common' => 'boolean',
+            'users' => 'array',
+            'users.*' => 'integer|exists:users,id',
         ]);
 
         $quiz_template->update([
-            'name'        => $data['name'],
+            'name' => $data['name'],
             'description' => $data['description'] ?? null,
-            'is_common'   => $request->has('is_common') ? true : false,
+            'is_common' => $request->has('is_common') ? true : false,
         ]);
 
         // Drop per-user links when the template becomes common so access rules stay consistent.
-        if(!$quiz_template->is_common && !empty($data['users'])) {
+        if (! $quiz_template->is_common && ! empty($data['users'])) {
             $quiz_template->users()->sync($data['users']);
         } else {
             $quiz_template->users()->detach();
@@ -138,6 +139,7 @@ class QuizTemplateController extends Controller
     public function destroy(QuizTemplate $quiz_template)
     {
         $quiz_template->delete();
+
         return redirect()->route('quiz_templates.index')->with('success', __('templates.deleted_successfully'));
     }
 }

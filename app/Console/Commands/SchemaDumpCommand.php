@@ -91,7 +91,7 @@ class SchemaDumpCommand extends Command
 
         if ($existingCandidateDirectories !== []) {
             $newPath = implode(PATH_SEPARATOR, array_merge($existingCandidateDirectories, [$currentPath]));
-            putenv('PATH=' . $newPath);
+            putenv('PATH='.$newPath);
             $_SERVER['PATH'] = $newPath;
             $_ENV['PATH'] = $newPath;
         }

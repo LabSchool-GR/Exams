@@ -11,8 +11,8 @@ namespace App\Http\Controllers;
 
 use App\Mail\AdminFeedbackAlert;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
@@ -46,7 +46,7 @@ class FeedbackController extends Controller
             ->values()
             ->all();
 
-        if (!empty($adminEmails)) {
+        if (! empty($adminEmails)) {
             try {
                 Mail::to($adminEmails)->queue(new AdminFeedbackAlert(
                     (string) $request->string('title'),

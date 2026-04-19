@@ -13,7 +13,7 @@ return [
     'registration' => [
         'allowed_email_domains' => $registrationDomains,
         'allowed_email_domains_display' => implode(', ', array_map(
-            static fn (string $domain): string => '@' . $domain,
+            static fn (string $domain): string => '@'.$domain,
             $registrationDomains
         )),
     ],

@@ -7,7 +7,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-
 use App\Models\Category;
 use App\Models\QuizTemplate;
 use App\Models\Update;
@@ -118,7 +117,7 @@ it('allows admin access to quiz templates management and blocks teachers', funct
     ]);
 
     $template = QuizTemplate::create([
-        'code' => 'template_' . uniqid(),
+        'code' => 'template_'.uniqid(),
         'name' => 'Admin Template',
         'description' => 'Only admins can manage this',
         'is_common' => true,

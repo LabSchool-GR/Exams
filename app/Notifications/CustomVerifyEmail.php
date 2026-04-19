@@ -11,10 +11,9 @@ namespace App\Notifications;
 
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Notifications\Notification;
 
 class CustomVerifyEmail extends VerifyEmail
 {
@@ -40,7 +39,7 @@ class CustomVerifyEmail extends VerifyEmail
     {
         $url = $this->verificationUrl($notifiable);
 
-         return (new MailMessage)
+        return (new MailMessage)
             ->subject(__('emails.verify.subject'))
             ->greeting(__('emails.verify.greeting', ['name' => $notifiable->name]))
             ->line(__('emails.verify.intro'))

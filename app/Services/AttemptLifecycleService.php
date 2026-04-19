@@ -52,7 +52,7 @@ class AttemptLifecycleService
         array $skippedQuestionIds = [],
         ?int $currentQuestionIndex = null
     ): QuizAttempt {
-        if (!$attempt->isInProgress()) {
+        if (! $attempt->isInProgress()) {
             return $attempt;
         }
 
@@ -72,7 +72,7 @@ class AttemptLifecycleService
      */
     public function touch(QuizAttempt $attempt): void
     {
-        if (!$attempt->isInProgress()) {
+        if (! $attempt->isInProgress()) {
             return;
         }
 
@@ -87,8 +87,8 @@ class AttemptLifecycleService
     public function expireIfNeeded(QuizAttempt $attempt, Quiz $quiz): QuizAttempt
     {
         if (
-            !$attempt->isInProgress() ||
-            !$quiz->has_timer ||
+            ! $attempt->isInProgress() ||
+            ! $quiz->has_timer ||
             $attempt->expires_at === null ||
             $attempt->expires_at->isFuture()
         ) {
@@ -108,7 +108,7 @@ class AttemptLifecycleService
      */
     public function submit(QuizAttempt $attempt, Quiz $quiz): QuizAttempt
     {
-        if (!$attempt->isInProgress()) {
+        if (! $attempt->isInProgress()) {
             return $attempt;
         }
 
@@ -146,7 +146,7 @@ class AttemptLifecycleService
      */
     public function secondsRemaining(QuizAttempt $attempt, Quiz $quiz): ?int
     {
-        if (!$quiz->has_timer || $attempt->expires_at === null) {
+        if (! $quiz->has_timer || $attempt->expires_at === null) {
             return null;
         }
 
@@ -197,7 +197,7 @@ class AttemptLifecycleService
 
         foreach ($questionIds as $questionId) {
             $question = $questions->get($questionId);
-            if (!$question) {
+            if (! $question) {
                 continue;
             }
 
@@ -216,7 +216,7 @@ class AttemptLifecycleService
                 ->all();
 
             if (
-                !empty($selectedIds) &&
+                ! empty($selectedIds) &&
                 count($correctIds) === count($selectedIds) &&
                 empty(array_diff($correctIds, $selectedIds))
             ) {

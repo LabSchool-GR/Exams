@@ -7,7 +7,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-
 use App\Models\Category;
 use App\Models\Question;
 use App\Models\Quiz;
@@ -31,7 +30,7 @@ function makeOwnedQuizWithFiles(): array
     ]);
 
     $category = Category::create([
-        'name' => 'Deletion Category ' . uniqid(),
+        'name' => 'Deletion Category '.uniqid(),
     ]);
 
     Storage::disk('public')->put('quizzes_images/quiz-delete-test.png', 'quiz-image');
@@ -192,7 +191,7 @@ it('deletes the registered student together with all linked and legacy attempts'
     ]);
 
     $category = Category::create([
-        'name' => 'Student Cleanup Category ' . uniqid(),
+        'name' => 'Student Cleanup Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([

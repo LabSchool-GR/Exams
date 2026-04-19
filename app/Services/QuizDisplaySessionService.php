@@ -26,8 +26,7 @@ class QuizDisplaySessionService
 {
     public function __construct(
         private readonly AttemptLifecycleService $attemptLifecycle
-    ) {
-    }
+    ) {}
 
     public function launchForStudent(Quiz $quiz, QuizStudent $student): QuizDisplaySession
     {
@@ -46,7 +45,7 @@ class QuizDisplaySessionService
             $questionOrder = $this->resolvedQuestionOrder($quiz, $attempt);
             $answerOrderMap = $this->resolvedAnswerOrderMap($quiz, $attempt, $questionOrder);
 
-            if (!$attempt->isInProgress()) {
+            if (! $attempt->isInProgress()) {
                 throw new \RuntimeException(__('controllers.second_screen_session_not_writable'));
             }
 
@@ -74,7 +73,7 @@ class QuizDisplaySessionService
     {
         $displaySession = $this->normalizeSessionState($displaySession);
 
-        if (!$displaySession->isActive()) {
+        if (! $displaySession->isActive()) {
             throw new \RuntimeException(__('display.session_unavailable'));
         }
 
@@ -82,7 +81,7 @@ class QuizDisplaySessionService
 
         if (
             $displaySession->isControllerClaimed()
-            && !hash_equals((string) $displaySession->controller_session_hash, $sessionHash)
+            && ! hash_equals((string) $displaySession->controller_session_hash, $sessionHash)
         ) {
             throw new \RuntimeException(__('display.session_already_claimed'));
         }
@@ -94,7 +93,7 @@ class QuizDisplaySessionService
             'controller_claimed_at' => $displaySession->controller_claimed_at ?? now(),
         ];
 
-        if (!$displaySession->isControllerClaimed()) {
+        if (! $displaySession->isControllerClaimed()) {
             $updates['state_version'] = (int) $displaySession->state_version + 1;
         }
 
@@ -130,7 +129,7 @@ class QuizDisplaySessionService
         $displaySession = $this->normalizeSessionState($displaySession);
         $attempt = $displaySession->attempt()->with(['quiz.questions.answers', 'answers'])->firstOrFail();
 
-        if (!$attempt->isInProgress()) {
+        if (! $attempt->isInProgress()) {
             throw new \RuntimeException(__('display.session_unavailable'));
         }
 
@@ -157,7 +156,7 @@ class QuizDisplaySessionService
             foreach ($filteredIds as $answerId) {
                 $answer = $question->answers->firstWhere('id', $answerId);
 
-                if (!$answer) {
+                if (! $answer) {
                     continue;
                 }
 
@@ -190,7 +189,7 @@ class QuizDisplaySessionService
         $currentQuestion = $runtime['currentQuestion'];
         $selectedAnswerIds = $runtime['selectedAnswerIds'];
 
-        if (!$attempt->isInProgress()) {
+        if (! $attempt->isInProgress()) {
             throw new \RuntimeException(__('display.session_unavailable'));
         }
 
@@ -268,7 +267,7 @@ class QuizDisplaySessionService
         $attempt = $displaySession->attempt;
         $quiz = $displaySession->quiz;
 
-        if (!$attempt || !$quiz) {
+        if (! $attempt || ! $quiz) {
             throw new \RuntimeException(__('display.session_unavailable'));
         }
 
@@ -362,7 +361,7 @@ class QuizDisplaySessionService
             'question' => $question ? [
                 'id' => $question->id,
                 'text' => $question->text,
-                'image_url' => $question->image ? asset('storage/' . $question->image) : null,
+                'image_url' => $question->image ? asset('storage/'.$question->image) : null,
                 'required_answers' => (int) $question->correct_answers_count,
                 'instruction' => trans_choice('join.select_instruction', (int) $question->correct_answers_count, [
                     'count' => (int) $question->correct_answers_count,
@@ -426,7 +425,7 @@ class QuizDisplaySessionService
             ->latest('id')
             ->first();
 
-        if (!$session) {
+        if (! $session) {
             return null;
         }
 
@@ -476,7 +475,7 @@ class QuizDisplaySessionService
         if ($ongoing) {
             $ongoing = $this->attemptLifecycle->expireIfNeeded($ongoing, $quiz);
 
-            if ($ongoing->isInProgress() && !$quiz->allow_resume) {
+            if ($ongoing->isInProgress() && ! $quiz->allow_resume) {
                 $ongoing->answers()->delete();
                 $this->attemptLifecycle->abandon($ongoing, true);
                 $ongoing = null;
@@ -545,7 +544,7 @@ class QuizDisplaySessionService
 
         foreach ($questionOrder as $questionId) {
             $question = $questions->get($questionId);
-            if (!$question) {
+            if (! $question) {
                 continue;
             }
 
@@ -559,6 +558,7 @@ class QuizDisplaySessionService
                 && empty(array_diff($currentAnswerIds, $storedAnswerIds))
             ) {
                 $map[$questionId] = array_values(array_map('intval', $storedAnswerIds));
+
                 continue;
             }
 
@@ -581,13 +581,13 @@ class QuizDisplaySessionService
         $student = $displaySession->student;
         $attempt = $displaySession->attempt;
 
-        if (!$quiz || !$attempt) {
+        if (! $quiz || ! $attempt) {
             throw new \RuntimeException(__('display.session_unavailable'));
         }
 
         $attempt = $this->attemptLifecycle->expireIfNeeded($attempt, $quiz);
 
-        if ($persistLifecycle && !$attempt->isInProgress() && $displaySession->status === QuizDisplaySession::STATUS_ACTIVE) {
+        if ($persistLifecycle && ! $attempt->isInProgress() && $displaySession->status === QuizDisplaySession::STATUS_ACTIVE) {
             $displaySession->update([
                 'status' => $attempt->status === QuizAttempt::STATUS_SUBMITTED
                     ? QuizDisplaySession::STATUS_SUBMITTED
@@ -645,7 +645,7 @@ class QuizDisplaySessionService
             foreach ($orderedAnswerIds as $index => $answerId) {
                 $answer = $answersById->get($answerId);
 
-                if (!$answer) {
+                if (! $answer) {
                     continue;
                 }
 
@@ -674,7 +674,7 @@ class QuizDisplaySessionService
 
     private function answerPrefix(Quiz $quiz, int $index): ?string
     {
-        if (!$quiz->show_answer_numbering) {
+        if (! $quiz->show_answer_numbering) {
             return null;
         }
 
@@ -686,12 +686,12 @@ class QuizDisplaySessionService
             ? range('A', 'Z')
             : ['Α', 'Β', 'Γ', 'Δ', 'Ε', 'Ζ', 'Η', 'Θ', 'Ι', 'Κ', 'Λ', 'Μ', 'Ν', 'Ξ', 'Ο', 'Π', 'Ρ', 'Σ', 'Τ', 'Υ', 'Φ', 'Χ', 'Ψ', 'Ω'];
 
-        return ($alphabet[$index] ?? (string) ($index + 1)) . '.';
+        return ($alphabet[$index] ?? (string) ($index + 1)).'.';
     }
 
     private function assertQuizSupportsDisplayMode(Quiz $quiz): void
     {
-        if (!$quiz->usesSecondScreenMode()) {
+        if (! $quiz->usesSecondScreenMode()) {
             throw new \RuntimeException(__('controllers.second_screen_disabled'));
         }
 
@@ -728,7 +728,7 @@ class QuizDisplaySessionService
 
     private function canSubmitAttempt(QuizAttempt $attempt, Collection $questions, array $answerCountsByQuestionId): bool
     {
-        if (!$attempt->isInProgress()) {
+        if (! $attempt->isInProgress()) {
             return false;
         }
 
@@ -739,7 +739,7 @@ class QuizDisplaySessionService
 
     private function resultPdfUrl(Quiz $quiz, QuizAttempt $attempt): ?string
     {
-        if (!$attempt->isFinalized()) {
+        if (! $attempt->isFinalized()) {
             return null;
         }
 
@@ -759,7 +759,7 @@ class QuizDisplaySessionService
         array $questionOrder,
         array $selectedAnswerIds
     ): ?string {
-        if (!$attempt->isInProgress() || !$question) {
+        if (! $attempt->isInProgress() || ! $question) {
             return null;
         }
 
@@ -773,7 +773,7 @@ class QuizDisplaySessionService
             ]);
         }
 
-        if ($isLastQuestion && !$this->canSubmitAttempt($attempt, $questions, $answerCountsByQuestionId)) {
+        if ($isLastQuestion && ! $this->canSubmitAttempt($attempt, $questions, $answerCountsByQuestionId)) {
             return __('display.action_helper_complete_all');
         }
 
@@ -799,13 +799,13 @@ class QuizDisplaySessionService
         $attempt = $displaySession->attempt;
         $quiz = $displaySession->quiz;
 
-        if (!$attempt || !$quiz) {
+        if (! $attempt || ! $quiz) {
             throw new \RuntimeException(__('display.session_unavailable'));
         }
 
         $attempt = $this->attemptLifecycle->expireIfNeeded($attempt, $quiz);
 
-        if (!$attempt->isInProgress() && $displaySession->isActive()) {
+        if (! $attempt->isInProgress() && $displaySession->isActive()) {
             $displaySession->update([
                 'status' => $attempt->status === QuizAttempt::STATUS_SUBMITTED
                     ? QuizDisplaySession::STATUS_SUBMITTED

@@ -90,7 +90,7 @@ class LegacyEncryptedString implements CastsAttributes
      */
     public static function isEncrypted(?string $value): bool
     {
-        if (!is_string($value) || $value === '') {
+        if (! is_string($value) || $value === '') {
             return false;
         }
 

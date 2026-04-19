@@ -23,7 +23,7 @@ it('keeps blade views free from inline scripts and alpine-style inline handlers'
 
         foreach ($patterns as $pattern => $label) {
             if (preg_match($pattern, $contents)) {
-                $violations[] = sprintf('%s: %s', str_replace(base_path() . DIRECTORY_SEPARATOR, '', $file->getPathname()), $label);
+                $violations[] = sprintf('%s: %s', str_replace(base_path().DIRECTORY_SEPARATOR, '', $file->getPathname()), $label);
             }
         }
     }

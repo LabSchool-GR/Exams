@@ -7,18 +7,17 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     public function up()
-	{
-		Schema::table('quizzes', function (Blueprint $table) {
-			$table->string('language', 10)->default('el')->after('question_view');
-			// Δεκτές τιμές: el, en, auto
-		});
-	}
+    {
+        Schema::table('quizzes', function (Blueprint $table) {
+            $table->string('language', 10)->default('el')->after('question_view');
+            // Δεκτές τιμές: el, en, auto
+        });
+    }
 
-	public function down()
-	{
-		Schema::table('quizzes', function (Blueprint $table) {
-			$table->dropColumn('language');
-		});
-	}
-
+    public function down()
+    {
+        Schema::table('quizzes', function (Blueprint $table) {
+            $table->dropColumn('language');
+        });
+    }
 };

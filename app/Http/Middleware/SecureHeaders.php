@@ -68,14 +68,14 @@ class SecureHeaders
         }
 
         $reportUri = config('security.csp.report_uri');
-        if (!empty($reportUri)) {
+        if (! empty($reportUri)) {
             $directives['report-uri'] = [$reportUri];
         }
 
         $policyParts = [];
         foreach ($directives as $directive => $sources) {
             $sourceList = implode(' ', array_values(array_unique(array_filter($sources))));
-            $policyParts[] = trim($directive . ' ' . $sourceList);
+            $policyParts[] = trim($directive.' '.$sourceList);
         }
 
         return implode('; ', array_filter($policyParts));

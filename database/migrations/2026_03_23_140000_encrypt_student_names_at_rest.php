@@ -43,7 +43,7 @@ return new class extends Migration
             ->orderBy('id')
             ->chunkById(100, function ($rows) use ($table): void {
                 foreach ($rows as $row) {
-                    if (!is_string($row->student_name) || $row->student_name === '') {
+                    if (! is_string($row->student_name) || $row->student_name === '') {
                         continue;
                     }
 
@@ -63,7 +63,7 @@ return new class extends Migration
             ->orderBy('id')
             ->chunkById(100, function ($rows) use ($table): void {
                 foreach ($rows as $row) {
-                    if (!is_string($row->student_name) || $row->student_name === '') {
+                    if (! is_string($row->student_name) || $row->student_name === '') {
                         continue;
                     }
 

@@ -7,7 +7,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-
 use App\Models\Category;
 use App\Models\Quiz;
 use App\Models\QuizAnonymousPoolReservation;
@@ -24,7 +23,7 @@ it('requires a valid signed url for student access links', function () {
     ]);
 
     $category = Category::create([
-        'name' => 'Signed Student Link Category ' . uniqid(),
+        'name' => 'Signed Student Link Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -73,7 +72,7 @@ it('blocks registered pin access when a quiz allows only personal links', functi
     ]);
 
     $category = Category::create([
-        'name' => 'Links Only Category ' . uniqid(),
+        'name' => 'Links Only Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -130,7 +129,7 @@ it('blocks personal links when a quiz allows only exam pin access', function () 
     ]);
 
     $category = Category::create([
-        'name' => 'Pin Only Category ' . uniqid(),
+        'name' => 'Pin Only Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -176,7 +175,7 @@ it('does not write legacy link columns when access urls are rendered', function 
     ]);
 
     $category = Category::create([
-        'name' => 'Legacy Links Category ' . uniqid(),
+        'name' => 'Legacy Links Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -234,7 +233,7 @@ it('encrypts student names at rest while keeping admin flows readable', function
     ]);
 
     $category = Category::create([
-        'name' => 'Encrypted Name Category ' . uniqid(),
+        'name' => 'Encrypted Name Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -299,12 +298,12 @@ it('encrypts student names at rest while keeping admin flows readable', function
         ->and($attempt->student_name)->toBe('Encrypted Student');
 
     $this->actingAs($owner)
-        ->get(route('quizzes.quiz_attempts.index', $quiz) . '?search=Encry')
+        ->get(route('quizzes.quiz_attempts.index', $quiz).'?search=Encry')
         ->assertOk()
         ->assertSee('Encrypted Student');
 
     $this->actingAs($owner)
-        ->get(route('quizzes.quiz_attempts.index', $quiz) . '?search=Student')
+        ->get(route('quizzes.quiz_attempts.index', $quiz).'?search=Student')
         ->assertOk()
         ->assertSee('Encrypted Student');
 });
@@ -314,7 +313,7 @@ it('rate limits repeated student code validation attempts', function () {
     ]);
 
     $category = Category::create([
-        'name' => 'Student Code Throttle Category ' . uniqid(),
+        'name' => 'Student Code Throttle Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -360,7 +359,7 @@ it('anonymizes old attempts and prunes stale student rows', function () {
     ]);
 
     $category = Category::create([
-        'name' => 'Retention Category ' . uniqid(),
+        'name' => 'Retention Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -431,7 +430,7 @@ it('keeps recent attempts and active student rows intact during retention prunin
     ]);
 
     $category = Category::create([
-        'name' => 'Recent Retention Category ' . uniqid(),
+        'name' => 'Recent Retention Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -500,7 +499,7 @@ it('prunes stale display sessions and expired anonymous pool reservations', func
     ]);
 
     $category = Category::create([
-        'name' => 'Temporary Runtime Cleanup Category ' . uniqid(),
+        'name' => 'Temporary Runtime Cleanup Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -607,7 +606,7 @@ it('blocks an existing participant session when the quiz is deactivated', functi
     ]);
 
     $category = Category::create([
-        'name' => 'Inactive Session Category ' . uniqid(),
+        'name' => 'Inactive Session Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -665,7 +664,7 @@ it('shows a friendly conflict page when another quiz replaces the active browser
     ]);
 
     $category = Category::create([
-        'name' => 'Session Conflict Category ' . uniqid(),
+        'name' => 'Session Conflict Category '.uniqid(),
     ]);
 
     $firstQuiz = Quiz::create([
@@ -790,7 +789,7 @@ it('stores public anonymous pool results only after final submission', function 
     ]);
 
     $category = Category::create([
-        'name' => 'Public Pool Runtime Category ' . uniqid(),
+        'name' => 'Public Pool Runtime Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -875,7 +874,7 @@ it('drops abandoned public anonymous pool sessions without persisting participan
     ]);
 
     $category = Category::create([
-        'name' => 'Public Pool Abandon Category ' . uniqid(),
+        'name' => 'Public Pool Abandon Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([

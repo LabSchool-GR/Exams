@@ -22,7 +22,7 @@ function makeSecondScreenQuiz(array $ownerOverrides = [], array $quizOverrides =
     ], $ownerOverrides));
 
     $category = Category::create([
-        'name' => 'Second Screen Category ' . uniqid(),
+        'name' => 'Second Screen Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create(array_merge([
@@ -97,7 +97,7 @@ function makeSecondScreenQuiz(array $ownerOverrides = [], array $quizOverrides =
 it('stores second screen mode only when created by an admin', function () {
     $teacher = User::factory()->create(['role' => 'teacher']);
     $admin = User::factory()->create(['role' => 'admin']);
-    $category = Category::create(['name' => 'Second Screen Toggle Category ' . uniqid()]);
+    $category = Category::create(['name' => 'Second Screen Toggle Category '.uniqid()]);
 
     $this->actingAs($teacher)
         ->post(route('quizzes.store'), [
@@ -316,7 +316,7 @@ it('returns no content when second-screen state version has not changed', functi
     $controllerVersion = (int) $controllerState->json('session.state_version');
 
     $this->withCookie($sessionCookie, $controllerCookie)
-        ->get(route('quiz_display.controller_state', $displaySession, false) . '?since=' . $controllerVersion)
+        ->get(route('quiz_display.controller_state', $displaySession, false).'?since='.$controllerVersion)
         ->assertNoContent();
 });
 

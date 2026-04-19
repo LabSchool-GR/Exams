@@ -19,9 +19,13 @@ use Illuminate\Support\Facades\URL;
 class QuizDisplaySession extends Model
 {
     public const STATUS_WAITING = 'waiting';
+
     public const STATUS_ACTIVE = 'active';
+
     public const STATUS_SUBMITTED = 'submitted';
+
     public const STATUS_EXPIRED = 'expired';
+
     public const STATUS_REVOKED = 'revoked';
 
     protected $fillable = [

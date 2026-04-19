@@ -30,7 +30,7 @@ class AnswerController extends Controller
 
     private function ensureQuizContentUnlocked(Quiz $quiz): ?RedirectResponse
     {
-        if (!$quiz->hasLockedContent()) {
+        if (! $quiz->hasLockedContent()) {
             return null;
         }
 

@@ -7,9 +7,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-
 use App\Models\Category;
-use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\User;
 
@@ -20,7 +18,7 @@ function makeQuizWithQuestionForAuthorization(array $ownerOverrides = [], array 
     ], $ownerOverrides));
 
     $category = Category::create([
-        'name' => 'Authorization Category ' . uniqid(),
+        'name' => 'Authorization Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create(array_merge([

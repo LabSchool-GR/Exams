@@ -13,8 +13,7 @@ class QuotaIncreaseRequestMail extends Mailable implements ShouldQueue
 
     public function __construct(
         public readonly array $payload
-    ) {
-    }
+    ) {}
 
     public function build(): self
     {

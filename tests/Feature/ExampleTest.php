@@ -6,8 +6,6 @@
  * Author: Kanatas Dimitrios (labschool.gr)
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
-
-
 it('returns a successful response', function () {
     $response = $this->get('/');
 

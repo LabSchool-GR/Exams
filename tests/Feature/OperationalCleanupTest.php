@@ -15,9 +15,9 @@ it('trims local runtime artifacts without removing sentinel files', function () 
     $cacheDataPath = storage_path('framework/cache/data');
     $logPath = storage_path('framework/testing/operational-cleanup.log');
 
-    $compiledViewPath = $viewsPath . DIRECTORY_SEPARATOR . 'operational-cleanup-test.php';
-    $cacheBucketPath = $cacheDataPath . DIRECTORY_SEPARATOR . 'aa' . DIRECTORY_SEPARATOR . 'bb';
-    $cacheFilePath = $cacheBucketPath . DIRECTORY_SEPARATOR . 'operational-cleanup-test';
+    $compiledViewPath = $viewsPath.DIRECTORY_SEPARATOR.'operational-cleanup-test.php';
+    $cacheBucketPath = $cacheDataPath.DIRECTORY_SEPARATOR.'aa'.DIRECTORY_SEPARATOR.'bb';
+    $cacheFilePath = $cacheBucketPath.DIRECTORY_SEPARATOR.'operational-cleanup-test';
     $originalLogContents = File::exists($logPath) ? File::get($logPath) : null;
 
     File::ensureDirectoryExists($viewsPath);
@@ -38,7 +38,7 @@ it('trims local runtime artifacts without removing sentinel files', function () 
 
         expect(File::exists($compiledViewPath))->toBeFalse()
             ->and(File::exists($cacheFilePath))->toBeFalse()
-            ->and(File::exists($viewsPath . DIRECTORY_SEPARATOR . '.gitignore'))->toBeTrue()
+            ->and(File::exists($viewsPath.DIRECTORY_SEPARATOR.'.gitignore'))->toBeTrue()
             ->and(File::size($logPath))->toBe(0);
     } finally {
         File::delete($compiledViewPath);

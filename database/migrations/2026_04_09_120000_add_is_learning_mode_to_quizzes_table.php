@@ -21,7 +21,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        if (!Schema::hasColumn('quizzes', 'is_learning_mode')) {
+        if (! Schema::hasColumn('quizzes', 'is_learning_mode')) {
             return;
         }
 

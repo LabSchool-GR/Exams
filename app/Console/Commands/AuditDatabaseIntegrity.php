@@ -82,7 +82,7 @@ class AuditDatabaseIntegrity extends Command
             $issuesFound
         );
 
-        if (!$issuesFound) {
+        if (! $issuesFound) {
             $this->components->info('No blocking integrity issues were found by this audit.');
         } else {
             $this->newLine();

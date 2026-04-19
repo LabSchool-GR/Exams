@@ -23,7 +23,7 @@ class QuizTemplate extends Model
      * Fields that can be mass assigned from the template editor UI.
      */
     protected $fillable = [
-        'code', 'name', 'description', 'is_common'
+        'code', 'name', 'description', 'is_common',
     ];
 
     /**

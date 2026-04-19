@@ -7,10 +7,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-
-use App\Models\Answer;
 use App\Models\Category;
-use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\QuizAttempt;
 use App\Models\QuizStudent;
@@ -30,7 +27,7 @@ function makeQuizAttemptForAuthorization(): array
     ]);
 
     $category = Category::create([
-        'name' => 'Attempt Auth Category ' . uniqid(),
+        'name' => 'Attempt Auth Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -127,7 +124,7 @@ it('lists registered students by student code to avoid decrypt-and-sort in memor
     ]);
 
     $category = Category::create([
-        'name' => 'Register Students Order Category ' . uniqid(),
+        'name' => 'Register Students Order Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -193,7 +190,7 @@ it('generates anonymous participant slots with unique codes and independent atte
     ]);
 
     $category = Category::create([
-        'name' => 'Anonymous Slots Category ' . uniqid(),
+        'name' => 'Anonymous Slots Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -244,7 +241,7 @@ it('limits manual student registrations to five attempts even when resume is dis
     ]);
 
     $category = Category::create([
-        'name' => 'Manual Attempts Category ' . uniqid(),
+        'name' => 'Manual Attempts Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -288,7 +285,7 @@ it('rejects imported students that use the reserved guest code', function () {
     ]);
 
     $category = Category::create([
-        'name' => 'Reserved Guest Code Category ' . uniqid(),
+        'name' => 'Reserved Guest Code Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -324,7 +321,7 @@ CSV;
             'students_csv' => UploadedFile::fake()->createWithContent('students.csv', $csv),
         ])
         ->assertRedirect(route('quiz_attempts.register_students', $quiz))
-        ->assertSessionHas('error', "Line 2: Student code 0000 is reserved for guest access.");
+        ->assertSessionHas('error', 'Line 2: Student code 0000 is reserved for guest access.');
 
     expect(QuizStudent::query()->where('quiz_id', $quiz->id)->count())->toBe(0);
 });
@@ -408,7 +405,7 @@ it('shows correct wrong and unanswered counts for question stats', function () {
     ]);
 
     $category = Category::create([
-        'name' => 'Stats Category ' . uniqid(),
+        'name' => 'Stats Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -518,7 +515,7 @@ it('counts unanswered only for attempts that actually included the question in r
     ]);
 
     $category = Category::create([
-        'name' => 'Random Stats Category ' . uniqid(),
+        'name' => 'Random Stats Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -673,7 +670,7 @@ it('uses the persisted question order for result exports when randomized attempt
     ]);
 
     $category = Category::create([
-        'name' => 'Random Export Category ' . uniqid(),
+        'name' => 'Random Export Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -765,7 +762,7 @@ it('abandons an existing attempt before creating a fresh one when resume is disa
     ]);
 
     $category = Category::create([
-        'name' => 'Resume Disabled Category ' . uniqid(),
+        'name' => 'Resume Disabled Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -856,7 +853,7 @@ it('shows a retry link for failed private student attempts when attempts remain'
         ]);
 
         $category = Category::create([
-            'name' => 'Private Retry Category ' . uniqid(),
+            'name' => 'Private Retry Category '.uniqid(),
         ]);
 
         $quiz = Quiz::create([

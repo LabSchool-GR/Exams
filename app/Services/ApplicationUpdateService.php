@@ -147,10 +147,10 @@ class ApplicationUpdateService
             ->acceptJson()
             ->timeout((int) config('updates.github.timeout_seconds', 5))
             ->withHeaders([
-                'User-Agent' => config('app.name', 'Laravel') . ' Update Center',
+                'User-Agent' => config('app.name', 'Laravel').' Update Center',
                 'X-GitHub-Api-Version' => '2022-11-28',
             ])
-            ->get('/repos/' . trim($repository, '/') . '/releases/latest');
+            ->get('/repos/'.trim($repository, '/').'/releases/latest');
 
         if ($response->status() === 404) {
             throw new RuntimeException('No published GitHub release was found.');
@@ -269,7 +269,7 @@ class ApplicationUpdateService
             return null;
         }
 
-        return $segments[0] . '/' . preg_replace('/\.git$/', '', $segments[1]);
+        return $segments[0].'/'.preg_replace('/\.git$/', '', $segments[1]);
     }
 
     /**
@@ -277,7 +277,7 @@ class ApplicationUpdateService
      */
     private function cacheKey(string $sourceType, string $sourceKey): string
     {
-        return 'system-updates.release.' . $sourceType . '.' . md5($sourceKey);
+        return 'system-updates.release.'.$sourceType.'.'.md5($sourceKey);
     }
 
     /**

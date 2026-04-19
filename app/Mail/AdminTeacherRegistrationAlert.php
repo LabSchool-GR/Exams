@@ -14,8 +14,7 @@ class AdminTeacherRegistrationAlert extends Mailable implements ShouldQueue
     public function __construct(
         public readonly string $usersUrl,
         public readonly string $registeredAt
-    ) {
-    }
+    ) {}
 
     public function build(): self
     {

@@ -151,9 +151,9 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
-	
-	'aliases' => [
-		'App' => Illuminate\Support\Facades\App::class,
+
+    'aliases' => [
+        'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
         'Blade' => Illuminate\Support\Facades\Blade::class,
@@ -188,7 +188,7 @@ return [
 
         // ✅ Προσθήκη DomPDF alias
         'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,
-		'QrCode' => \SimpleSoftwareIO\QrCode\Facades\QrCode::class,
-	],
+        'QrCode' => \SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+    ],
 
 ];

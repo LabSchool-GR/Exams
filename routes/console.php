@@ -7,8 +7,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-use App\Models\QuizAttempt;
 use App\Models\QuizAnonymousPoolReservation;
+use App\Models\QuizAttempt;
 use App\Models\QuizDisplaySession;
 use App\Models\QuizStudent;
 use App\Services\AttemptLifecycleService;
@@ -37,7 +37,7 @@ Artisan::command('quiz-attempts:expire', function (AttemptLifecycleService $atte
         ->orderBy('id')
         ->chunkById(100, function ($attempts) use ($attemptLifecycle, &$expiredCount): void {
             foreach ($attempts as $attempt) {
-                if (!$attempt->quiz) {
+                if (! $attempt->quiz) {
                     continue;
                 }
 
@@ -91,7 +91,7 @@ Artisan::command('privacy:prune-exam-personal-data {--attempts-days=} {--student
     $candidateStudentIds = array_values(array_unique($anonymizedStudentIds));
 
     QuizStudent::query()
-        ->when(!empty($candidateStudentIds), function ($query) use ($candidateStudentIds, $studentCutoff) {
+        ->when(! empty($candidateStudentIds), function ($query) use ($candidateStudentIds, $studentCutoff) {
             // Recently anonymized students are eligible for pruning once no fresh attempts point to them.
             $query->where(function ($scoped) use ($candidateStudentIds, $studentCutoff) {
                 $scoped->where('updated_at', '<=', $studentCutoff)
@@ -161,7 +161,7 @@ Artisan::command('runtime:prune-temporary-state {--display-hours=}', function ()
 // Local developer machines accumulate compiled views, file cache fragments, and large debug logs over time.
 Artisan::command('local:trim-runtime-artifacts {--log-megabytes=10} {--log-path=}', function () {
     /** @var ClosureCommand $this */
-    if (!app()->environment(['local', 'testing'])) {
+    if (! app()->environment(['local', 'testing'])) {
         $this->warn('This command is intended only for local or testing environments.');
 
         return;

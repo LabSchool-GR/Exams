@@ -49,9 +49,9 @@ class RegisteredUserController extends Controller
                 'string',
                 'email',
                 'max:255',
-                'unique:' . User::class,
+                'unique:'.User::class,
                 function (string $attribute, mixed $value, Closure $fail): void {
-                    if (!$this->emailBelongsToAllowedDomain((string) $value)) {
+                    if (! $this->emailBelongsToAllowedDomain((string) $value)) {
                         $fail(__('auth.allowed_email_domain', [
                             'domains' => $this->allowedRegistrationDomainsDisplay(),
                         ]));
@@ -67,7 +67,7 @@ class RegisteredUserController extends Controller
                 'required',
                 'string',
                 function (string $attribute, mixed $value, Closure $fail) use ($request): void {
-                    if (!$this->validateTurnstileToken((string) $value, $request->ip())) {
+                    if (! $this->validateTurnstileToken((string) $value, $request->ip())) {
                         $fail(__('auth.turnstile_failed'));
                     }
                 },
@@ -94,14 +94,14 @@ class RegisteredUserController extends Controller
             ->values()
             ->all();
 
-        if (!empty($adminEmails)) {
+        if (! empty($adminEmails)) {
             try {
                 Mail::to($adminEmails)->queue(new AdminTeacherRegistrationAlert(
                     route('users.index'),
                     now()->toDateTimeString()
                 ));
             } catch (\Throwable $e) {
-                Log::error('Admin registration notification failed: ' . $e->getMessage());
+                Log::error('Admin registration notification failed: '.$e->getMessage());
             }
         }
 
@@ -181,7 +181,7 @@ class RegisteredUserController extends Controller
             return false;
         }
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             Log::warning('Turnstile validation returned a non-success response.', [
                 'status' => $response->status(),
             ]);
@@ -190,7 +190,7 @@ class RegisteredUserController extends Controller
         }
 
         $payload = $response->json();
-        if (!is_array($payload)) {
+        if (! is_array($payload)) {
             Log::warning('Turnstile validation returned an invalid payload.');
 
             return false;

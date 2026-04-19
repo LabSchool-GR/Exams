@@ -7,9 +7,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-
 use App\Mail\QuotaIncreaseRequestMail;
-use App\Models\Question;
 use App\Models\Category;
 use App\Models\Quiz;
 use App\Models\User;
@@ -36,7 +34,7 @@ function makeQuotaRequestTeacher(array $overrides = []): User
 function makeQuotaRequestQuiz(User $owner, array $overrides = []): Quiz
 {
     $category = Category::create([
-        'name' => 'Quota Request Category ' . uniqid(),
+        'name' => 'Quota Request Category '.uniqid(),
     ]);
 
     return Quiz::create(array_merge([

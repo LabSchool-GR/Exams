@@ -37,7 +37,7 @@ class QuotaRequestController extends Controller
         ]);
 
         $user = $request->user();
-        if (!$user || $user->isAdmin()) {
+        if (! $user || $user->isAdmin()) {
             return back()->with('error', __('controllers.quota_request_not_allowed'));
         }
 
@@ -56,7 +56,7 @@ class QuotaRequestController extends Controller
             $question?->id ?? 'none'
         );
 
-        if (!Cache::add($cacheKey, now()->timestamp, now()->addHours(6))) {
+        if (! Cache::add($cacheKey, now()->timestamp, now()->addHours(6))) {
             return back()->with('error', __('controllers.quota_request_throttled'));
         }
 

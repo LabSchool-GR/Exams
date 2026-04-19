@@ -7,24 +7,22 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\ConfirmablePasswordController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Auth\EmailVerificationPromptController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\{
-    AuthenticatedSessionController,
-    ConfirmablePasswordController,
-    EmailVerificationNotificationController,
-    EmailVerificationPromptController,
-    NewPasswordController,
-    PasswordController,
-    PasswordResetLinkController,
-    RegisteredUserController,
-    VerifyEmailController
-};
 
 // Guests may register, log in, and start the password-reset flow.
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('register', [RegisteredUserController::class, 'store'])
-        ->middleware('throttle:' . config('security.throttle.registration_attempts', '5,1'));
+        ->middleware('throttle:'.config('security.throttle.registration_attempts', '5,1'));
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('login', [AuthenticatedSessionController::class, 'store']);

@@ -21,6 +21,7 @@ yarn-error.log
 /database/*.sqlite
 /storage/logs/*.log
 /storage/framework/views/*.php
+/bootstrap/cache/*.php
 /.fleet
 /.idea
 /.nova

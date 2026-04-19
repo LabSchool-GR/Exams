@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         // Guard against duplicate schema history: the column already exists in older installs.
-        if (!Schema::hasColumn('quizzes', 'is_random_answers_order')) {
+        if (! Schema::hasColumn('quizzes', 'is_random_answers_order')) {
             Schema::table('quizzes', function (Blueprint $table) {
                 $table->boolean('is_random_answers_order')
                     ->default(false)

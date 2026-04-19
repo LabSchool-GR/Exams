@@ -34,7 +34,7 @@ class QuestionController extends Controller
 
     private function ensureQuizContentUnlocked(Quiz $quiz): ?RedirectResponse
     {
-        if (!$quiz->hasLockedContent()) {
+        if (! $quiz->hasLockedContent()) {
             return null;
         }
 
@@ -45,7 +45,7 @@ class QuestionController extends Controller
     {
         $user = auth()->user();
 
-        if (!$user || $user->isAdmin()) {
+        if (! $user || $user->isAdmin()) {
             return true;
         }
 
@@ -61,7 +61,7 @@ class QuestionController extends Controller
 
         $questions = $quiz->questions()->with('answers')->get();
         $isContentLocked = $quiz->hasLockedContent();
-        $canAddQuestion = !$isContentLocked && $this->canAddQuestion($quiz);
+        $canAddQuestion = ! $isContentLocked && $this->canAddQuestion($quiz);
 
         return view('questions.index', compact('quiz', 'questions', 'canAddQuestion', 'isContentLocked'));
     }
@@ -77,7 +77,7 @@ class QuestionController extends Controller
             return $redirect;
         }
 
-        if (!$this->canAddQuestion($quiz)) {
+        if (! $this->canAddQuestion($quiz)) {
             return redirect()
                 ->route('quizzes.questions.index', $quiz)
                 ->with('error', __('controllers.question_limit_reached'));
@@ -97,7 +97,7 @@ class QuestionController extends Controller
             return $redirect;
         }
 
-        if (!$this->canAddQuestion($quiz)) {
+        if (! $this->canAddQuestion($quiz)) {
             return redirect()
                 ->route('quizzes.questions.index', $quiz)
                 ->with('error', __('controllers.question_limit_reached'));
@@ -244,7 +244,7 @@ class QuestionController extends Controller
         }
 
         $user = auth()->user();
-        if ($user && !$user->isAdmin() && $answersData->count() > $user->max_answers_per_question) {
+        if ($user && ! $user->isAdmin() && $answersData->count() > $user->max_answers_per_question) {
             throw ValidationException::withMessages([
                 'answers' => __('controllers.answer_limit_reached', [
                     'limit' => $user->max_answers_per_question,
@@ -267,7 +267,7 @@ class QuestionController extends Controller
                 continue;
             }
 
-            if (!in_array($answerData['id'], $existingIds, true)) {
+            if (! in_array($answerData['id'], $existingIds, true)) {
                 throw ValidationException::withMessages([
                     'answers' => __('quizzes_cards.invalid_answer_reference'),
                 ]);
@@ -311,6 +311,7 @@ class QuestionController extends Controller
                     'is_correct' => $answerData['is_correct'],
                 ]);
                 $retainedIds[] = $answer->id;
+
                 continue;
             }
 
@@ -347,7 +348,7 @@ class QuestionController extends Controller
         }
 
         $user = auth()->user();
-        if ($user && !$user->isAdmin()) {
+        if ($user && ! $user->isAdmin()) {
             $remainingCapacity = max(0, (int) $user->max_questions_per_quiz - $quiz->questions()->count());
 
             if ($remainingCapacity < 1) {
@@ -395,7 +396,7 @@ class QuestionController extends Controller
             return back()->with('error', 'Maximum of 20 questions allowed per CSV import.');
         }
 
-        if ($user && !$user->isAdmin()) {
+        if ($user && ! $user->isAdmin()) {
             $remainingCapacity = max(0, (int) $user->max_questions_per_quiz - $quiz->questions()->count());
 
             if (count($parsedRows) > $remainingCapacity) {
@@ -448,7 +449,7 @@ class QuestionController extends Controller
         $answerColumns = [];
 
         foreach ($headers as $index => $header) {
-            if (!preg_match('/^answer_(\d+)$/', $header, $matches)) {
+            if (! preg_match('/^answer_(\d+)$/', $header, $matches)) {
                 continue;
             }
 
@@ -468,7 +469,7 @@ class QuestionController extends Controller
      */
     private function validateQuestionImportHeaders(array $headers, array $answerColumns): ?string
     {
-        if (!in_array('text', $headers, true) || !in_array('correct_answers', $headers, true) || count($answerColumns) < 2) {
+        if (! in_array('text', $headers, true) || ! in_array('correct_answers', $headers, true) || count($answerColumns) < 2) {
             return 'CSV must contain the headers: text, answer_1, answer_2, ..., correct_answers.';
         }
 
@@ -523,7 +524,7 @@ class QuestionController extends Controller
             return "Row {$rowNumber}: each question must include at least two answers.";
         }
 
-        if ($user && !$user->isAdmin() && $answersData->count() > $user->max_answers_per_question) {
+        if ($user && ! $user->isAdmin() && $answersData->count() > $user->max_answers_per_question) {
             return "Row {$rowNumber}: you can import up to {$user->max_answers_per_question} answers per question.";
         }
 
@@ -543,7 +544,7 @@ class QuestionController extends Controller
         }
 
         foreach ($correctAnswerNumbers as $correctAnswerNumber) {
-            if (!ctype_digit($correctAnswerNumber) || (int) $correctAnswerNumber < 1) {
+            if (! ctype_digit($correctAnswerNumber) || (int) $correctAnswerNumber < 1) {
                 return "Row {$rowNumber}: correct_answers must contain answer numbers like 1 or 1,3.";
             }
         }

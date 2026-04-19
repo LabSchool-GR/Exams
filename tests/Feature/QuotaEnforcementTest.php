@@ -7,7 +7,6 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-
 use App\Models\Category;
 use App\Models\Quiz;
 use App\Models\User;
@@ -32,7 +31,7 @@ function makeTeacherWithQuotaOverrides(array $overrides = []): User
 function makeQuotaQuiz(User $owner, array $overrides = []): Quiz
 {
     $category = Category::create([
-        'name' => 'Quota Category ' . uniqid(),
+        'name' => 'Quota Category '.uniqid(),
     ]);
 
     return Quiz::create(array_merge([

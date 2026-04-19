@@ -10,8 +10,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Update;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class UpdateController extends Controller

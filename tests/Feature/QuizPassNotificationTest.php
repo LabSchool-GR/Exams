@@ -11,11 +11,11 @@ function makePassNotificationQuiz(bool $notifyCreatorOnPass): array
 {
     $owner = User::factory()->create([
         'role' => 'teacher',
-        'email' => 'teacher' . uniqid() . '@example.com',
+        'email' => 'teacher'.uniqid().'@example.com',
     ]);
 
     $category = Category::create([
-        'name' => 'Pass Notification Flow Category ' . uniqid(),
+        'name' => 'Pass Notification Flow Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([

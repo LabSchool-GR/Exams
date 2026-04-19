@@ -7,6 +7,7 @@ use Normalizer;
 class StudentNameBlindIndex
 {
     private const PREFIX_MIN_LENGTH = 2;
+
     private const PREFIX_MAX_LENGTH = 24;
 
     public static function forValue(?string $value): ?string
@@ -17,7 +18,7 @@ class StudentNameBlindIndex
             return null;
         }
 
-        return '|' . implode('|', array_map(static fn (string $term): string => static::hash($term), $terms)) . '|';
+        return '|'.implode('|', array_map(static fn (string $term): string => static::hash($term), $terms)).'|';
     }
 
     /**

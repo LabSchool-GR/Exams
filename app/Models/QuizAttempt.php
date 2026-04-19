@@ -24,18 +24,27 @@ class QuizAttempt extends Model
     use HasFactory;
 
     public const STATUS_IN_PROGRESS = 'in_progress';
+
     public const STATUS_SUBMITTED = 'submitted';
+
     public const STATUS_EXPIRED = 'expired';
+
     public const STATUS_ABANDONED = 'abandoned';
 
     public const FINISH_REASON_MANUAL_SUBMIT = 'manual_submit';
+
     public const FINISH_REASON_TIMER_EXPIRED = 'timer_expired';
+
     public const FINISH_REASON_AUTO_SUBMIT = 'auto_submit';
+
     public const FINISH_REASON_ABANDONED = 'abandoned';
+
     public const FINISH_REASON_ADMIN_DELETE = 'admin_delete';
+
     public const FINISH_REASON_ADMIN_TERMINATED = 'admin_terminated';
 
     public const ANONYMIZED_STUDENT_CODE = '0000';
+
     public const ANONYMIZED_STUDENT_NAME = 'Anonymized Participant';
 
     protected $fillable = [

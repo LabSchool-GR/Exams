@@ -10,11 +10,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
@@ -93,38 +93,38 @@ class UserController extends Controller
             ->route('users.index')
             ->with('success', __('controllers.user_deleted_successfully'));
     }
-	
-	public function create(): View
-	{
-		return view('users.create');
-	}
 
-	public function store(Request $request): RedirectResponse
-	{
-		$request->validate([
-			'name' => 'required|string|max:255',
-			'email' => 'required|email|max:255|unique:users,email',
-			'password' => 'required|string|min:8|confirmed',
-			'role' => 'required|in:teacher,admin',
+    public function create(): View
+    {
+        return view('users.create');
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|in:teacher,admin',
             'max_quizzes' => 'required|integer|min:1|max:500',
             'max_questions_per_quiz' => 'required|integer|min:1|max:500',
             'max_answers_per_question' => 'required|integer|min:2|max:20',
             'max_students_per_quiz' => 'required|integer|min:1|max:5000',
-		]);
+        ]);
 
-		$user = User::create([
-			'name' => $request->name,
-			'email' => $request->email,
-			'password' => Hash::make($request->password),
-			'role' => $request->role,
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => $request->role,
             'max_quizzes' => (int) $request->max_quizzes,
             'max_questions_per_quiz' => (int) $request->max_questions_per_quiz,
             'max_answers_per_question' => (int) $request->max_answers_per_question,
             'max_students_per_quiz' => (int) $request->max_students_per_quiz,
-		]);
+        ]);
 
-		event(new Registered($user)); // Trigger email verification
+        event(new Registered($user)); // Trigger email verification
 
-		return redirect()->route('users.index')->with('success', __('controllers.user_created_successfully'));
-	}
+        return redirect()->route('users.index')->with('success', __('controllers.user_created_successfully'));
+    }
 }

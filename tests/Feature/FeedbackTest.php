@@ -37,8 +37,8 @@ test('feedback is delivered only to admins without sender identity in the email 
         return $mail->hasTo($admin->email)
             && str_contains($rendered, 'Feedback Title')
             && str_contains($rendered, 'Feedback body for admins.')
-            && !str_contains($rendered, 'Feedback Sender')
-            && !str_contains($rendered, 'sender@sch.gr');
+            && ! str_contains($rendered, 'Feedback Sender')
+            && ! str_contains($rendered, 'sender@sch.gr');
     });
 
     Mail::assertNotQueued(AdminFeedbackAlert::class, function (AdminFeedbackAlert $mail) use ($otherTeacher, $sender) {
@@ -83,7 +83,7 @@ test('feedback is rate limited after repeated submissions', function () {
 
     foreach (range(1, 3) as $attempt) {
         $this->actingAs($sender)->post(route('feedback.store'), [
-            'title' => 'Feedback Title ' . $attempt,
+            'title' => 'Feedback Title '.$attempt,
             'message' => 'Feedback body for admins.',
         ])->assertRedirect(route('dashboard'));
     }

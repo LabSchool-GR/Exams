@@ -36,7 +36,7 @@ trait HandlesQuizParticipantPublicPool
     {
         $reservationId = Session::get('public_anonymous_pool_reservation_id');
 
-        if (!$reservationId) {
+        if (! $reservationId) {
             return null;
         }
 
@@ -45,7 +45,7 @@ trait HandlesQuizParticipantPublicPool
             ->where('quiz_id', $quiz->id)
             ->first();
 
-        if (!$reservation) {
+        if (! $reservation) {
             Session::forget([
                 'public_anonymous_pool_reservation_id',
                 'public_anonymous_pool_slot_code',
@@ -194,7 +194,7 @@ trait HandlesQuizParticipantPublicPool
     {
         $reservation = $this->currentPublicAnonymousPoolReservation($quiz);
 
-        if (!$reservation) {
+        if (! $reservation) {
             return null;
         }
 
@@ -238,7 +238,7 @@ trait HandlesQuizParticipantPublicPool
 
             foreach ($guestAnswers as $questionId => $answerIds) {
                 $question = $quiz->questions()->with('answers')->find((int) $questionId);
-                if (!$question || !is_array($answerIds)) {
+                if (! $question || ! is_array($answerIds)) {
                     continue;
                 }
 
@@ -262,13 +262,13 @@ trait HandlesQuizParticipantPublicPool
 
     private function ensurePublicAnonymousPoolReservationIsActive(Quiz $quiz): ?RedirectResponse
     {
-        if (!$this->sessionUsesPublicAnonymousPool($quiz)) {
+        if (! $this->sessionUsesPublicAnonymousPool($quiz)) {
             return null;
         }
 
         $reservation = $this->currentPublicAnonymousPoolReservation($quiz);
 
-        if (!$reservation) {
+        if (! $reservation) {
             $this->resetQuizRuntimeState();
 
             return redirect()->route('quiz.join')
