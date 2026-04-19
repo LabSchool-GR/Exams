@@ -43,6 +43,7 @@ return [
 
     'verify_email_title' => 'Verify Your Email Address',
     'verify_email_description' => 'Thank you for signing up. Please verify your email address by clicking the link we sent you.',
+    'verify_email_check_inbox' => 'Check your email to complete verification.',
     'resend_verification' => 'Resend verification email',
     'logout' => 'Logout',
     'verification_sent' => 'A new verification link has been sent to your email address.',

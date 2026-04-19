@@ -22,3 +22,9 @@ it('shows the configured source code link on public pages', function () {
         ->assertSee('https://example.com/source', false)
         ->assertSee(__('navigation.source_code'));
 });
+
+it('can cache application routes for production deployments', function () {
+    $this->artisan('route:cache')->assertExitCode(0);
+
+    $this->artisan('route:clear')->assertExitCode(0);
+});

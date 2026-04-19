@@ -316,7 +316,7 @@ class QuizController extends Controller
             'language' => 'required|in:el,en,auto',
             'image' => 'nullable|image|max:150',
         ], [
-            'image.max' => 'Ξ¤ΞΏ Ξ±ΟΟ‡ΞµΞ―ΞΏ ΞµΞΉΞΊΟΞ½Ξ±Ο‚ Ξ΄ΞµΞ½ Ο€ΟΞ­Ο€ΞµΞΉ Ξ½Ξ± Ο…Ο€ΞµΟΞ²Ξ±Ξ―Ξ½ΞµΞΉ Ο„Ξ± 150KB.',
+            'image.max' => __('controllers.quiz_image_max'),
         ]);
 
         $canManageSpecialModes = $this->currentUserCanManageSpecialModes();
@@ -481,7 +481,7 @@ class QuizController extends Controller
         }
 
         $request->validate($rules, [
-            'image.max' => 'Ξ¤ΞΏ Ξ±ΟΟ‡ΞµΞ―ΞΏ ΞµΞΉΞΊΟΞ½Ξ±Ο‚ Ξ΄ΞµΞ½ Ο€ΟΞ­Ο€ΞµΞΉ Ξ½Ξ± Ο…Ο€ΞµΟΞ²Ξ±Ξ―Ξ½ΞµΞΉ Ο„Ξ± 150KB.',
+            'image.max' => __('controllers.quiz_image_max'),
         ]);
 
         $canManageSpecialModes = $this->currentUserCanManageSpecialModes();

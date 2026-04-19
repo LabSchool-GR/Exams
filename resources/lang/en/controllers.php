@@ -8,6 +8,8 @@
 return [
     'quiz_created' => 'The quiz was created successfully.',
     'quiz_updated' => 'The quiz was updated successfully.',
+    'quiz_image_max' => 'The image file must not exceed 150KB.',
+    'quiz_access_forbidden' => 'You do not have permission to access this quiz.',
     'quiz_duplicated' => 'The example quiz was copied to your collection as a new draft.',
     'questions_limit_exceeded' => 'The number of questions to be answered cannot exceed the total number of available questions.',
     'quiz_deleted' => 'The quiz was deleted successfully.',

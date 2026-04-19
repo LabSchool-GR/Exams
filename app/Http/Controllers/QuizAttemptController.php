@@ -64,7 +64,7 @@ class QuizAttemptController extends Controller
 		}
 		// All non-admin access is scoped to the teacher who created the quiz.
 		if ($quiz->creator_id !== $user->id) {
-			abort(403, 'Ξ”ΞµΞ½ Ξ­Ο‡ΞµΟ„Ξµ Ξ΄ΞΉΞΊΞ±Ξ―Ο‰ΞΌΞ± Ο€ΟΟΟƒΞ²Ξ±ΟƒΞ·Ο‚ ΟƒΞµ Ξ±Ο…Ο„Ο Ο„ΞΏ quiz.');
+			abort(403, __('controllers.quiz_access_forbidden'));
 		}
 	}
 

@@ -7,14 +7,13 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\{
     AnswerController,
     CategoryController,
     DashboardController,
     FeedbackController,
+    LocaleController,
     ProfileController,
     QuotaRequestController,
     QuestionController,
@@ -29,10 +28,7 @@ use App\Http\Controllers\{
 };
 
 // Public entry points that do not require an authenticated teacher session.
-Route::get('/', function () {
-    App::setLocale(Session::get('locale', config('app.locale')));
-    return view('quiz.join');
-})->name('quiz.join');
+Route::get('/', [QuizParticipantController::class, 'showJoinForm'])->name('home');
 
 // Signed links allow controlled access to generated documents without exposing them globally.
 Route::get('quizzes/{quiz}/quiz_attempts/{quizAttempt}/pdf/signed', [QuizAttemptController::class, 'downloadPdf'])
@@ -45,11 +41,7 @@ Route::middleware('auth')->get('quizzes/{quiz}/quiz_attempts/{quizAttempt}/pdf',
 Route::get('/verify/attempt/{attempt}', [QuizAttemptController::class, 'verifyAttempt'])
     ->name('quiz_attempts.verify');
 
-Route::get('/lang/{locale}', function (string $locale) {
-    abort_unless(in_array($locale, ['el', 'en']), 400);
-    session(['locale' => $locale]);
-    return back();
-})->name('set.locale');
+Route::get('/lang/{locale}', [LocaleController::class, 'update'])->name('set.locale');
 
 Route::view('/terms', 'terms')->name('terms');
 Route::view('/privacy', 'privacy')->name('privacy');

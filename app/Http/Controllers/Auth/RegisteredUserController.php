@@ -110,7 +110,7 @@ class RegisteredUserController extends Controller
         $request->session()->regenerate();
 
         return redirect()->route('verification.notice')
-            ->with('success', 'Ξ•Ξ»Ξ­Ξ³ΞΎΟ„Ξµ Ο„ΞΏ email ΟƒΞ±Ο‚ Ξ³ΞΉΞ± ΞµΟ€ΞΉΞ²ΞµΞ²Ξ±Ξ―Ο‰ΟƒΞ·.');
+            ->with('success', __('auth.verify_email_check_inbox'));
     }
 
     /**
