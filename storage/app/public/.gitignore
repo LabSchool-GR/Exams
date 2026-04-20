@@ -1,2 +1,15 @@
 *
 !.gitignore
+!bg-quiz.jpg
+!default-question.png
+!favicon.ico
+!docs/
+!docs/**
+!flags/
+!flags/**
+!questions_images/
+!questions_images/.gitignore
+!quizzes_images/
+!quizzes_images/.gitignore
+!sounds/
+!sounds/**
