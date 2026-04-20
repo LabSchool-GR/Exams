@@ -4,7 +4,7 @@ use App\Mail\AdminFeedbackAlert;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
-test('feedback is delivered only to admins without sender identity in the email body', function () {
+test('feedback is delivered only to admins and includes sender identity in the email body', function () {
     Mail::fake();
 
     $admin = User::factory()->create([
@@ -37,8 +37,9 @@ test('feedback is delivered only to admins without sender identity in the email 
         return $mail->hasTo($admin->email)
             && str_contains($rendered, 'Feedback Title')
             && str_contains($rendered, 'Feedback body for admins.')
-            && ! str_contains($rendered, 'Feedback Sender')
-            && ! str_contains($rendered, 'sender@sch.gr');
+            && str_contains($rendered, 'Feedback Sender')
+            && str_contains($rendered, 'sender@sch.gr')
+            && $mail->hasReplyTo('sender@sch.gr', 'Feedback Sender');
     });
 
     Mail::assertNotQueued(AdminFeedbackAlert::class, function (AdminFeedbackAlert $mail) use ($otherTeacher, $sender) {
