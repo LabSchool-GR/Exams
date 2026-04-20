@@ -1,5 +1,7 @@
 @extends('layouts.guest')
 
+@section('hide_guest_footer', '1')
+
 @section('content')
 <style>
     body {

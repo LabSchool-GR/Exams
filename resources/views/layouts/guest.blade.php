@@ -50,7 +50,10 @@
 
     @yield('content')
 
-    @include('layouts.partials.app_footer')
+    @hasSection('hide_guest_footer')
+    @else
+        @include('layouts.partials.app_footer')
+    @endif
 </body>
 
 </html>
