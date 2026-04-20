@@ -14,12 +14,23 @@ class AdminFeedbackAlert extends Mailable implements ShouldQueue
     public function __construct(
         public readonly string $titleText,
         public readonly string $messageBody,
-        public readonly string $submittedAt
+        public readonly string $submittedAt,
+        public readonly string $submittedByName,
+        public readonly string $submittedByEmail
     ) {}
 
     public function build(): self
     {
-        return $this->subject(__('emails.feedback_alert.subject'))
+        $mail = $this->subject(__('emails.feedback_alert.subject'))
             ->view('emails.feedback');
+
+        if ($this->submittedByEmail !== '') {
+            $mail->replyTo(
+                $this->submittedByEmail,
+                $this->submittedByName !== '' ? $this->submittedByName : null
+            );
+        }
+
+        return $mail;
     }
 }

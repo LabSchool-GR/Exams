@@ -4,9 +4,17 @@
 @section('email_intro', __('emails.feedback_alert.intro'))
 
 @section('email_body')
-    <p style="margin: 0 0 16px; color: #6b7280;">{{ __('emails.feedback_alert.privacy_note') }}</p>
+    <p style="margin: 0 0 16px; color: #6b7280;">{{ __('emails.feedback_alert.sender_note') }}</p>
 
     <table cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; max-width: 720px; margin-bottom: 20px;">
+        <tr>
+            <td style="border: 1px solid #d1d5db; background: #f9fafb; width: 220px;"><strong>{{ __('emails.feedback_alert.sender_name') }}</strong></td>
+            <td style="border: 1px solid #d1d5db;">{{ $submittedByName !== '' ? $submittedByName : '—' }}</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #d1d5db; background: #f9fafb; width: 220px;"><strong>{{ __('emails.feedback_alert.sender_email') }}</strong></td>
+            <td style="border: 1px solid #d1d5db;">{{ $submittedByEmail !== '' ? $submittedByEmail : '—' }}</td>
+        </tr>
         <tr>
             <td style="border: 1px solid #d1d5db; background: #f9fafb; width: 220px;"><strong>{{ __('emails.feedback_alert.submitted_at') }}</strong></td>
             <td style="border: 1px solid #d1d5db;">{{ $submittedAt }}</td>

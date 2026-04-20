@@ -37,6 +37,8 @@ class FeedbackController extends Controller
             'message' => 'required|string',
         ]);
 
+        $user = $request->user();
+
         $adminEmails = User::query()
             ->where('role', 'admin')
             ->whereNotNull('email')
@@ -51,11 +53,14 @@ class FeedbackController extends Controller
                 Mail::to($adminEmails)->queue(new AdminFeedbackAlert(
                     (string) $request->string('title'),
                     (string) $request->string('message'),
-                    now()->toDateTimeString()
+                    now()->toDateTimeString(),
+                    $user?->name ?? '',
+                    $user?->email ?? ''
                 ));
             } catch (\Throwable $exception) {
                 Log::error('Feedback notification queue dispatch failed.', [
                     'message' => $exception->getMessage(),
+                    'user_id' => $user?->id,
                 ]);
 
                 return back()->with('error', __('controllers.feedback_send_failed'));
