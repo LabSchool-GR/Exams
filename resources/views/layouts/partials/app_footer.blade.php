@@ -4,7 +4,7 @@
     $appLicense = trim((string) config('app.license', 'AGPL-3.0-or-later')) ?: 'AGPL-3.0-or-later';
 @endphp
 
-<footer class="text-center text-muted small mt-5 mb-3">
+<footer class="app-footer-subtle text-center text-muted small">
     <hr>
     <p class="mb-2">
         {{ __('footer.product_tagline') }}

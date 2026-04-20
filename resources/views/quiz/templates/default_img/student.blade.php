@@ -32,7 +32,8 @@ body {
 .screen-shell {
     position: relative;
     z-index: 2;
-    min-height: 100vh;
+    min-height: 100%;
+    width: 100%;
     padding: clamp(1rem, 2vh, 2rem) 1rem;
 }
 

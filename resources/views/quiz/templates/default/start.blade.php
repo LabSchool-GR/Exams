@@ -33,8 +33,12 @@
 }
 
 body {
-    min-height: 100vh;
-    background-image: url('{{ asset('storage/bg-quiz.jpg') }}');
+    min-height: 100dvh;
+    @if(isset($quiz) && $quiz->image)
+        background-image: url('{{ asset('storage/' . $quiz->image) }}');
+    @else
+        background-image: url('{{ asset('storage/bg-quiz.jpg') }}');
+    @endif
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -51,18 +55,19 @@ body {
 .screen-shell {
     position: relative;
     z-index: 2;
-    min-height: 100vh;
+    min-height: 100%;
+    width: 100%;
     padding: clamp(1rem, 2vh, 2rem) 1rem;
 }
 
 .exam-card {
     width: 100%;
     max-width: 760px;
-    border-radius: 1.1rem;
-    border: 1px solid var(--quiz-border);
-    background: rgba(255, 255, 255, 0.86);
-    box-shadow: 0 20px 42px rgba(15, 23, 42, 0.15);
-    backdrop-filter: blur(6px);
+    border-radius: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 25px 50px rgba(15, 23, 42, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    backdrop-filter: blur(12px);
     overflow: hidden;
 }
 
@@ -79,6 +84,20 @@ body {
     display: grid;
     justify-items: center;
     gap: 0.8rem;
+}
+
+.intro-media {
+    width: 100%;
+    max-height: 220px;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+}
+
+.intro-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .eyebrow {
@@ -123,10 +142,10 @@ body {
     gap: 0.55rem;
     margin-top: 0.1rem;
     padding: 0.62rem 0.92rem;
-    border-radius: 1rem;
-    background: rgba(255, 255, 255, 0.74);
-    border: 1px solid rgba(23, 50, 77, 0.08);
-    color: var(--quiz-muted);
+    border-radius: 2rem;
+    background: #ffffff;
+    border: 1px solid rgba(31, 122, 140, 0.15);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
 }
 
 .student-pill strong {
@@ -150,12 +169,11 @@ body {
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background:
-        radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(232, 242, 247, 0.95)),
-        linear-gradient(145deg, rgba(31, 122, 140, 0.1), rgba(66, 133, 244, 0.14));
+    background: #ffffff;
     box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.82),
-        0 20px 36px rgba(31, 122, 140, 0.16);
+        inset 0 4px 10px rgba(31, 122, 140, 0.05),
+        0 15px 35px rgba(31, 122, 140, 0.12),
+        0 0 0 6px rgba(255, 255, 255, 0.6);
 }
 
 .countdown-orb::before {
@@ -252,6 +270,10 @@ body {
         font-size: 0.72rem;
     }
 
+    .intro-media {
+        max-height: 160px;
+    }
+
     .app-title {
         margin-top: 0.45rem;
         margin-bottom: 0.2rem;
@@ -335,6 +357,12 @@ body {
         <div class="exam-card__inner text-center">
             <div class="hero-grid">
                 <div class="hero-stack">
+                    @if($quiz->image)
+                        <div class="intro-media fade-in">
+                            <img src="{{ asset('storage/' . $quiz->image) }}" alt="{{ $quiz->title }}">
+                        </div>
+                    @endif
+
                     <div class="eyebrow fade-in" style="animation-delay: 0.2s;">
                         <span>{{ __('join.app_title') }}</span>
                     </div>

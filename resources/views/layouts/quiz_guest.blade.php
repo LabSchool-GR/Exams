@@ -48,7 +48,9 @@
         @endif
     </div>
 
-    @yield('content')
+    <main class="quiz-participant-main">
+        @yield('content')
+    </main>
 
     @php
         $isGuestParticipantFlow = (
@@ -61,27 +63,27 @@
             : 'join.participant_notice';
     @endphp
 
-    <aside class="quiz-disclaimer-panel" data-quiz-disclaimer aria-label="{{ __('join.participant_notice_aria') }}">
-        <div class="quiz-disclaimer-panel__inner">
-            <span class="quiz-disclaimer-panel__icon" aria-hidden="true">
-                <i class="fas fa-circle-info"></i>
-            </span>
-            <p class="quiz-disclaimer-panel__text">
-                {{ __($participantNoticeKey) }}
-            </p>
-            <button
-                type="button"
-                class="quiz-disclaimer-panel__dismiss"
-                data-quiz-disclaimer-dismiss
-                aria-label="{{ __('join.participant_notice_dismiss') }}"
-                title="{{ __('join.participant_notice_dismiss') }}"
-            >
-                <i class="fas fa-times" aria-hidden="true"></i>
-            </button>
-        </div>
-    </aside>
-
-    @include('layouts.partials.app_footer')
+    <div class="quiz-participant-meta">
+        <aside class="quiz-disclaimer-panel" data-quiz-disclaimer aria-label="{{ __('join.participant_notice_aria') }}">
+            <div class="quiz-disclaimer-panel__inner">
+                <span class="quiz-disclaimer-panel__icon" aria-hidden="true">
+                    <i class="fas fa-circle-info"></i>
+                </span>
+                <p class="quiz-disclaimer-panel__text">
+                    {{ __($participantNoticeKey) }}
+                </p>
+                <button
+                    type="button"
+                    class="quiz-disclaimer-panel__dismiss"
+                    data-quiz-disclaimer-dismiss
+                    aria-label="{{ __('join.participant_notice_dismiss') }}"
+                    title="{{ __('join.participant_notice_dismiss') }}"
+                >
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+        </aside>
+    </div>
 </body>
 
 </html>

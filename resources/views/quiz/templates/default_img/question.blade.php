@@ -16,8 +16,12 @@
 }
 
 body {
-    min-height: 100vh;
-    background-image: url('{{ asset('storage/bg-quiz.jpg') }}');
+    min-height: 100dvh;
+    @if(isset($quiz) && $quiz->image)
+        background-image: url('{{ asset('storage/' . $quiz->image) }}');
+    @else
+        background-image: url('{{ asset('storage/bg-quiz.jpg') }}');
+    @endif
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -34,18 +38,19 @@ body {
 .screen-shell {
     position: relative;
     z-index: 2;
-    min-height: 100vh;
+    min-height: 100%;
+    width: 100%;
     padding: 1rem 0.85rem;
 }
 
 .exam-card {
     width: 100%;
     max-width: 760px;
-    border-radius: 1.1rem;
-    border: 1px solid var(--quiz-border);
-    background: rgba(255, 255, 255, 0.86);
-    box-shadow: 0 20px 42px rgba(15, 23, 42, 0.15);
-    backdrop-filter: blur(6px);
+    border-radius: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 25px 50px rgba(15, 23, 42, 0.12);
+    backdrop-filter: blur(12px);
     overflow: hidden;
 }
 
@@ -63,7 +68,7 @@ body {
 .quiz-context-title {
     margin: 0;
     text-align: center;
-    font-size: 0.82rem;
+    font-size: 0.94rem;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -107,10 +112,8 @@ body {
 
 .question-panel {
     padding: 0.8rem 0.9rem;
-    border-radius: 1rem;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(245, 249, 252, 0.9));
-    border: 1px solid rgba(23, 50, 77, 0.08);
-    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);
+    border-radius: 1.25rem;
+    background: transparent;
 }
 
 .question-panel--headline {
@@ -125,27 +128,27 @@ body {
 .question-title {
     margin: 0;
     width: min(100%, 42rem);
-    padding: 0.8rem 1rem;
-    border-radius: 1rem;
-    font-size: 1.1rem;
-    line-height: 1.45;
+    padding: 1.2rem 1.5rem;
+    border-radius: 0.85rem;
+    font-size: 1.15rem;
+    line-height: 1.55;
     font-weight: 800;
     color: var(--quiz-ink);
     white-space: pre-line;
     text-align: left;
-    background: linear-gradient(180deg, rgba(220, 243, 229, 0.96), rgba(236, 250, 241, 0.92));
-    border: 1px solid rgba(23, 114, 69, 0.14);
-    box-shadow: 0 12px 28px rgba(23, 114, 69, 0.08);
+    background: #ffffff;
+    border-left: 5px solid var(--quiz-accent);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
 }
 
 .question-image-shell {
     padding: 0.55rem;
     border-radius: 0.95rem;
-    background: rgba(255, 255, 255, 0.88);
-    border: 1px solid rgba(23, 50, 77, 0.08);
+    background: #ffffff;
+    border: 1px solid rgba(23, 50, 77, 0.05);
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.7),
-        0 16px 32px rgba(15, 23, 42, 0.08);
+        0 12px 28px rgba(15, 23, 42, 0.06);
     height: 100%;
 }
 
@@ -168,29 +171,29 @@ body {
     align-items: center;
     gap: 0.85rem;
     width: 100%;
-    padding: 0.72rem 0.85rem;
-    border-radius: 0.95rem;
+    padding: 0.85rem 1rem;
+    border-radius: 1rem;
     border: 1px solid rgba(23, 50, 77, 0.1);
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.02);
     transition:
-        transform 0.16s ease,
-        box-shadow 0.16s ease,
-        border-color 0.16s ease,
-        background-color 0.16s ease;
+        transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.25s ease,
+        border-color 0.25s ease,
+        background-color 0.25s ease;
+    cursor: pointer;
 }
 
 .answer-option:hover {
-    cursor: pointer;
-    transform: translateY(-1px);
-    border-color: rgba(31, 122, 140, 0.26);
-    box-shadow: 0 14px 28px rgba(31, 122, 140, 0.12);
+    transform: translateY(-2px);
+    border-color: rgba(31, 122, 140, 0.4);
+    box-shadow: 0 12px 24px rgba(31, 122, 140, 0.08);
 }
 
 .answer-option:has(input:checked) {
-    background: linear-gradient(135deg, rgba(31, 122, 140, 0.1), rgba(66, 133, 244, 0.08));
-    border-color: rgba(31, 122, 140, 0.34);
-    box-shadow: 0 18px 30px rgba(31, 122, 140, 0.14);
+    background: #f0f7f9;
+    border-color: var(--quiz-accent);
+    box-shadow: 0 8px 20px rgba(31, 122, 140, 0.15);
 }
 
 .answer-input {
@@ -203,6 +206,7 @@ body {
 .answer-copy {
     flex: 1;
     color: #243b53;
+    font-size: 1.02rem;
     line-height: 1.45;
 }
 
@@ -277,8 +281,10 @@ body {
     border-radius: 999px;
     padding: 0.72rem 1rem;
     font-weight: 700;
+    font-size: 1rem;
     border: 0;
     width: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-submit {
@@ -290,6 +296,8 @@ body {
 .btn-submit:hover,
 .btn-submit:focus {
     color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 22px 36px rgba(31, 122, 140, 0.3);
 }
 
 .btn-submit.btn-success {
@@ -305,6 +313,7 @@ body {
 .btn-skip:hover,
 .btn-skip:focus {
     color: #8a5a12;
+    background: rgba(183, 121, 31, 0.18);
 }
 
 .timer-block {
@@ -349,7 +358,7 @@ body {
     }
 
     .quiz-context-title {
-        font-size: 0.76rem;
+        font-size: 0.84rem;
     }
 
     .question-image {
@@ -359,7 +368,7 @@ body {
     .answer-copy,
     #selection-info,
     #selected-answer {
-        font-size: 0.82rem;
+        font-size: 0.86rem;
     }
 }
 
@@ -482,7 +491,7 @@ body {
 
 @if(!$allowDisplay)
     <div class="overlay"></div>
-    <div class="container screen-shell d-flex justify-content-center align-items-start">
+    <div class="container screen-shell d-flex justify-content-center align-items-center">
         <div class="exam-card"
              data-quiz-question-runtime
              data-correct-count="{{ $correctCount }}"
@@ -510,7 +519,7 @@ body {
 
 <div class="overlay"></div>
 
-<div class="container screen-shell d-flex justify-content-center align-items-start">
+<div class="container screen-shell d-flex justify-content-center align-items-center">
     <div class="exam-card quiz-runtime-fallback-target fade-in"
          data-quiz-question-runtime
          data-correct-count="{{ $correctCount }}"

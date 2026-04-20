@@ -100,8 +100,8 @@ return [
     'public_pool_start' => 'You are starting through the shared anonymous pool.',
     'public_pool_slot_expired' => 'Your temporary anonymous slot expired before submission. Please start again.',
     'retry_quiz' => 'Try Again',
-    'participant_notice' => 'This content was created by the quiz owner. The choices you submit are sent to the quiz owner. Cookies are used for the examination process.',
-    'participant_notice_guest' => 'This content was created by the quiz owner. Cookies are used for the examination process.',
+    'participant_notice' => 'This content was created by the quiz owner. The choices you submit are sent to the quiz owner. Essential cookies are used for the secure operation of the examination process.',
+    'participant_notice_guest' => 'This content was created by the quiz owner. Essential cookies are used for the secure operation of the examination process.',
     'participant_notice_aria' => 'Quiz participation notice',
     'participant_notice_dismiss' => 'Hide participation notice',
 ];

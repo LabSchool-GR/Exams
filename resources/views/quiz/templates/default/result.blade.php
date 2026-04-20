@@ -18,8 +18,12 @@
 }
 
 body {
-    min-height: 100vh;
-    background-image: url('{{ asset('storage/bg-quiz.jpg') }}');
+    min-height: 100dvh;
+    @if(isset($quiz) && $quiz->image)
+        background-image: url('{{ asset('storage/' . $quiz->image) }}');
+    @else
+        background-image: url('{{ asset('storage/bg-quiz.jpg') }}');
+    @endif
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -36,18 +40,19 @@ body {
 .screen-shell {
     position: relative;
     z-index: 2;
-    min-height: 100vh;
+    min-height: 100%;
+    width: 100%;
     padding: clamp(1rem, 2vh, 2rem) 1rem;
 }
 
 .exam-card {
     width: 100%;
     max-width: 760px;
-    border-radius: 1.1rem;
-    border: 1px solid var(--quiz-border);
-    background: rgba(255, 255, 255, 0.86);
-    box-shadow: 0 20px 42px rgba(15, 23, 42, 0.15);
-    backdrop-filter: blur(6px);
+    border-radius: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 25px 50px rgba(15, 23, 42, 0.15);
+    backdrop-filter: blur(12px);
     overflow: hidden;
 }
 
@@ -59,8 +64,8 @@ body {
     margin-bottom: 1rem;
     overflow: hidden;
     border-radius: 1.35rem;
-    border: 1px solid rgba(23, 50, 77, 0.08);
-    background: linear-gradient(160deg, rgba(31, 122, 140, 0.08), rgba(255, 255, 255, 0.96));
+    border: 4px solid #ffffff;
+    box-shadow: 0 12px 25px rgba(15, 23, 42, 0.08);
 }
 
 .hero-media img {
@@ -104,11 +109,11 @@ body {
     margin-top: 0.2rem;
     padding: 0.55rem 0.95rem;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.64);
+    background: #ffffff;
     border: 1px solid rgba(23, 50, 77, 0.08);
     color: var(--quiz-muted);
     font-size: 0.93rem;
-    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.05);
+    box-shadow: 0 8px 16px rgba(15, 23, 42, 0.04);
 }
 
 .identity-chip strong {
@@ -117,13 +122,14 @@ body {
 }
 
 .status-pill {
-    display: block;
+    display: inline-block;
     margin-top: 1rem;
-    padding: 0.8rem 1rem;
-    border-radius: 1rem;
-    font-weight: 700;
-    font-size: 0.93rem;
-    text-align: left;
+    padding: 0.8rem 1.4rem;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 1rem;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.04);
 }
 
 .status-pill.pass {
@@ -147,11 +153,11 @@ body {
 .metrics-panel {
     display: grid;
     gap: 0;
-    margin-top: 1.1rem;
+    margin-top: 1.5rem;
     border-radius: 1.2rem;
-    background: rgba(255, 255, 255, 0.72);
+    background: #ffffff;
     border: 1px solid rgba(23, 50, 77, 0.08);
-    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.08);
+    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.05);
     overflow: hidden;
 }
 
@@ -174,8 +180,8 @@ body {
 }
 
 .metric-value {
-    color: var(--quiz-ink);
-    font-size: 1.55rem;
+    color: var(--quiz-accent);
+    font-size: 1.8rem;
     font-weight: 800;
     line-height: 1.1;
 }
@@ -209,6 +215,7 @@ body {
     padding: 0.88rem 1rem;
     font-weight: 700;
     font-size: 0.98rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 @media (max-height: 820px) {
@@ -251,6 +258,8 @@ body {
 .btn-primary-soft:hover,
 .btn-primary-soft:focus {
     color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 22px 36px rgba(31, 122, 140, 0.3);
 }
 
 .btn-outline-soft {
@@ -259,10 +268,19 @@ body {
     border: 1px solid rgba(23, 50, 77, 0.14);
 }
 
+.btn-outline-soft:hover {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 8px 16px rgba(15, 23, 42, 0.05);
+}
+
 .btn-warning-soft {
     background: rgba(183, 121, 31, 0.12);
     color: #8a5a12;
     border: 1px solid rgba(183, 121, 31, 0.22);
+}
+
+.btn-warning-soft:hover {
+    background: rgba(183, 121, 31, 0.18);
 }
 
 .btn-disabled-soft {
