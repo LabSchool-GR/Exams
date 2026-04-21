@@ -674,20 +674,9 @@ class QuizDisplaySessionService
 
     private function answerPrefix(Quiz $quiz, int $index): ?string
     {
-        if (! $quiz->show_answer_numbering) {
-            return null;
-        }
-
-        $effectiveLanguage = $quiz->language === 'auto'
-            ? app()->getLocale()
-            : ($quiz->language ?? app()->getLocale());
-
-        $alphabet = $effectiveLanguage === 'en'
-            ? range('A', 'Z')
-            : ['Α', 'Β', 'Γ', 'Δ', 'Ε', 'Ζ', 'Η', 'Θ', 'Ι', 'Κ', 'Λ', 'Μ', 'Ν', 'Ξ', 'Ο', 'Π', 'Ρ', 'Σ', 'Τ', 'Υ', 'Φ', 'Χ', 'Ψ', 'Ω'];
-
-        return ($alphabet[$index] ?? (string) ($index + 1)).'.';
+        return $quiz->answerLabelForIndex($index);
     }
+
 
     private function assertQuizSupportsDisplayMode(Quiz $quiz): void
     {

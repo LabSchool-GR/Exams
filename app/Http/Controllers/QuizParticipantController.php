@@ -48,7 +48,7 @@ class QuizParticipantController extends Controller
         $quiz = Quiz::find(Session::get('quiz_id'));
 
         if ($quiz) {
-            App::setLocale($quiz->language ?? config('app.locale'));
+            App::setLocale($quiz->resolvedLocale(config('app.locale')));
         }
 
         return view('quiz.session_conflict', [
@@ -75,7 +75,7 @@ class QuizParticipantController extends Controller
                 ->with('error', __('join.quiz_not_found'));
         }
 
-        App::setLocale($quiz->language ?? config('app.locale'));
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
 
         if ($redirect = $this->ensureQuizIsActiveForParticipantFlow($quiz)) {
             return $redirect;
@@ -111,7 +111,7 @@ class QuizParticipantController extends Controller
                 ->with('error', __('join.quiz_code_error'));
         }
 
-        App::setLocale($quiz->language ?? config('app.locale'));
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
 
         if ($redirect = $this->ensureStudentCodeScreenIsAllowed($quiz)) {
             return $redirect;
@@ -141,7 +141,7 @@ class QuizParticipantController extends Controller
                 ->with('error', __('join.quiz_not_found'));
         }
 
-        App::setLocale($quiz->language ?? config('app.locale'));
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
 
         if ($redirect = $this->ensureQuizIsActiveForParticipantFlow($quiz)) {
             return $redirect;
@@ -272,7 +272,7 @@ class QuizParticipantController extends Controller
                 ->with('error', __('join.quiz_not_found'));
         }
 
-        App::setLocale($quiz->language ?? config('app.locale'));
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
 
         if ($redirect = $this->ensureQuizIsActiveForParticipantFlow($quiz)) {
             return $redirect;
@@ -298,7 +298,7 @@ class QuizParticipantController extends Controller
             return redirect()->route('quiz.join')->with('error', __('join.no_session'));
         }
 
-        App::setLocale($quiz->language ?? config('app.locale'));
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
 
         if ($redirect = $this->ensureQuizIsActiveForParticipantFlow($quiz)) {
             return $redirect;
@@ -427,7 +427,7 @@ class QuizParticipantController extends Controller
                 ->with('error', __('join.no_session'));
         }
 
-        App::setLocale($quiz->language ?? config('app.locale'));
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
 
         if ($redirect = $this->ensureQuizIsActiveForParticipantFlow($quiz)) {
             return $redirect;
@@ -482,7 +482,7 @@ class QuizParticipantController extends Controller
             return redirect()->route('quiz.join')->with('error', __('join.no_session'));
         }
 
-        App::setLocale($quiz->language ?? config('app.locale'));
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
 
         if ($redirect = $this->ensureQuizIsActiveForParticipantFlow($quiz)) {
             return $redirect;
@@ -602,7 +602,7 @@ class QuizParticipantController extends Controller
         }
         $question = $this->resolveQuestionFromRoute($questionKey, $quiz);
 
-        App::setLocale($quiz->language ?? config('app.locale'));
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
 
         if ($redirect = $this->ensureQuizIsActiveForParticipantFlow($quiz)) {
             return $redirect;
@@ -762,7 +762,7 @@ class QuizParticipantController extends Controller
                 ->with('error', __('join.no_session'));
         }
 
-        App::setLocale($quiz->language ?? config('app.locale'));
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
 
         if ($redirect = $this->ensureQuizIsActiveForParticipantFlow($quiz)) {
             return $redirect;
@@ -822,7 +822,7 @@ class QuizParticipantController extends Controller
             return redirect()->route('quiz.join')->with('error', __('join.no_session'));
         }
 
-        App::setLocale($quiz->language ?? config('app.locale'));
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
 
         if ($redirect = $this->ensureQuizIsActiveForParticipantFlow($quiz)) {
             return $redirect;
@@ -997,7 +997,7 @@ class QuizParticipantController extends Controller
             return $quiz;
         }
 
-        App::setLocale($quiz->language ?? config('app.locale'));
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
 
         $attemptId = Session::get('attempt_id');
         $questionOrder = Session::get('question_order', []);
@@ -1135,7 +1135,7 @@ class QuizParticipantController extends Controller
 
         $quiz = $student->quiz()->firstOrFail();
 
-        App::setLocale($quiz->language ?? config('app.locale'));
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
         $this->ensureQuizRouteToken($quiz);
 
         $userAgent = strtolower($request->header('User-Agent', ''));
@@ -1244,7 +1244,7 @@ class QuizParticipantController extends Controller
             abort(404);
         }
 
-        App::setLocale($quiz->language ?? config('app.locale'));
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
         $this->ensureQuizRouteToken($quiz);
 
         $userAgent = strtolower($request->header('User-Agent', ''));

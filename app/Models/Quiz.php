@@ -222,6 +222,38 @@ class Quiz extends Model
     }
 
     /**
+     * Resolve the quiz locale, treating "auto" as the provided fallback locale.
+     */
+    public function resolvedLocale(?string $fallback = null): string
+    {
+        $fallback ??= config('app.locale');
+
+        $language = is_string($this->language) ? trim($this->language) : '';
+
+        if ($language === '' || $language === 'auto') {
+            return $fallback;
+        }
+
+        return $language;
+    }
+
+    /**
+     * Build the configured answer label for a zero-based answer index.
+     */
+    public function answerLabelForIndex(int $index, string $suffix = '.'): ?string
+    {
+        if (! $this->show_answer_numbering) {
+            return null;
+        }
+
+        $alphabet = str_starts_with($this->resolvedLocale(app()->getLocale()), 'en')
+            ? range('A', 'Z')
+            : ['Α', 'Β', 'Γ', 'Δ', 'Ε', 'Ζ', 'Η', 'Θ', 'Ι', 'Κ', 'Λ', 'Μ', 'Ν', 'Ξ', 'Ο', 'Π', 'Ρ', 'Σ', 'Τ', 'Υ', 'Φ', 'Χ', 'Ψ', 'Ω'];
+
+        return ($alphabet[$index] ?? (string) ($index + 1)).$suffix;
+    }
+
+    /**
      * Determine whether the quiz should email the creator when a participant passes.
      */
     public function shouldNotifyCreatorOnPass(): bool

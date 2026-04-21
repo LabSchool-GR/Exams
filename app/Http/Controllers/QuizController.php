@@ -621,7 +621,7 @@ class QuizController extends Controller
     {
         $this->authorizeQuizReadAccess($quiz);
 
-        App::setLocale($quiz->language ?? config('app.locale'));
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
 
         $questions = $quiz->questions()->with('answers')->get();
 

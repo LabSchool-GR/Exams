@@ -575,7 +575,7 @@ class QuizAttemptController extends Controller
         $quiz->load(['creator', 'questions.answers']);
         $quizAttempt->load(['answers.answer', 'answers.question']);
 
-        App::setLocale($quiz->language ?? config('app.locale'));
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
 
         $groupedAnswers = $quizAttempt->answers->groupBy('question_id');
         $questionResults = [];
@@ -678,7 +678,7 @@ class QuizAttemptController extends Controller
                 ->with('error', __('controllers.anonymous_bulk_mode_disabled'));
         }
 
-        App::setLocale($quiz->language ?? config('app.locale'));
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
 
         $students = QuizStudent::query()
             ->where('quiz_id', $quiz->id)
@@ -752,7 +752,7 @@ class QuizAttemptController extends Controller
     {
         $this->authorizeQuizAccess($quiz);
 
-        App::setLocale($quiz->language ?? config('app.locale'));
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
 
         $student = QuizStudent::query()
             ->where('quiz_id', $quiz->id)
@@ -802,7 +802,7 @@ class QuizAttemptController extends Controller
         $quiz = $this->resolveQuizFromAttempt($attempt);
         $this->authorizeQuizAccess($quiz);
 
-        App::setLocale($quiz->language ?? config('app.locale'));
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
 
         // User is not eligible for certificate
         if ($attempt->score < $quiz->pass_percentage) {

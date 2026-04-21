@@ -1,22 +1,6 @@
 @extends('layouts.quiz_guest')
 
 @section('meta')
-    <meta property="og:title" content="{{ $quiz->title }}">
-    <meta property="og:description" content="{{ Str::limit($quiz->description, 150) }}">
-    <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:type" content="website">
-
-    @if ($quiz->image)
-        <meta property="og:image" content="{{ asset('storage/' . $quiz->image) }}">
-        <meta name="twitter:image" content="{{ asset('storage/' . $quiz->image) }}">
-    @else
-        <meta property="og:image" content="{{ asset('storage/bg-quiz.jpg') }}">
-        <meta name="twitter:image" content="{{ asset('storage/bg-quiz.jpg') }}">
-    @endif
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $quiz->title }}">
-    <meta name="twitter:description" content="{{ Str::limit($quiz->description, 150) }}">
 @endsection
 
 @section('content')

@@ -1,12 +1,60 @@
 <!DOCTYPE html>
-<html lang="{{ $quiz->language ?? app()->getLocale() }}">
+<html lang="{{ $quiz->resolvedLocale(app()->getLocale()) }}">
 
 <head>
+    @php
+        $resolvedLocale = isset($quiz)
+            ? $quiz->resolvedLocale(app()->getLocale())
+            : app()->getLocale();
+
+        $isEnglishLocale = \Illuminate\Support\Str::startsWith($resolvedLocale, 'en');
+
+        $pageTitle = isset($quiz)
+            ? trim((string) $quiz->title) !== ''
+                ? (string) $quiz->title
+                : config('app.name', 'Laravel Quiz')
+            : config('app.name', 'Laravel Quiz');
+
+        $rawDescription = isset($quiz)
+            ? trim((string) ($quiz->description ?? ''))
+            : '';
+
+        $pageDescription = $rawDescription !== ''
+            ? \Illuminate\Support\Str::limit($rawDescription, 150)
+            : '';
+
+        if ($pageDescription === '') {
+            $pageDescription = isset($quiz)
+                ? ($isEnglishLocale
+                    ? 'Open the quiz "'.$pageTitle.'" and jump straight into the experience.'
+                    : 'Άνοιξε το quiz "'.$pageTitle.'" και μπες κατευθείαν στην εμπειρία.')
+                : config('app.name', 'Laravel Quiz');
+        }
+
+        $pageImage = (isset($quiz) && !empty($quiz->image))
+            ? asset('storage/' . $quiz->image)
+            : asset('storage/bg-quiz.jpg');
+    @endphp
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel Quiz') }}</title>
+    <title>{{ $pageTitle }}</title>
+    <meta name="description" content="{{ $pageDescription }}">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ $pageImage }}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDescription }}">
+    <meta name="twitter:image" content="{{ $pageImage }}">
+
     @yield('meta')
 
     {{-- Shared icon font assets --}}

@@ -207,7 +207,7 @@ class QuizDisplaySessionController extends Controller
         $quiz = $displaySession->quiz;
 
         if ($quiz) {
-            App::setLocale($quiz->language === 'auto' ? app()->getLocale() : ($quiz->language ?? app()->getLocale()));
+            App::setLocale($quiz->resolvedLocale(app()->getLocale()));
         }
     }
 
