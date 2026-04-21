@@ -677,7 +677,6 @@ class QuizDisplaySessionService
         return $quiz->answerLabelForIndex($index);
     }
 
-
     private function assertQuizSupportsDisplayMode(Quiz $quiz): void
     {
         if (! $quiz->usesSecondScreenMode()) {

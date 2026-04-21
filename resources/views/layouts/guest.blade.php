@@ -51,6 +51,11 @@
     @yield('content')
 
     @hasSection('hide_guest_footer')
+        @if (filled(config('app.source_url')))
+            <div class="text-center small text-muted py-3">
+                @include('layouts.partials.source_code_link')
+            </div>
+        @endif
     @else
         @include('layouts.partials.app_footer')
     @endif

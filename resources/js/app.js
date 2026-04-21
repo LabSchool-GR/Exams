@@ -1621,6 +1621,68 @@ function initQuizDisplayController() {
     });
 }
 
+function initRetroScreenTransitions() {
+    document.querySelectorAll('.retro-screen').forEach((screen) => {
+        if (screen.dataset.retroTransitionsBound === 'true') {
+            return;
+        }
+
+        const beginExit = () => {
+            if (screen.classList.contains('retro-screen--exiting')) {
+                return;
+            }
+
+            screen.classList.add('retro-screen--exiting');
+        };
+
+        screen.dataset.retroTransitionsBound = 'true';
+
+        screen.querySelectorAll('a[href]').forEach((anchor) => {
+            anchor.addEventListener('click', (event) => {
+                if (
+                    event.defaultPrevented ||
+                    anchor.target === '_blank' ||
+                    anchor.hasAttribute('download') ||
+                    anchor.getAttribute('href')?.startsWith('#') ||
+                    event.metaKey ||
+                    event.ctrlKey ||
+                    event.shiftKey ||
+                    event.altKey ||
+                    event.button !== 0
+                ) {
+                    return;
+                }
+
+                event.preventDefault();
+                beginExit();
+                window.setTimeout(() => {
+                    window.location.href = anchor.href;
+                }, 170);
+            });
+        });
+
+        screen.querySelectorAll('form').forEach((form) => {
+            if (
+                form.matches('[data-quiz-answer-form], [data-quiz-skip-form]') ||
+                form.closest('[data-quiz-question-runtime]')
+            ) {
+                return;
+            }
+
+            form.addEventListener('submit', (event) => {
+                if (form.dataset.retroSubmitting === 'true') {
+                    return;
+                }
+
+                event.preventDefault();
+                form.dataset.retroSubmitting = 'true';
+                beginExit();
+                window.setTimeout(() => form.submit(), 170);
+            });
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initQuizParticipantDisclaimer();
     initToasts();
@@ -1645,4 +1707,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initQuizQuestionRuntime();
     initQuizDisplayScreen();
     initQuizDisplayController();
+    initRetroScreenTransitions();
 });
