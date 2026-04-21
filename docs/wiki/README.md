@@ -7,6 +7,8 @@ You can use them in two ways:
 1. Keep them here as versioned documentation inside the repo.
 2. Copy each file into the matching page of the GitHub Wiki.
 
+Greek companion pages are also available under `docs/wiki/el/`.
+
 Suggested page order:
 
 - `Home.md`
