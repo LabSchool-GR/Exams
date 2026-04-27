@@ -59,7 +59,7 @@ test('feedback reports a friendly error when queue dispatch fails', function () 
 
     Mail::shouldReceive('to->queue')
         ->once()
-        ->andThrow(new \RuntimeException('Queue unavailable'));
+        ->andThrow(new RuntimeException('Queue unavailable'));
 
     $response = $this->actingAs($sender)->from(route('feedback.create'))->post(route('feedback.store'), [
         'title' => 'Feedback Title',

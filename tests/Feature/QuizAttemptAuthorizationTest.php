@@ -7,6 +7,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
+use App\Http\Controllers\QuizAttemptController;
 use App\Models\Category;
 use App\Models\Quiz;
 use App\Models\QuizAttempt;
@@ -748,7 +749,7 @@ it('uses the persisted question order for result exports when randomized attempt
     ]);
 
     // Result exports must honor the stored attempt order instead of falling back to database ordering.
-    $controller = app(App\Http\Controllers\QuizAttemptController::class);
+    $controller = app(QuizAttemptController::class);
     $method = new ReflectionMethod($controller, 'determineQuestionIds');
     $method->setAccessible(true);
     $questionIds = $method->invoke($controller, $quiz->fresh('questions'), $attempt->fresh('answers'));

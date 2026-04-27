@@ -188,7 +188,7 @@ it('releases the quota throttle key when queue dispatch fails', function () {
 
     Mail::shouldReceive('to->queue')
         ->once()
-        ->andThrow(new \RuntimeException('Queue unavailable'));
+        ->andThrow(new RuntimeException('Queue unavailable'));
 
     $response = $this->actingAs($teacher)
         ->from(route('dashboard'))

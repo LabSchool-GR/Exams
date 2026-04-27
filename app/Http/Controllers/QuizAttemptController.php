@@ -35,6 +35,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Facades\Excel;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class QuizAttemptController extends Controller
 {
@@ -859,7 +860,7 @@ class QuizAttemptController extends Controller
     /**
      * Ensure that the attempt belongs to the given quiz.
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws NotFoundHttpException
      */
     private function ensureAttemptBelongsToQuiz(Quiz $quiz, QuizAttempt $attempt): void
     {
