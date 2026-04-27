@@ -1,6 +1,8 @@
 @extends('layouts.guest')
 
 @section('hide_guest_footer', '1')
+@section('body_class', 'quiz-participant-shell')
+@section('main_class', 'quiz-participant-main')
 
 @section('content')
 <style>
@@ -80,7 +82,7 @@
 
 <div class="overlay"></div>
 
-<div class="container d-flex justify-content-center align-items-center min-vh-100">
+<div class="container screen-shell d-flex justify-content-center align-items-center">
     <div class="card card-glass shadow-lg w-100" style="max-width: 600px;">
         <h2 class="text-center text-primary fw-bold fade-in" style="animation-delay: 0.5s;">
             <i class="fas fa-graduation-cap me-2"></i> {{ __('join.app_title') }}

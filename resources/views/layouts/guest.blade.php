@@ -22,7 +22,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-light text-dark">
+<body class="bg-light text-dark @yield('body_class')">
     {{-- Shared flash toasts for guest-facing pages --}}
     <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3 app-toast-container">
         @if(session('success'))
@@ -48,7 +48,9 @@
         @endif
     </div>
 
-    @yield('content')
+    <main class="@yield('main_class')">
+        @yield('content')
+    </main>
 
     @hasSection('hide_guest_footer')
         @if (filled(config('app.source_url')))
