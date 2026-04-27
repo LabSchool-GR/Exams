@@ -54,7 +54,7 @@ body {
 
 .hero-grid {
     display: grid;
-    gap: 1rem;
+    gap: 1.1rem;
     align-items: start;
 }
 
@@ -89,30 +89,23 @@ body {
 }
 
 .app-title {
-    margin: 0.45rem 0 0;
-    font-size: 1.3rem;
+    margin: 0.38rem 0 0;
+    font-size: clamp(1.25rem, 1.05rem + 0.9vw, 1.55rem);
     font-weight: 700;
     color: var(--quiz-ink);
+    line-height: 1.18;
 }
 
 .helper-line {
-    margin: 0;
+    margin: 0.45rem 0 0;
     color: var(--quiz-muted);
     font-size: 0.95rem;
 }
 
-.quiz-title {
-    margin: 0.7rem 0 0;
-    font-size: clamp(1rem, 0.9rem + 0.7vw, 1.18rem);
-    font-weight: 700;
-    color: #213547;
-}
-
 .description-box,
-.error-box,
-.access-box {
-    margin-top: 0.85rem;
-    padding: 0.85rem 0.95rem;
+.error-box {
+    margin-top: 1rem;
+    padding: 1rem;
     border-radius: 0.95rem;
     border: 1px solid rgba(23, 50, 77, 0.08);
 }
@@ -123,20 +116,32 @@ body {
     white-space: pre-line;
 }
 
+.description-box__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-bottom: 0.55rem;
+    color: #29435a;
+    font-weight: 700;
+}
+
 .error-box {
     background: rgba(220, 38, 38, 0.08);
     color: #991b1b;
     border-color: rgba(220, 38, 38, 0.14);
 }
 
-.access-box {
-    background: linear-gradient(135deg, rgba(31, 122, 140, 0.08), rgba(66, 133, 244, 0.08));
-    color: var(--quiz-muted);
+.pin-form {
+    margin-top: 1.35rem;
 }
 
 .form-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.65rem;
     color: var(--quiz-ink);
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .input-shell {
@@ -172,7 +177,7 @@ body {
 
 .btn-start {
     width: 100%;
-    margin-top: 0.9rem;
+    margin-top: 1rem;
     border: 0;
     border-radius: 999px;
     padding: 0.82rem 1rem;
@@ -226,8 +231,7 @@ body {
     }
 
     .description-box,
-    .error-box,
-    .access-box {
+    .error-box {
         font-size: 0.92rem;
     }
 }
@@ -240,8 +244,7 @@ body {
 
     .helper-line,
     .description-box,
-    .error-box,
-    .access-box {
+    .error-box {
         font-size: 0.88rem;
     }
 
@@ -276,18 +279,13 @@ body {
     <div class="exam-card" data-focus-on-load="student_code">
         <div class="exam-card__inner">
             <div class="hero-grid hero-grid--single">
-                <div>
-                    @if($quiz->image)
+                @if($quiz->image)
+                    <div>
                         <div class="hero-media fade-in" style="animation-delay: 0.1s;">
                             <img src="{{ asset('storage/' . $quiz->image) }}" alt="{{ $quiz->title }}">
                         </div>
-                    @endif
-
-                    <div class="access-box fade-in text-start" style="animation-delay: 0.24s;">
-                        <strong><i class="fas fa-lock me-1"></i> {{ __('join.student_code_label') }}</strong><br>
-                        {{ __('join.for_quiz') }}
                     </div>
-                </div>
+                @endif
 
                 <div>
                     <div class="eyebrow fade-in" style="animation-delay: 0.14s;">
@@ -295,31 +293,33 @@ body {
                         <span>{{ __('join.app_title') }}</span>
                     </div>
 
-                    <p class="helper-line fade-in" style="animation-delay: 0.38s;">
+                    <p class="helper-line fade-in" style="animation-delay: 0.24s;">
                         {{ __('join.for_quiz') }}
                     </p>
 
-                    <h1 class="app-title fade-in" style="animation-delay: 0.26s;">
+                    <h1 class="app-title fade-in" style="animation-delay: 0.34s;">
                         {{ $quiz->title }}
                     </h1>
 
                     @if($quiz->description)
-                        <div class="description-box fade-in" style="animation-delay: 0.5s;">
-                            <strong><i class="fas fa-info-circle me-1"></i> {{ __('join.description_label') }}</strong><br>
-                            {{ $quiz->description }}
+                        <div class="description-box fade-in" style="animation-delay: 0.46s;">
+                            <span class="description-box__label">
+                                <i class="fas fa-info-circle"></i> {{ __('join.description_label') }}
+                            </span>
+                            <div>{{ $quiz->description }}</div>
                         </div>
                     @endif
 
                     @if(session('error'))
-                        <div class="error-box fade-in" style="animation-delay: 0.62s;">
+                        <div class="error-box fade-in" style="animation-delay: 0.58s;">
                             {{ session('error') }}
                         </div>
                     @endif
 
                     <form action="{{ route('quiz.validate_student') }}"
                           method="POST"
-                          class="mt-4 fade-in"
-                          style="animation-delay: 0.74s;">
+                          class="pin-form fade-in"
+                          style="animation-delay: 0.68s;">
                         @csrf
 
                         <div class="mb-3">
