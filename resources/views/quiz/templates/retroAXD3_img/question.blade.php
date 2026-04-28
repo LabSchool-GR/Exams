@@ -29,6 +29,11 @@
     align-items: center;
 }
 
+.retro-question-content--text-only {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+}
+
 .retro-question-copy {
     display: grid;
     gap: 0.7rem;
@@ -61,6 +66,11 @@
     text-shadow:
         2px 0 0 rgba(255, 79, 207, 0.34),
         -2px 0 0 rgba(89, 242, 255, 0.24);
+}
+
+.retro-question-content--text-only .retro-question-text {
+    max-width: min(100%, 860px);
+    font-size: clamp(1.6rem, 2.6vw, 2.25rem);
 }
 
 .retro-question-media {
@@ -270,6 +280,7 @@
         'retro-answer-button--green',
         'retro-answer-button--yellow',
     ];
+    $hasQuestionImage = filled($question->image);
 @endphp
 
 @if(!$allowDisplay)
@@ -348,8 +359,8 @@
 
                     @if($showLearningFeedback)
                         <div class="retro-learning-panel">
-                            <div class="retro-question-content">
-                                @if($question->image)
+                            <div class="retro-question-content {{ $hasQuestionImage ? '' : 'retro-question-content--text-only' }}">
+                                @if($hasQuestionImage)
                                     <div class="retro-question-media">
                                         <img src="{{ asset('storage/' . $question->image) }}" alt="{{ __('join.question_image_alt') }}">
                                     </div>
@@ -368,8 +379,8 @@
                         </div>
                     @else
                         <div class="retro-question-screen">
-                            <div class="retro-question-content">
-                                @if($question->image)
+                            <div class="retro-question-content {{ $hasQuestionImage ? '' : 'retro-question-content--text-only' }}">
+                                @if($hasQuestionImage)
                                     <div class="retro-question-media">
                                         <img src="{{ asset('storage/' . $question->image) }}" alt="{{ __('join.question_image_alt') }}">
                                     </div>
