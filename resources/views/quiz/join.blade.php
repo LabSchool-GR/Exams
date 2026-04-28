@@ -118,6 +118,18 @@
                 <img src="{{ asset('storage/flags/en.png') }}" alt="English" width="24">
             </a>
         </div>
+        @if (filled(config('app.source_url')))
+            <div class="text-center small">
+                <a
+                    href="{{ config('app.source_url') }}"
+                    class="text-muted text-decoration-none"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {{ __('navigation.source_code') }}
+                </a>
+            </div>
+        @endif
     </div>
 </div>
 @endsection
