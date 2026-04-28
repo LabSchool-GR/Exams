@@ -1136,14 +1136,9 @@ class QuizParticipantController extends Controller
         $quiz = $student->quiz()->firstOrFail();
 
         App::setLocale($quiz->resolvedLocale(config('app.locale')));
-        $this->ensureQuizRouteToken($quiz);
+        $quizRouteKey = $this->ensureQuizRouteToken($quiz);
 
-        $userAgent = strtolower($request->header('User-Agent', ''));
-        $isBot = str_contains($userAgent, 'facebookexternalhit')
-            || str_contains($userAgent, 'twitterbot')
-            || str_contains($userAgent, 'linkedinbot')
-            || str_contains($userAgent, 'slackbot')
-            || str_contains($userAgent, 'discordbot');
+        $isBot = $this->isLinkPreviewBot($request);
 
         if ($quiz->status !== 'active') {
             return redirect()->route('quiz.join')
@@ -1157,7 +1152,7 @@ class QuizParticipantController extends Controller
         if ($isBot) {
             $student_name = $student->student_name;
 
-            return view('quiz.templates.default.start', compact('quiz', 'student_name'));
+            return view('quiz.templates.default.start', compact('quiz', 'student_name', 'quizRouteKey'));
         }
 
         if ($quiz->usesLearningMode()) {
@@ -1245,21 +1240,16 @@ class QuizParticipantController extends Controller
         }
 
         App::setLocale($quiz->resolvedLocale(config('app.locale')));
-        $this->ensureQuizRouteToken($quiz);
+        $quizRouteKey = $this->ensureQuizRouteToken($quiz);
 
-        $userAgent = strtolower($request->header('User-Agent', ''));
-        $isBot = str_contains($userAgent, 'facebookexternalhit')
-            || str_contains($userAgent, 'twitterbot')
-            || str_contains($userAgent, 'linkedinbot')
-            || str_contains($userAgent, 'slackbot')
-            || str_contains($userAgent, 'discordbot');
+        $isBot = $this->isLinkPreviewBot($request);
 
         if ($isBot) {
             $student_name = $isPublicAnonymousPoolMode
                 ? __('controllers.anonymous_student_name')
                 : __('join.guest_name');
 
-            return view('quiz.templates.default.start', compact('quiz', 'student_name'));
+            return view('quiz.templates.default.start', compact('quiz', 'student_name', 'quizRouteKey'));
         }
 
         if ($isPublicAnonymousPoolMode) {
@@ -1327,5 +1317,20 @@ class QuizParticipantController extends Controller
             'categories' => $categories,
             'categoryId' => $categoryId,
         ]);
+    }
+
+    /**
+     * Social and messaging preview crawlers need HTML metadata, not participant redirects.
+     */
+    private function isLinkPreviewBot(Request $request): bool
+    {
+        $userAgent = strtolower($request->header('User-Agent', ''));
+
+        return str_contains($userAgent, 'facebookexternalhit')
+            || str_contains($userAgent, 'twitterbot')
+            || str_contains($userAgent, 'linkedinbot')
+            || str_contains($userAgent, 'slackbot')
+            || str_contains($userAgent, 'discordbot')
+            || str_contains($userAgent, 'viber');
     }
 }

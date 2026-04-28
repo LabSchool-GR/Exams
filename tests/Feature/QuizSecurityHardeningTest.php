@@ -68,6 +68,49 @@ it('requires a valid signed url for student access links', function () {
     $this->get($student->accessLinkUrl(now()->addMinutes(30)))->assertRedirect(route('quiz.start'));
 });
 
+it('renders public quiz metadata for messaging link previews', function () {
+    /** @var TestCase $this */
+    $owner = User::factory()->create([
+        'role' => 'teacher',
+    ]);
+
+    $category = Category::create([
+        'name' => 'Preview Metadata Category '.uniqid(),
+    ]);
+
+    $quiz = Quiz::create([
+        'title' => 'Preview Metadata Quiz',
+        'description' => 'A short description for social previews.',
+        'category_id' => $category->id,
+        'creator_id' => $owner->id,
+        'quiz_code' => substr(str_shuffle('ABCDEFGHJKLMNPQRSTUVWXYZ23456789'), 0, 8),
+        'max_attempts' => 1,
+        'time_limit' => 600,
+        'is_random_order' => false,
+        'is_random_answers_order' => false,
+        'show_answer_numbering' => false,
+        'allow_guest' => true,
+        'has_timer' => false,
+        'allow_resume' => false,
+        'pass_percentage' => 50,
+        'question_view' => 'default',
+        'status' => 'active',
+        'questions_limit' => null,
+        'is_public' => true,
+        'public_token_hash' => Quiz::generateLinkTokenHash(),
+        'language' => 'el',
+        'image' => 'quizzes_images/preview-metadata.png',
+    ]);
+
+    $this->withHeader('User-Agent', 'Viber')
+        ->get($quiz->publicAccessUrl(now()->addMinutes(30)))
+        ->assertOk()
+        ->assertSee('<meta property="og:title" content="Preview Metadata Quiz">', false)
+        ->assertSee('<meta property="og:description" content="A short description for social previews.">', false)
+        ->assertSee('<meta property="og:image" content="'.asset('storage/quizzes_images/preview-metadata.png').'">', false)
+        ->assertSee('<meta name="twitter:card" content="summary_large_image">', false);
+});
+
 it('blocks registered pin access when a quiz allows only personal links', function () {
     /** @var TestCase $this */
     $owner = User::factory()->create([
