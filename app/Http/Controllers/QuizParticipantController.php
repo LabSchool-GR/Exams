@@ -1326,11 +1326,24 @@ class QuizParticipantController extends Controller
     {
         $userAgent = strtolower($request->header('User-Agent', ''));
 
-        return str_contains($userAgent, 'facebookexternalhit')
+        if (str_contains($userAgent, 'facebookexternalhit')
             || str_contains($userAgent, 'twitterbot')
             || str_contains($userAgent, 'linkedinbot')
             || str_contains($userAgent, 'slackbot')
             || str_contains($userAgent, 'discordbot')
-            || str_contains($userAgent, 'viber');
+            || str_contains($userAgent, 'viber')) {
+            return true;
+        }
+
+        $accept = strtolower($request->header('Accept', ''));
+        $hasMinimalAcceptHeader = $accept === '' || $accept === '*/*';
+        $hasBrowserFetchMetadata = $request->headers->has('Sec-Fetch-Mode')
+            || $request->headers->has('Sec-Fetch-Site')
+            || $request->headers->has('Sec-Fetch-Dest')
+            || $request->headers->has('Sec-Fetch-User');
+
+        return $request->isMethod('GET')
+            && $hasMinimalAcceptHeader
+            && ! $hasBrowserFetchMetadata;
     }
 }

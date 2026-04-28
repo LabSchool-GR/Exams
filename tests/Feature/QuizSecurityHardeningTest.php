@@ -112,6 +112,24 @@ it('renders public quiz metadata for messaging link previews', function () {
         ->assertSee('<meta property="og:url" content="'.e($publicUrl).'">', false)
         ->assertSee('<meta property="og:image" content="'.asset('storage/quizzes_images/preview-metadata.png').'">', false)
         ->assertSee('<meta name="twitter:card" content="summary_large_image">', false);
+
+    $this->flushHeaders()
+        ->withHeaders([
+            'Accept' => '*/*',
+            'User-Agent' => 'Mozilla/5.0',
+        ])
+        ->get($publicUrl)
+        ->assertOk()
+        ->assertSee('<meta property="og:title" content="Preview Metadata Quiz">', false);
+
+    $this->flushHeaders()
+        ->withHeaders([
+            'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language' => 'el-GR,el;q=0.9',
+            'Sec-Fetch-Mode' => 'navigate',
+            'User-Agent' => 'Mozilla/5.0',
+        ])->get($publicUrl)
+        ->assertRedirect(route('quiz.start'));
 });
 
 it('blocks registered pin access when a quiz allows only personal links', function () {
