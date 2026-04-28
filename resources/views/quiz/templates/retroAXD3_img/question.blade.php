@@ -42,19 +42,6 @@
     padding: clamp(0.35rem, 1vw, 0.65rem) 0 0;
 }
 
-.retro-question-kicker {
-    margin: 0;
-    font-family: "IBM Plex Mono", monospace;
-    font-size: clamp(0.82rem, 1.1vw, 1rem);
-    font-weight: 700;
-    color: #efe7ff;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    text-shadow:
-        2px 0 0 rgba(255, 79, 207, 0.42),
-        -2px 0 0 rgba(89, 242, 255, 0.3);
-}
-
 .retro-question-text {
     margin: 0;
     max-width: none;
@@ -367,7 +354,6 @@
                                     </div>
                                 @endif
                                 <div class="retro-question-copy">
-                                    <p class="retro-question-kicker">&gt; {{ $questionProgressLabel }}:</p>
                                     <h1 class="retro-question-text">{{ $question->text }}</h1>
                                 </div>
                             </div>
@@ -387,7 +373,6 @@
                                     </div>
                                 @endif
                                 <div class="retro-question-copy">
-                                    <p class="retro-question-kicker">&gt; {{ $questionProgressLabel }}:</p>
                                     <h1 class="retro-question-text">{{ $question->text }}</h1>
                                 </div>
                             </div>
