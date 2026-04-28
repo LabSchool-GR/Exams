@@ -102,11 +102,14 @@ it('renders public quiz metadata for messaging link previews', function () {
         'image' => 'quizzes_images/preview-metadata.png',
     ]);
 
+    $publicUrl = $quiz->publicAccessUrl(now()->addMinutes(30));
+
     $this->withHeader('User-Agent', 'Viber')
-        ->get($quiz->publicAccessUrl(now()->addMinutes(30)))
+        ->get($publicUrl)
         ->assertOk()
         ->assertSee('<meta property="og:title" content="Preview Metadata Quiz">', false)
         ->assertSee('<meta property="og:description" content="A short description for social previews.">', false)
+        ->assertSee('<meta property="og:url" content="'.e($publicUrl).'">', false)
         ->assertSee('<meta property="og:image" content="'.asset('storage/quizzes_images/preview-metadata.png').'">', false)
         ->assertSee('<meta name="twitter:card" content="summary_large_image">', false);
 });

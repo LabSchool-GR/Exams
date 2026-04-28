@@ -34,6 +34,8 @@
         $pageImage = (isset($quiz) && !empty($quiz->image))
             ? asset('storage/' . $quiz->image)
             : asset('storage/bg-quiz.jpg');
+
+        $pageUrl = request()->fullUrl();
     @endphp
 
     <meta charset="utf-8">
@@ -45,11 +47,11 @@
 
     <title>{{ $pageTitle }}</title>
     <meta name="description" content="{{ $pageDescription }}">
-    <link rel="canonical" href="{{ url()->current() }}">
+    <link rel="canonical" href="{{ $pageUrl }}">
 
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $pageDescription }}">
-    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:url" content="{{ $pageUrl }}">
     <meta property="og:type" content="website">
     <meta property="og:image" content="{{ $pageImage }}">
 
