@@ -132,6 +132,33 @@ function buildCountdownLabel(template, seconds) {
     return template.replaceAll(':seconds', String(seconds));
 }
 
+function bindQuizQuestionHistoryGuard() {
+    if (window.quizQuestionHistoryGuardBound === true) {
+        return;
+    }
+
+    window.quizQuestionHistoryGuardBound = true;
+
+    window.addEventListener('pagehide', () => {
+        if (document.querySelector('[data-quiz-question-runtime]')) {
+            document.documentElement.style.visibility = 'hidden';
+        }
+    });
+
+    window.addEventListener('pageshow', (event) => {
+        const isQuestionRuntime = document.querySelector('[data-quiz-question-runtime]') !== null;
+        const navigationEntry = performance.getEntriesByType?.('navigation')?.[0];
+        const restoredFromHistory = event.persisted || navigationEntry?.type === 'back_forward';
+
+        if (isQuestionRuntime && restoredFromHistory) {
+            window.location.reload();
+            return;
+        }
+
+        document.documentElement.style.visibility = '';
+    });
+}
+
 function getFocusableElements(container) {
     return Array.from(container.querySelectorAll('a, button, input:not([type="hidden"]), textarea, select, details, [tabindex]:not([tabindex="-1"])'))
         .filter((element) => element instanceof HTMLElement && !element.hasAttribute('disabled') && !element.hidden);
@@ -915,6 +942,8 @@ function initQuizQuestionRuntime() {
         if (container.dataset.runtimeBound === 'true') {
             return;
         }
+
+        bindQuizQuestionHistoryGuard();
 
         const form = container.querySelector('[data-quiz-answer-form]');
         const submitButton = container.querySelector('[data-quiz-submit-button]');

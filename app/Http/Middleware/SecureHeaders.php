@@ -48,7 +48,32 @@ class SecureHeaders
             $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
         }
 
+        if ($this->shouldPreventBrowserCaching($request)) {
+            $response->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0, private');
+            $response->headers->set('Pragma', 'no-cache');
+            $response->headers->set('Expires', '0');
+        }
+
         return $response;
+    }
+
+    /**
+     * Quiz runtime pages can reveal question and answer text through browser history caches.
+     */
+    protected function shouldPreventBrowserCaching(Request $request): bool
+    {
+        return $request->routeIs(
+            'quiz.start',
+            'quiz.start_question',
+            'quiz.question',
+            'quiz.submit_answer',
+            'quiz.skip_question',
+            'quiz.next_question',
+            'quiz.submit_final',
+            'quiz.end',
+            'quiz_display.screen',
+            'quiz_display.controller'
+        );
     }
 
     /**

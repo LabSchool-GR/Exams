@@ -16,8 +16,10 @@ use App\Models\QuizStudent;
 use App\Models\User;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
+use Tests\TestCase;
 
 it('requires a valid signed url for student access links', function () {
+    /** @var TestCase $this */
     $owner = User::factory()->create([
         'role' => 'teacher',
     ]);
@@ -67,6 +69,7 @@ it('requires a valid signed url for student access links', function () {
 });
 
 it('blocks registered pin access when a quiz allows only personal links', function () {
+    /** @var TestCase $this */
     $owner = User::factory()->create([
         'role' => 'teacher',
     ]);
@@ -124,6 +127,7 @@ it('blocks registered pin access when a quiz allows only personal links', functi
 });
 
 it('blocks personal links when a quiz allows only exam pin access', function () {
+    /** @var TestCase $this */
     $owner = User::factory()->create([
         'role' => 'teacher',
     ]);
@@ -170,6 +174,7 @@ it('blocks personal links when a quiz allows only exam pin access', function () 
 });
 
 it('does not write legacy link columns when access urls are rendered', function () {
+    /** @var TestCase $this */
     $owner = User::factory()->create([
         'role' => 'teacher',
     ]);
@@ -228,6 +233,8 @@ it('does not write legacy link columns when access urls are rendered', function 
 });
 
 it('encrypts student names at rest while keeping admin flows readable', function () {
+    /** @var TestCase $this */
+    /** @var User $owner */
     $owner = User::factory()->create([
         'role' => 'teacher',
     ]);
@@ -308,6 +315,7 @@ it('encrypts student names at rest while keeping admin flows readable', function
         ->assertSee('Encrypted Student');
 });
 it('rate limits repeated student code validation attempts', function () {
+    /** @var TestCase $this */
     $owner = User::factory()->create([
         'role' => 'teacher',
     ]);
@@ -354,6 +362,7 @@ it('rate limits repeated student code validation attempts', function () {
 });
 
 it('anonymizes old attempts and prunes stale student rows', function () {
+    /** @var TestCase $this */
     $owner = User::factory()->create([
         'role' => 'teacher',
     ]);
@@ -425,6 +434,7 @@ it('anonymizes old attempts and prunes stale student rows', function () {
 });
 
 it('keeps recent attempts and active student rows intact during retention pruning', function () {
+    /** @var TestCase $this */
     $owner = User::factory()->create([
         'role' => 'teacher',
     ]);
@@ -494,6 +504,7 @@ it('keeps recent attempts and active student rows intact during retention prunin
 });
 
 it('prunes stale display sessions and expired anonymous pool reservations', function () {
+    /** @var TestCase $this */
     $owner = User::factory()->create([
         'role' => 'teacher',
     ]);
@@ -595,12 +606,14 @@ it('prunes stale display sessions and expired anonymous pool reservations', func
 });
 
 it('renders the privacy notice page', function () {
+    /** @var TestCase $this */
     $this->get(route('privacy'))
         ->assertOk()
         ->assertSee(__('privacy.title'));
 });
 
 it('blocks an existing participant session when the quiz is deactivated', function () {
+    /** @var TestCase $this */
     $owner = User::factory()->create([
         'role' => 'teacher',
     ]);
@@ -659,6 +672,7 @@ it('blocks an existing participant session when the quiz is deactivated', functi
 });
 
 it('shows a friendly conflict page when another quiz replaces the active browser session', function () {
+    /** @var TestCase $this */
     $owner = User::factory()->create([
         'role' => 'teacher',
     ]);
@@ -783,7 +797,90 @@ it('shows a friendly conflict page when another quiz replaces the active browser
         ->assertSee(__('join.continue_active_quiz'));
 });
 
+it('prevents browser caching of participant question pages', function () {
+    /** @var TestCase $this */
+    $owner = User::factory()->create([
+        'role' => 'teacher',
+    ]);
+
+    $category = Category::create([
+        'name' => 'No Store Runtime Category '.uniqid(),
+    ]);
+
+    $quiz = Quiz::create([
+        'title' => 'No Store Runtime Quiz',
+        'description' => 'Browser history cache hardening test',
+        'category_id' => $category->id,
+        'creator_id' => $owner->id,
+        'quiz_code' => substr(str_shuffle('ABCDEFGHJKLMNPQRSTUVWXYZ23456789'), 0, 8),
+        'max_attempts' => 1,
+        'time_limit' => 600,
+        'is_random_order' => false,
+        'is_random_answers_order' => false,
+        'show_answer_numbering' => false,
+        'allow_guest' => true,
+        'has_timer' => false,
+        'allow_resume' => false,
+        'pass_percentage' => 50,
+        'question_view' => 'default',
+        'status' => 'active',
+        'questions_limit' => null,
+        'is_public' => true,
+        'language' => 'el',
+    ]);
+
+    $question = $quiz->questions()->create([
+        'text' => 'No-store question',
+        'correct_answers_count' => 1,
+        'order' => 1,
+    ]);
+
+    $question->answers()->create([
+        'text' => 'No-store correct answer',
+        'is_correct' => true,
+    ]);
+
+    $question->answers()->create([
+        'text' => 'No-store wrong answer',
+        'is_correct' => false,
+    ]);
+
+    $this->post(route('quiz.validate_code'), [
+        'quiz_code' => $quiz->quiz_code,
+    ])->assertRedirect(route('quiz.join_student'));
+
+    $this->post(route('quiz.validate_student'), [
+        'student_code' => '0000',
+    ])->assertRedirect(route('quiz.start'));
+
+    $quizKey = session('quiz_route_token');
+
+    $this->get(route('quiz.start_question', ['quizKey' => $quizKey]))
+        ->assertRedirect();
+
+    $questionKey = array_key_first(session('question_route_map', []));
+
+    $response = $this->get(route('quiz.question', [
+        'quizKey' => $quizKey,
+        'questionKey' => $questionKey,
+    ]));
+
+    $cacheControl = $response->headers->get('Cache-Control', '');
+
+    $response->assertOk()
+        ->assertHeader('Pragma', 'no-cache')
+        ->assertHeader('Expires', '0');
+
+    expect($cacheControl)
+        ->toContain('no-store')
+        ->toContain('no-cache')
+        ->toContain('must-revalidate')
+        ->toContain('max-age=0')
+        ->toContain('private');
+});
+
 it('stores public anonymous pool results only after final submission', function () {
+    /** @var TestCase $this */
     $admin = User::factory()->create([
         'role' => 'admin',
     ]);
@@ -869,6 +966,7 @@ it('stores public anonymous pool results only after final submission', function 
 });
 
 it('drops abandoned public anonymous pool sessions without persisting participants', function () {
+    /** @var TestCase $this */
     $admin = User::factory()->create([
         'role' => 'admin',
     ]);
