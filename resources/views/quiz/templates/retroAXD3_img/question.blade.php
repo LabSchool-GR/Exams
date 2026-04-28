@@ -59,8 +59,8 @@
     margin: 0;
     max-width: none;
     color: #fff9ef;
-    font-size: clamp(1.45rem, 2vw, 2rem);
-    line-height: 1.18;
+    font-size: clamp(1.28rem, 1.72vw, 1.72rem);
+    line-height: 1.24;
     font-family: "VT323", "IBM Plex Mono", monospace;
     letter-spacing: 0.01em;
     text-shadow:
@@ -70,7 +70,7 @@
 
 .retro-question-content--text-only .retro-question-text {
     max-width: min(100%, 860px);
-    font-size: clamp(1.6rem, 2.6vw, 2.25rem);
+    font-size: clamp(1.38rem, 2.05vw, 1.9rem);
 }
 
 .retro-question-media {
@@ -248,7 +248,8 @@
     }
 
     .retro-question-text {
-        font-size: clamp(1.35rem, 6vw, 1.8rem);
+        font-size: clamp(1.2rem, 5.2vw, 1.55rem);
+        line-height: 1.28;
         text-align: center;
     }
 
