@@ -1295,7 +1295,7 @@ class QuizParticipantController extends Controller
      */
     public function catalogue(Request $request): View
     {
-        $categoryId = $request->get('category_id');
+        $categoryId = $request->query('category_id');
 
         $query = Quiz::with(['creator', 'category'])
             ->where('is_public', true)
