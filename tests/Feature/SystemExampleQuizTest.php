@@ -3,6 +3,8 @@
 use App\Models\Category;
 use App\Models\Question;
 use App\Models\Quiz;
+use App\Models\QuizAttempt;
+use App\Models\QuizStudent;
 use App\Models\User;
 
 function makeSystemExampleQuiz(array $quizOverrides = []): array
@@ -141,6 +143,110 @@ it('duplicates a system example quiz into the teachers own collection', function
     expect($copiedQuiz->system_key)->toBeNull();
     expect($copiedQuiz->questions()->count())->toBe($exampleQuiz->questions()->count());
     expect($copiedQuiz->questions()->first()?->answers()->count())->toBe($exampleQuiz->questions()->first()?->answers()->count());
+
+    $response
+        ->assertRedirect(route('quizzes.edit', $copiedQuiz))
+        ->assertSessionHas('success', __('controllers.quiz_duplicated'));
+});
+
+it('duplicates an owned quiz with a fresh quiz code and without participants or results', function () {
+    $teacher = User::factory()->create([
+        'role' => 'teacher',
+        'max_quizzes' => 5,
+    ]);
+
+    $category = Category::create([
+        'name' => 'Owned Duplicate Category '.uniqid(),
+    ]);
+
+    $quiz = Quiz::create([
+        'title' => 'Reusable Chapter Quiz',
+        'description' => 'Original quiz with live data.',
+        'category_id' => $category->id,
+        'creator_id' => $teacher->id,
+        'quiz_code' => '12345678',
+        'max_attempts' => 2,
+        'time_limit' => 900,
+        'is_random_order' => true,
+        'is_random_answers_order' => true,
+        'show_answer_numbering' => true,
+        'allow_guest' => false,
+        'has_timer' => true,
+        'allow_resume' => true,
+        'is_learning_mode' => false,
+        'pass_percentage' => 70,
+        'question_view' => 'default',
+        'status' => 'active',
+        'questions_limit' => 1,
+        'is_public' => false,
+        'language' => 'el',
+    ]);
+
+    $question = $quiz->questions()->create([
+        'text' => 'Original question',
+        'correct_answers_count' => 1,
+        'order' => 1,
+    ]);
+
+    $correctAnswer = $question->answers()->create([
+        'text' => 'Correct answer',
+        'is_correct' => true,
+    ]);
+
+    $question->answers()->create([
+        'text' => 'Wrong answer',
+        'is_correct' => false,
+    ]);
+
+    $student = QuizStudent::create([
+        'quiz_id' => $quiz->id,
+        'student_code' => '2468',
+        'student_name' => 'Original Participant',
+        'max_attempts' => 2,
+        'access_token_hash' => QuizStudent::generateLinkTokenHash(),
+    ]);
+
+    $attempt = QuizAttempt::create([
+        'quiz_id' => $quiz->id,
+        'quiz_student_id' => $student->id,
+        'student_code' => $student->student_code,
+        'student_name' => $student->student_name,
+        'max_attempts' => 2,
+        'score' => 100,
+        'status' => QuizAttempt::STATUS_SUBMITTED,
+        'submitted_at' => now(),
+        'finalized_at' => now(),
+    ]);
+
+    $attempt->answers()->create([
+        'question_id' => $question->id,
+        'answer_id' => $correctAnswer->id,
+        'is_correct' => true,
+    ]);
+
+    $response = $this->actingAs($teacher)
+        ->post(route('quizzes.duplicate', $quiz));
+
+    $copiedQuiz = Quiz::query()
+        ->where('creator_id', $teacher->id)
+        ->whereKeyNot($quiz->id)
+        ->latest('id')
+        ->first();
+
+    expect($copiedQuiz)->not->toBeNull();
+    expect($copiedQuiz->title)->toBe($quiz->title);
+    expect($copiedQuiz->quiz_code)->not->toBe($quiz->quiz_code);
+    expect($copiedQuiz->status)->toBe('inactive');
+    expect($copiedQuiz->students()->count())->toBe(0);
+    expect($copiedQuiz->attempts()->count())->toBe(0);
+    expect($copiedQuiz->questions()->count())->toBe(1);
+
+    $copiedQuestion = $copiedQuiz->questions()->first();
+
+    expect($copiedQuestion)->not->toBeNull();
+    expect($copiedQuestion->text)->toBe($question->text);
+    expect($copiedQuestion->answers()->count())->toBe(2);
+    expect($copiedQuestion->answers()->where('text', 'Correct answer')->where('is_correct', true)->exists())->toBeTrue();
 
     $response
         ->assertRedirect(route('quizzes.edit', $copiedQuiz))

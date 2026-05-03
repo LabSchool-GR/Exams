@@ -191,6 +191,12 @@
                                 <a href="{{ route('quizzes.printable_pdf', $quiz) }}" class="dashboard-secondary-button dashboard-secondary-button--compact">
                                     <i class="fas fa-print me-2"></i>{{ __('quizzes.export_pdf') }}
                                 </a>
+                                <form action="{{ route('quizzes.duplicate', $quiz) }}" method="POST" class="dashboard-inline-form">
+                                    @csrf
+                                    <button type="submit" class="dashboard-secondary-button dashboard-secondary-button--compact">
+                                        <i class="fas fa-copy me-2"></i>{{ __('quizzes.copy_as_new_quiz') }}
+                                    </button>
+                                </form>
                                 <form action="{{ route('quizzes.destroy', $quiz) }}" method="POST" class="dashboard-inline-form" data-confirm-submit="{{ __('quizzes.confirm_delete') }}">
                                     @csrf
                                     @method('DELETE')
