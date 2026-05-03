@@ -29,6 +29,7 @@ The format is intentionally lightweight and release-friendly so entries can be r
 ### Added
 
 - In-app Update Center for administrators with GitHub release checks and downloadable update packages.
+- Teachers can copy an existing quiz into a fresh draft with a new quiz code, preserving settings, questions, and answers while leaving participants and results behind.
 
 ### Changed
 
