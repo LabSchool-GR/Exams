@@ -94,9 +94,12 @@ This triggers the GitHub release workflow in [.github/workflows/release.yml](../
 - Confirm the GitHub Actions release workflow succeeded.
 - Confirm the GitHub Release contains:
   - the curated release notes from `CHANGELOG.md` or the expected fallback text
-  - the `.zip` package
-  - the `.sha256` checksum
+  - the full `.zip` package
+  - the incremental upgrade `.zip` package when this release supports a previous version
+  - `.sha256` checksums for every package
+  - the generated `update.json` manifest with full and upgrade package URLs
 - Confirm the in-app Update Center can see the new version.
+- Confirm the in-app Update Center shows the incremental upgrade package when `APP_VERSION` matches the supported `from_version`.
 - Confirm the release notes/changelog render acceptably in the Update Center.
 
 ## 10. Deployment follow-through

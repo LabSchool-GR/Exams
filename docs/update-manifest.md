@@ -34,6 +34,36 @@ When this URL is configured, the Update Center prefers the manifest over the Git
 }
 ```
 
+For releases that provide both a full package and an incremental upgrade package, include the structured `packages` block:
+
+```json
+{
+  "version": "v2.1.0",
+  "release_name": "LabSchool Exams v2.1.0",
+  "published_at": "2026-05-03T12:00:00Z",
+  "notes": "# v2.1.0\n\n### Added\n- Teacher-owned quiz duplication",
+  "release_url": "https://updates.example.org/exams/releases/v2.1.0",
+  "download_url": "https://updates.example.org/exams/labschool-exams-v2.1.0-full.zip",
+  "package_name": "labschool-exams-v2.1.0-full.zip",
+  "packages": {
+    "full": {
+      "url": "https://updates.example.org/exams/labschool-exams-v2.1.0-full.zip",
+      "package_name": "labschool-exams-v2.1.0-full.zip"
+    },
+    "upgrades": [
+      {
+        "from_version": "v2.0.0",
+        "to_version": "v2.1.0",
+        "url": "https://updates.example.org/exams/labschool-exams-v2.0.0-to-v2.1.0-upgrade.zip",
+        "package_name": "labschool-exams-v2.0.0-to-v2.1.0-upgrade.zip"
+      }
+    ]
+  }
+}
+```
+
+The in-app Update Center shows a matching upgrade package when the installed `APP_VERSION` matches an entry's `from_version`. It always keeps the full package available as a fallback.
+
 ## Workflow Support
 
 The release workflow generates an `update.json` asset for each tagged release.

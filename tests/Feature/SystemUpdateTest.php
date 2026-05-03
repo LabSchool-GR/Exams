@@ -42,6 +42,49 @@ test('admin can view the update center using a public update manifest when confi
         ->assertSee('labschool-exams-v1.2.0.zip');
 });
 
+test('admin can view a matching incremental upgrade package from the public manifest', function () {
+    config()->set('app.version', 'v2.0.0');
+    config()->set('updates.manifest.url', 'https://updates.labschool.gr/exams/update.json');
+
+    Http::fake([
+        'https://updates.labschool.gr/exams/update.json' => Http::response([
+            'version' => 'v2.1.0',
+            'release_name' => 'LabSchool Exams v2.1.0',
+            'published_at' => '2026-05-03T10:15:00Z',
+            'notes' => "Added\n- Teacher-owned quiz duplication",
+            'release_url' => 'https://updates.labschool.gr/exams/releases/v2.1.0',
+            'download_url' => 'https://updates.labschool.gr/exams/labschool-exams-v2.1.0-full.zip',
+            'package_name' => 'labschool-exams-v2.1.0-full.zip',
+            'packages' => [
+                'full' => [
+                    'url' => 'https://updates.labschool.gr/exams/labschool-exams-v2.1.0-full.zip',
+                    'package_name' => 'labschool-exams-v2.1.0-full.zip',
+                ],
+                'upgrades' => [
+                    [
+                        'from_version' => 'v2.0.0',
+                        'to_version' => 'v2.1.0',
+                        'url' => 'https://updates.labschool.gr/exams/labschool-exams-v2.0.0-to-v2.1.0-upgrade.zip',
+                        'package_name' => 'labschool-exams-v2.0.0-to-v2.1.0-upgrade.zip',
+                    ],
+                ],
+            ],
+        ], 200),
+    ]);
+
+    $admin = User::factory()->create([
+        'role' => 'admin',
+    ]);
+
+    $this->actingAs($admin)
+        ->get(route('system_updates.index'))
+        ->assertOk()
+        ->assertSee('v2.1.0')
+        ->assertSee('labschool-exams-v2.1.0-full.zip')
+        ->assertSee('labschool-exams-v2.0.0-to-v2.1.0-upgrade.zip')
+        ->assertSee(__('system_updates.download_upgrade_package'));
+});
+
 test('admin can view the update center with latest github release details', function () {
     config()->set('app.version', '1.0.0');
 
@@ -74,7 +117,7 @@ test('admin can view the update center with latest github release details', func
         ->assertSee('v1.1.0')
         ->assertSee(__('system_updates.status_update_available', ['version' => 'v1.1.0']))
         ->assertSee('labschool-exams-v1.1.0.zip')
-        ->assertSee(__('system_updates.download_package'));
+        ->assertSee(__('system_updates.download_full_package'));
 });
 
 test('non admin users cannot access the update center', function () {

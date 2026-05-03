@@ -24,6 +24,7 @@ For each pushed tag:
 - installs frontend dependencies
 - builds `public/build`
 - creates a release zip package
+- creates an incremental upgrade zip package for the configured upgrade base tag
 - writes a `VERSION` file inside the package using the tag name
 - builds curated release notes from `CHANGELOG.md` when a matching tag section exists
 - uploads the zip and its SHA-256 checksum to the GitHub Release
@@ -50,6 +51,24 @@ It excludes:
 - `tests/`
 - local `.env`
 - transient runtime logs and cache/view/session files
+
+## Upgrade Package
+
+Starting with `v2.1.0`, the workflow also publishes an incremental package for the configured upgrade base tag.
+
+For the first 2.1 release, that path is:
+
+```text
+v2.0.0 -> v2.1.0
+```
+
+The package is named:
+
+```text
+labschool-exams-v2.0.0-to-v2.1.0-upgrade.zip
+```
+
+See [upgrade-packages.md](upgrade-packages.md) for the package contents and operator steps.
 
 ## Version Display
 

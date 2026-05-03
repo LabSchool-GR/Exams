@@ -8,6 +8,9 @@ on:
 permissions:
   contents: write
 
+env:
+  UPGRADE_BASE_TAG: v2.0.0
+
 jobs:
   verify-release:
     runs-on: ubuntu-latest
@@ -102,22 +105,28 @@ jobs:
           RELEASE_TAG: ${{ github.ref_name }}
           REPOSITORY_SLUG: ${{ github.repository }}
         run: |
-          PACKAGE_NAME="labschool-exams-${RELEASE_TAG}.zip"
+          FULL_PACKAGE_NAME="labschool-exams-${RELEASE_TAG}-full.zip"
+          UPGRADE_PACKAGE_NAME="labschool-exams-${UPGRADE_BASE_TAG}-to-${RELEASE_TAG}-upgrade.zip"
           RELEASE_URL="https://github.com/${REPOSITORY_SLUG}/releases/tag/${RELEASE_TAG}"
-          DOWNLOAD_URL="https://github.com/${REPOSITORY_SLUG}/releases/download/${RELEASE_TAG}/${PACKAGE_NAME}"
+          FULL_DOWNLOAD_URL="https://github.com/${REPOSITORY_SLUG}/releases/download/${RELEASE_TAG}/${FULL_PACKAGE_NAME}"
+          UPGRADE_DOWNLOAD_URL="https://github.com/${REPOSITORY_SLUG}/releases/download/${RELEASE_TAG}/${UPGRADE_PACKAGE_NAME}"
           php scripts/build-update-manifest.php \
             "${RELEASE_TAG}" \
             "${RUNNER_TEMP}/release-notes.md" \
             "${RUNNER_TEMP}/update.json" \
             "${RELEASE_URL}" \
-            "${DOWNLOAD_URL}" \
-            "${PACKAGE_NAME}"
+            "${FULL_DOWNLOAD_URL}" \
+            "${FULL_PACKAGE_NAME}" \
+            "${UPGRADE_BASE_TAG}" \
+            "${UPGRADE_DOWNLOAD_URL}" \
+            "${UPGRADE_PACKAGE_NAME}"
 
       - name: Create release package
         env:
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
           PACKAGE_ROOT="labschool-exams-${RELEASE_TAG}"
+          PACKAGE_NAME="labschool-exams-${RELEASE_TAG}-full.zip"
           RELEASE_DIR="${RUNNER_TEMP}/release"
           mkdir -p "${RELEASE_DIR}/${PACKAGE_ROOT}"
 
@@ -137,8 +146,71 @@ jobs:
           printf '%s\n' "${RELEASE_TAG}" > "${RELEASE_DIR}/${PACKAGE_ROOT}/VERSION"
 
           cd "${RELEASE_DIR}"
-          zip -r "${PACKAGE_ROOT}.zip" "${PACKAGE_ROOT}"
-          sha256sum "${PACKAGE_ROOT}.zip" > "${PACKAGE_ROOT}.zip.sha256"
+          zip -r "${PACKAGE_NAME}" "${PACKAGE_ROOT}"
+          sha256sum "${PACKAGE_NAME}" > "${PACKAGE_NAME}.sha256"
+
+      - name: Create upgrade package
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          if ! git rev-parse --verify --quiet "${UPGRADE_BASE_TAG}^{commit}" >/dev/null; then
+            echo "Upgrade base tag ${UPGRADE_BASE_TAG} was not found." >&2
+            exit 1
+          fi
+
+          UPGRADE_ROOT="labschool-exams-${UPGRADE_BASE_TAG}-to-${RELEASE_TAG}-upgrade"
+          UPGRADE_NAME="${UPGRADE_ROOT}.zip"
+          UPGRADE_DIR="${RUNNER_TEMP}/upgrade"
+          CHANGED_FILES="${RUNNER_TEMP}/upgrade-changed-files.txt"
+          DELETED_FILES="${RUNNER_TEMP}/upgrade-deleted-files.txt"
+          mkdir -p "${UPGRADE_DIR}/${UPGRADE_ROOT}"
+
+          git diff --name-only -z --diff-filter=ACMRT "${UPGRADE_BASE_TAG}" "${RELEASE_TAG}" -- . ':(exclude).github' ':(exclude)tests' ':(exclude)exams_local.sql' > "${CHANGED_FILES}"
+          if [ -s "${CHANGED_FILES}" ]; then
+            rsync -a --relative --from0 --files-from="${CHANGED_FILES}" ./ "${UPGRADE_DIR}/${UPGRADE_ROOT}/"
+          fi
+
+          git diff --name-only --diff-filter=D "${UPGRADE_BASE_TAG}" "${RELEASE_TAG}" -- . ':(exclude).github' ':(exclude)tests' ':(exclude)exams_local.sql' > "${DELETED_FILES}"
+
+          if [ -d public/build ]; then
+            mkdir -p "${UPGRADE_DIR}/${UPGRADE_ROOT}/public"
+            rsync -a --delete public/build "${UPGRADE_DIR}/${UPGRADE_ROOT}/public/"
+          fi
+
+          printf '%s\n' "${RELEASE_TAG}" > "${UPGRADE_DIR}/${UPGRADE_ROOT}/VERSION"
+
+          cat > "${UPGRADE_DIR}/${UPGRADE_ROOT}/upgrade-manifest.json" <<EOF
+          {
+            "package_type": "upgrade",
+            "from_version": "${UPGRADE_BASE_TAG}",
+            "to_version": "${RELEASE_TAG}",
+            "requires_backup": true,
+            "requires_migrations": true,
+            "composer_install_required": $(git diff --quiet "${UPGRADE_BASE_TAG}" "${RELEASE_TAG}" -- composer.json composer.lock && echo false || echo true),
+            "frontend_assets_included": true,
+            "deleted_files_manifest": "deleted-files.txt"
+          }
+          EOF
+
+          cp "${DELETED_FILES}" "${UPGRADE_DIR}/${UPGRADE_ROOT}/deleted-files.txt"
+
+          cat > "${UPGRADE_DIR}/${UPGRADE_ROOT}/UPGRADE.md" <<EOF
+          # Upgrade ${UPGRADE_BASE_TAG} to ${RELEASE_TAG}
+
+          1. Back up the database and application files.
+          2. Put the application in maintenance mode with \`php artisan down\`.
+          3. Extract this package over the existing installation without replacing \`.env\`, \`storage/\`, or \`public/storage\`.
+          4. Delete any paths listed in \`deleted-files.txt\`, if present.
+          5. Run \`composer install --no-dev --prefer-dist --optimize-autoloader\` if \`composer_install_required\` is true in \`upgrade-manifest.json\`.
+          6. Run \`php artisan migrate --force\`.
+          7. Run \`php artisan optimize:clear\`, then rebuild production caches as needed.
+          8. Bring the application back with \`php artisan up\`.
+          9. Smoke-test login, quiz management, student join, and PDF export.
+          EOF
+
+          cd "${UPGRADE_DIR}"
+          zip -r "${UPGRADE_NAME}" "${UPGRADE_ROOT}"
+          sha256sum "${UPGRADE_NAME}" > "${UPGRADE_NAME}.sha256"
 
       - name: Publish GitHub release
         uses: softprops/action-gh-release@v2
@@ -146,6 +218,8 @@ jobs:
           name: LabSchool Exams ${{ github.ref_name }}
           body_path: ${{ runner.temp }}/release-notes.md
           files: |
-            ${{ runner.temp }}/release/labschool-exams-${{ github.ref_name }}.zip
-            ${{ runner.temp }}/release/labschool-exams-${{ github.ref_name }}.zip.sha256
+            ${{ runner.temp }}/release/labschool-exams-${{ github.ref_name }}-full.zip
+            ${{ runner.temp }}/release/labschool-exams-${{ github.ref_name }}-full.zip.sha256
+            ${{ runner.temp }}/upgrade/labschool-exams-${{ env.UPGRADE_BASE_TAG }}-to-${{ github.ref_name }}-upgrade.zip
+            ${{ runner.temp }}/upgrade/labschool-exams-${{ env.UPGRADE_BASE_TAG }}-to-${{ github.ref_name }}-upgrade.zip.sha256
             ${{ runner.temp }}/update.json
