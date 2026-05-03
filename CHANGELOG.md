@@ -26,6 +26,8 @@ The format is intentionally lightweight and release-friendly so entries can be r
 
 ## Unreleased
 
+## [v2.1.0] - 2026-05-03
+
 ### Added
 
 - In-app Update Center for administrators with GitHub release checks and downloadable update packages.
