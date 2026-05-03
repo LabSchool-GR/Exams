@@ -8,9 +8,12 @@ $outputPath = $argv[3] ?? (__DIR__.'/../update.json');
 $releaseUrl = $argv[4] ?? '';
 $downloadUrl = $argv[5] ?? '';
 $packageName = $argv[6] ?? '';
+$upgradeFrom = $argv[7] ?? '';
+$upgradeDownloadUrl = $argv[8] ?? '';
+$upgradePackageName = $argv[9] ?? '';
 
 if ($tag === '' || $releaseNotesPath === '') {
-    fwrite(STDERR, "Usage: php scripts/build-update-manifest.php <tag> <release-notes-path> [output-path] [release-url] [download-url] [package-name]\n");
+    fwrite(STDERR, "Usage: php scripts/build-update-manifest.php <tag> <release-notes-path> [output-path] [release-url] [download-url] [package-name] [upgrade-from] [upgrade-download-url] [upgrade-package-name]\n");
     exit(1);
 }
 
@@ -28,7 +31,26 @@ $payload = [
     'release_url' => $releaseUrl,
     'download_url' => $downloadUrl,
     'package_name' => $packageName,
+    'packages' => [
+        'full' => [
+            'url' => $downloadUrl,
+            'package_name' => $packageName,
+        ],
+        'upgrades' => [],
+    ],
 ];
+
+if ($upgradeFrom !== '' && $upgradeDownloadUrl !== '' && $upgradePackageName !== '') {
+    $payload['upgrade_from'] = $upgradeFrom;
+    $payload['upgrade_download_url'] = $upgradeDownloadUrl;
+    $payload['upgrade_package_name'] = $upgradePackageName;
+    $payload['packages']['upgrades'][] = [
+        'from_version' => $upgradeFrom,
+        'to_version' => $tag,
+        'url' => $upgradeDownloadUrl,
+        'package_name' => $upgradePackageName,
+    ];
+}
 
 file_put_contents(
     $outputPath,

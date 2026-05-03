@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -63,6 +64,10 @@ class ApplicationUpdateService
             );
 
             $status['source'] = $sourceType;
+            $latestRelease['matching_upgrade'] = $this->matchingUpgradePackage(
+                $status['current_version_normalized'],
+                $latestRelease['upgrade_packages'] ?? [],
+            );
             $status['latest_release'] = $latestRelease;
             $status['checked_at'] = $latestRelease['checked_at'];
             $status['status'] = $this->resolveStatus(
@@ -130,8 +135,9 @@ class ApplicationUpdateService
             'published_at_label' => $publishedAt?->setTimezone(config('app.timezone', 'UTC'))->format('d/m/Y H:i'),
             'notes' => trim((string) data_get($payload, 'notes', '')),
             'url' => trim((string) data_get($payload, 'release_url', '')),
-            'download_url' => trim((string) data_get($payload, 'download_url', '')),
-            'download_name' => trim((string) data_get($payload, 'package_name', '')),
+            'download_url' => trim((string) (data_get($payload, 'packages.full.url') ?: data_get($payload, 'download_url', ''))),
+            'download_name' => trim((string) (data_get($payload, 'packages.full.package_name') ?: data_get($payload, 'package_name', ''))),
+            'upgrade_packages' => $this->manifestUpgradePackages($payload, $version),
             'checked_at' => now()->toIso8601String(),
         ];
     }
@@ -167,8 +173,30 @@ class ApplicationUpdateService
             ? CarbonImmutable::parse($publishedAtRaw)
             : null;
 
-        $asset = collect(data_get($payload, 'assets', []))
+        $assets = collect(data_get($payload, 'assets', []));
+
+        $asset = $assets
             ->first(function (mixed $asset): bool {
+                if (! is_array($asset)) {
+                    return false;
+                }
+
+                $name = Str::lower((string) data_get($asset, 'name', ''));
+                $url = (string) data_get($asset, 'browser_download_url', '');
+
+                return filled($url) && Str::endsWith($name, '-full.zip');
+            })
+            ?: $assets->first(function (mixed $asset): bool {
+                if (! is_array($asset)) {
+                    return false;
+                }
+
+                $name = Str::lower((string) data_get($asset, 'name', ''));
+                $url = (string) data_get($asset, 'browser_download_url', '');
+
+                return filled($url) && Str::endsWith($name, '.zip') && ! Str::contains($name, '-upgrade');
+            })
+            ?: $assets->first(function (mixed $asset): bool {
                 if (! is_array($asset)) {
                     return false;
                 }
@@ -193,8 +221,122 @@ class ApplicationUpdateService
             'download_name' => is_array($asset)
                 ? trim((string) data_get($asset, 'name', ''))
                 : '',
+            'upgrade_packages' => $this->githubUpgradePackages($assets, $tagName),
             'checked_at' => now()->toIso8601String(),
         ];
+    }
+
+    /**
+     * Normalize upgrade package metadata from a public manifest.
+     *
+     * @param  array<string, mixed>  $payload
+     * @return list<array<string, string|null>>
+     */
+    private function manifestUpgradePackages(array $payload, string $toVersion): array
+    {
+        $packages = collect(data_get($payload, 'packages.upgrades', []))
+            ->filter(fn (mixed $package): bool => is_array($package))
+            ->map(fn (array $package): array => $this->normalizeUpgradePackage($package, $toVersion))
+            ->filter(fn (array $package): bool => filled($package['from_version']) && filled($package['download_url']))
+            ->values()
+            ->all();
+
+        $flatUpgradeUrl = trim((string) data_get($payload, 'upgrade_download_url', ''));
+        $flatUpgradeFrom = trim((string) data_get($payload, 'upgrade_from', ''));
+
+        if ($flatUpgradeUrl !== '' && $flatUpgradeFrom !== '') {
+            $flatPackage = $this->normalizeUpgradePackage([
+                'from_version' => $flatUpgradeFrom,
+                'to_version' => $toVersion,
+                'url' => $flatUpgradeUrl,
+                'package_name' => trim((string) data_get($payload, 'upgrade_package_name', '')),
+            ], $toVersion);
+
+            $alreadyListed = collect($packages)->contains(
+                fn (array $package): bool => ($package['from_version'] ?? null) === $flatPackage['from_version']
+                    && ($package['download_url'] ?? null) === $flatPackage['download_url']
+            );
+
+            if (! $alreadyListed) {
+                $packages[] = $flatPackage;
+            }
+        }
+
+        return array_values($packages);
+    }
+
+    /**
+     * Discover upgrade assets attached to a GitHub release.
+     *
+     * @return list<array<string, string|null>>
+     */
+    private function githubUpgradePackages(Collection $assets, string $toVersion): array
+    {
+        return $assets
+            ->filter(fn (mixed $asset): bool => is_array($asset))
+            ->map(function (array $asset) use ($toVersion): ?array {
+                $name = trim((string) data_get($asset, 'name', ''));
+                $url = trim((string) data_get($asset, 'browser_download_url', ''));
+
+                if ($name === '' || $url === '') {
+                    return null;
+                }
+
+                if (preg_match('/labschool-exams-(v?\d+\.\d+\.\d+)-to-(v?\d+\.\d+\.\d+)-upgrade\.zip$/i', $name, $matches) !== 1) {
+                    return null;
+                }
+
+                return $this->normalizeUpgradePackage([
+                    'from_version' => $matches[1],
+                    'to_version' => $matches[2],
+                    'url' => $url,
+                    'package_name' => $name,
+                ], $toVersion);
+            })
+            ->filter()
+            ->values()
+            ->all();
+    }
+
+    /**
+     * Normalize one upgrade package entry.
+     *
+     * @param  array<string, mixed>  $package
+     * @return array<string, string|null>
+     */
+    private function normalizeUpgradePackage(array $package, string $toVersion): array
+    {
+        $fromVersion = trim((string) data_get($package, 'from_version', data_get($package, 'from', '')));
+        $packageToVersion = trim((string) data_get($package, 'to_version', data_get($package, 'to', $toVersion)));
+
+        return [
+            'from_version' => $fromVersion,
+            'from_version_normalized' => $fromVersion !== '' ? $this->normalizeVersion($fromVersion) : null,
+            'to_version' => $packageToVersion !== '' ? $packageToVersion : $toVersion,
+            'download_url' => trim((string) (data_get($package, 'url') ?: data_get($package, 'download_url', ''))),
+            'download_name' => trim((string) (data_get($package, 'package_name') ?: data_get($package, 'name', ''))),
+        ];
+    }
+
+    /**
+     * Return the upgrade package that matches the installed version, when available.
+     *
+     * @param  list<array<string, string|null>>  $upgradePackages
+     * @return array<string, string|null>|null
+     */
+    private function matchingUpgradePackage(?string $currentVersion, array $upgradePackages): ?array
+    {
+        if (! filled($currentVersion)) {
+            return null;
+        }
+
+        foreach ($upgradePackages as $package) {
+            if (($package['from_version_normalized'] ?? null) === $currentVersion) {
+                return $package;
+            }
+        }
+
+        return null;
     }
 
     /**

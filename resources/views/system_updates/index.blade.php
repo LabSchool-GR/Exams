@@ -144,21 +144,46 @@
                             @endif
                             @if (!empty($updateStatus['latest_release']['download_name']))
                                 <p class="dashboard-form-help mb-0">
-                                    {{ __('system_updates.package_name') }}:
+                                    {{ __('system_updates.full_package_name') }}:
                                     <span class="dashboard-code-inline">{{ $updateStatus['latest_release']['download_name'] }}</span>
+                                </p>
+                            @endif
+                            @if (!empty($updateStatus['latest_release']['matching_upgrade']))
+                                <p class="dashboard-form-help mb-0">
+                                    {{ __('system_updates.upgrade_package_name') }}:
+                                    <span class="dashboard-code-inline">{{ $updateStatus['latest_release']['matching_upgrade']['download_name'] ?: __('system_updates.not_available') }}</span>
+                                </p>
+                                <p class="dashboard-form-help mb-0">
+                                    {{ __('system_updates.upgrade_from') }}:
+                                    <span class="fw-semibold">{{ $updateStatus['latest_release']['matching_upgrade']['from_version'] }}</span>
+                                </p>
+                            @elseif (!empty($updateStatus['latest_release']['upgrade_packages']))
+                                <p class="dashboard-form-help mb-0">
+                                    {{ __('system_updates.upgrade_unavailable_for_version') }}
                                 </p>
                             @endif
                         </div>
 
                         <div class="dashboard-form-actions mt-4">
+                            @if (!empty($updateStatus['latest_release']['matching_upgrade']['download_url']))
+                                <a
+                                    href="{{ $updateStatus['latest_release']['matching_upgrade']['download_url'] }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="btn dashboard-btn dashboard-btn--primary"
+                                >
+                                    <i class="fas fa-download me-2"></i>{{ __('system_updates.download_upgrade_package') }}
+                                </a>
+                            @endif
+
                             @if (!empty($updateStatus['latest_release']['download_url']))
                                 <a
                                     href="{{ $updateStatus['latest_release']['download_url'] }}"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    class="btn dashboard-btn dashboard-btn--primary"
+                                    class="btn dashboard-btn {{ !empty($updateStatus['latest_release']['matching_upgrade']['download_url']) ? 'dashboard-btn--ghost' : 'dashboard-btn--primary' }}"
                                 >
-                                    <i class="fas fa-download me-2"></i>{{ __('system_updates.download_package') }}
+                                    <i class="fas fa-box-open me-2"></i>{{ __('system_updates.download_full_package') }}
                                 </a>
                             @endif
 
