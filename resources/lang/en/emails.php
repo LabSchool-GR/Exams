@@ -13,6 +13,9 @@ return [
     'reset' => [
         'subject' => 'Reset Your Password',
         'greeting' => 'Hello :name!',
+        'line_1' => 'We received a request to reset the password for your LabSchool Exams account.',
+        'line_2' => 'Click the button above to create a new password and regain access to the application.',
+        'line_3' => 'If you did not request a password reset, you can safely ignore this message.',
         'intro' => 'We received a request to reset your password for Exams-Quizzes.',
         'action' => 'Reset Password',
         'expire' => 'This password reset link will expire in :count minutes.',
