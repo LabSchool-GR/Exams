@@ -1,62 +1,79 @@
 <p align="center">
-  <img src="public/images/logo-exams.png" alt="LabSchool Exams" width="180">
+  <img src="public/images/logo-exams-min.png" alt="LabSchool Exams" width="220">
 </p>
 
-# LabSchool Exams
+<h1 align="center">LabSchool Exams</h1>
 
-[![Version](https://img.shields.io/github/v/tag/LabSchool-GR/Exams?sort=semver)](https://github.com/LabSchool-GR/Exams/tags)
-[![License](https://img.shields.io/github/license/LabSchool-GR/Exams)](https://github.com/LabSchool-GR/Exams/blob/main/LICENSE.md)
-[![CI](https://github.com/LabSchool-GR/Exams/actions/workflows/tests.yml/badge.svg)](https://github.com/LabSchool-GR/Exams/actions/workflows/tests.yml)
+<p align="center">
+  <strong>Open-source knowledge assessment for schools, training teams, and educational communities.</strong><br>
+  <strong>Ανοιχτού κώδικα εφαρμογή αξιολόγησης γνώσεων για σχολεία, φορείς κατάρτισης και εκπαιδευτικές δράσεις.</strong>
+</p>
+
+<p align="center">
+  <a href="https://github.com/LabSchool-GR/Exams/tags"><img alt="Version" src="https://img.shields.io/github/v/tag/LabSchool-GR/Exams?sort=semver"></a>
+  <a href="LICENSE.md"><img alt="License: AGPL-3.0-or-later" src="https://img.shields.io/badge/license-AGPL--3.0--or--later-0f5f80"></a>
+  <a href="https://github.com/LabSchool-GR/Exams/actions/workflows/tests.yml"><img alt="Tests" src="https://github.com/LabSchool-GR/Exams/actions/workflows/tests.yml/badge.svg"></a>
+</p>
+
+---
 
 ## Ελληνικά
 
-Το **LabSchool Exams** είναι εφαρμογή αξιολόγησης γνώσεων ανοιχτού κώδικα, βασισμένη στο Laravel. Απευθύνεται σε σχολεία, φορείς κατάρτισης και εκπαιδευτικές δράσεις που χρειάζονται δημιουργία quiz, συμμετοχή εξεταζόμενων, αποτελέσματα, στατιστικά, PDFs και βεβαιώσεις.
+Το **LabSchool Exams** είναι μια εκπαιδευτική εφαρμογή αξιολόγησης γνώσεων, βασισμένη στο Laravel. Σχεδιάστηκε για εκπαιδευτικούς που θέλουν να δημιουργούν δοκιμασίες, να οργανώνουν συμμετέχοντες, να παρακολουθούν αποτελέσματα και να παράγουν αναφορές χωρίς περίπλοκη τεχνική διαδικασία.
 
-Οι εξεταζόμενοι δεν χρειάζεται να δημιουργούν λογαριασμό. Μπορούν να συμμετέχουν με προσωρινό PIN, προσωπικό σύνδεσμο ή άλλη ροή που έχει ορίσει ο δημιουργός του quiz.
+Οι εξεταζόμενοι δεν χρειάζεται να έχουν λογαριασμό. Μπορούν να συμμετέχουν με προσωρινό PIN, προσωπικό σύνδεσμο ή δημόσια/ανώνυμη ροή, ανάλογα με τον τρόπο που έχει ορίσει ο δημιουργός του quiz.
 
-**Βασικά σημεία**
+### Τι προσφέρει;
 
-- Δημιουργία και επεξεργασία quiz.
-- Ερωτήσεις μονής ή πολλαπλής σωστής απάντησης.
-- Διαχείριση εξεταζόμενων, PIN, προσωπικών συνδέσμων και ανώνυμων ροών.
-- Πρότυπα εμφάνισης quiz.
-- Αποτελέσματα, στατιστικά, εξαγωγές, PDFs και βεβαιώσεις.
-- Ρόλοι εκπαιδευτικών και διαχειριστών.
-- Έλεγχοι ασφάλειας, privacy και λειτουργικής διαχείρισης.
+- Δημιουργία quiz με ερωτήσεις μονής ή πολλαπλής σωστής απάντησης.
+- Διαχείριση μαθητών, εξεταζόμενων, επισκεπτών και ανώνυμων συμμετοχών.
+- Προσωπικοί σύνδεσμοι, PIN πρόσβασης και δημόσιες ροές συμμετοχής.
+- Πρότυπα εμφάνισης quiz για διαφορετικές εκπαιδευτικές ανάγκες.
+- Αποτελέσματα, στατιστικά ερωτήσεων, εξαγωγές, PDFs και βεβαιώσεις.
+- Ρόλοι εκπαιδευτικών και διαχειριστών με ελεγχόμενη πρόσβαση.
+- Οδηγός χρήσης και σελίδες τεκμηρίωσης για εγκατάσταση, αναβάθμιση και ασφάλεια.
 
-**Οδηγοί και σελίδες**
+### Γρήγορη πλοήγηση
 
-- [Αρχική σελίδα τεκμηρίωσης](docs/index.html)
-- [Οδηγός χρήσης](docs/learn.html)
-- [Εγκατάσταση και ρύθμιση](docs/Installation-and-Setup.html)
-- [Αναβάθμιση](docs/upgrade-packages.html)
-- [Ασφάλεια, απόρρητο και συμμόρφωση](docs/Security-Privacy-and-Compliance.html)
-- [Υποστήριξη έργου](docs/sponsor.html)
+| Ενότητα | Σύνδεσμος |
+| --- | --- |
+| Αρχική τεκμηρίωση | [docs/index.html](docs/index.html) |
+| Οδηγός χρήσης | [docs/learn.html](docs/learn.html) |
+| Εγκατάσταση | [docs/Installation-and-Setup.html](docs/Installation-and-Setup.html) |
+| Αναβάθμιση | [docs/upgrade-packages.html](docs/upgrade-packages.html) |
+| Ασφάλεια και απόρρητο | [docs/Security-Privacy-and-Compliance.html](docs/Security-Privacy-and-Compliance.html) |
+| Υποστήριξη έργου | [docs/sponsor.html](docs/sponsor.html) |
+
+---
 
 ## English
 
-**LabSchool Exams** is an open-source Laravel application for knowledge assessment. It is designed for schools, training organizations, and educational activities that need quiz creation, participant flows, results, statistics, PDFs, and certificates.
+**LabSchool Exams** is an educational knowledge-assessment application built with Laravel. It helps teachers and training teams create quizzes, organize participants, review results, and generate useful reports without turning assessment into a technical burden.
 
-Participants do not need to create an account. They can join with a temporary PIN, a personalized link, or another access flow configured by the quiz creator.
+Participants do not need an account. They can join with a temporary PIN, a personalized link, or a public/anonymous flow, depending on the process configured by the quiz creator.
 
-**Core features**
+### Highlights
 
-- Quiz creation and editing.
-- Single-answer and multiple-answer questions.
-- Examinee management, PIN access, personalized links, and anonymous flows.
-- Quiz display templates.
-- Results, statistics, exports, PDFs, and certificates.
-- Teacher and administrator roles.
-- Security, privacy, and operational controls.
+- Quiz authoring with single-answer and multiple-answer questions.
+- Student, examinee, guest, and anonymous participation workflows.
+- Personalized links, PIN access, and public participation flows.
+- Quiz display templates for different educational scenarios.
+- Results, question statistics, exports, PDFs, and certificates.
+- Teacher and administrator roles with controlled access.
+- Documentation pages for installation, upgrades, security, and everyday use.
 
-**Documentation**
+### Documentation
 
-- [Documentation home](docs/index.html)
-- [User guide](docs/learn.html)
-- [Installation and setup](docs/Installation-and-Setup.html)
-- [Upgrade packages](docs/upgrade-packages.html)
-- [Security, privacy and compliance](docs/Security-Privacy-and-Compliance.html)
-- [Support the project](docs/sponsor.html)
+| Section | Link |
+| --- | --- |
+| Documentation home | [docs/index.html](docs/index.html) |
+| User guide | [docs/learn.html](docs/learn.html) |
+| Installation | [docs/Installation-and-Setup.html](docs/Installation-and-Setup.html) |
+| Upgrade packages | [docs/upgrade-packages.html](docs/upgrade-packages.html) |
+| Security and privacy | [docs/Security-Privacy-and-Compliance.html](docs/Security-Privacy-and-Compliance.html) |
+| Support the project | [docs/sponsor.html](docs/sponsor.html) |
+
+---
 
 ## Quick Local Setup
 
@@ -73,20 +90,14 @@ Open `http://127.0.0.1:8000` and sign in with the administrator account created 
 
 ## Technology
 
-- PHP 8.2+
-- Laravel 12
-- MySQL/MariaDB or SQLite
-- Vite and npm
-- DomPDF
-- Laravel Excel
-- Pest/PHPUnit
+`PHP 8.2+` · `Laravel 12` · `MySQL/MariaDB` · `SQLite` · `Vite` · `DomPDF` · `Laravel Excel` · `Pest/PHPUnit`
 
 ## License
 
-This project is licensed under the GNU Affero General Public License v3.0 or later.
+LabSchool Exams is distributed under the **GNU Affero General Public License v3.0 or later**.
 
-See [LICENSE.md](LICENSE.md) for the full legal text.
+See [LICENSE.md](LICENSE.md) for the project license notice. The badge above is static because GitHub only auto-detects licenses when the repository contains a full canonical license text.
 
 ## Credits
 
-Developed by Dimitrios Kanatas for LabSchool.gr.
+Developed by **Dimitrios Kanatas** for [LabSchool.gr](https://labschool.gr).
