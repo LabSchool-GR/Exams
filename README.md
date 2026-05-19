@@ -1,155 +1,64 @@
+<p align="center">
+  <img src="public/images/logo-exams.png" alt="LabSchool Exams" width="180">
+</p>
+
 # LabSchool Exams
 
 [![Version](https://img.shields.io/github/v/tag/LabSchool-GR/Exams?sort=semver)](https://github.com/LabSchool-GR/Exams/tags)
 [![License](https://img.shields.io/github/license/LabSchool-GR/Exams)](https://github.com/LabSchool-GR/Exams/blob/main/LICENSE.md)
 [![CI](https://github.com/LabSchool-GR/Exams/actions/workflows/tests.yml/badge.svg)](https://github.com/LabSchool-GR/Exams/actions/workflows/tests.yml)
 
-Educational quiz and assessment platform built with Laravel for schools, training organizations, and blended-learning scenarios.
+## Ελληνικά
 
-Πλατφόρμα δημιουργίας quizzes και αξιολόγησης γνώσεων, βασισμένη στο Laravel, για σχολικές μονάδες, φορείς κατάρτισης και μικτά σενάρια μάθησης.
+Το **LabSchool Exams** είναι εφαρμογή αξιολόγησης γνώσεων ανοιχτού κώδικα, βασισμένη στο Laravel. Απευθύνεται σε σχολεία, φορείς κατάρτισης και εκπαιδευτικές δράσεις που χρειάζονται δημιουργία quiz, συμμετοχή εξεταζόμενων, αποτελέσματα, στατιστικά, PDFs και βεβαιώσεις.
 
-## Quick Start (60 sec)
+Οι εξεταζόμενοι δεν χρειάζεται να δημιουργούν λογαριασμό. Μπορούν να συμμετέχουν με προσωρινό PIN, προσωπικό σύνδεσμο ή άλλη ροή που έχει ορίσει ο δημιουργός του quiz.
 
-```bash
-composer install ; npm install ; cp .env.example .env ; php artisan app:install ; npm run build ; php artisan serve
-```
+**Βασικά σημεία**
 
-Open `http://127.0.0.1:8000` and sign in with your admin account.
+- Δημιουργία και επεξεργασία quiz.
+- Ερωτήσεις μονής ή πολλαπλής σωστής απάντησης.
+- Διαχείριση εξεταζόμενων, PIN, προσωπικών συνδέσμων και ανώνυμων ροών.
+- Πρότυπα εμφάνισης quiz.
+- Αποτελέσματα, στατιστικά, εξαγωγές, PDFs και βεβαιώσεις.
+- Ρόλοι εκπαιδευτικών και διαχειριστών.
+- Έλεγχοι ασφάλειας, privacy και λειτουργικής διαχείρισης.
 
-## Quick Navigation
+**Οδηγοί και σελίδες**
 
-- Greek summary: [Ελληνική Παρουσίαση](#ελληνική-παρουσίαση)
-- English summary: [English Overview](#english-overview)
-- Screenshots: [Βασικές Οθόνες / Key Screenshots](#βασικές-οθόνες--key-screenshots)
-- Visual gallery page: [docs/showcase.html](docs/showcase.html)
-- Installation: [Εγκατάσταση / Installation](#εγκατάσταση--installation)
-- Operations: [Λειτουργία Παραγωγής / Production Operations](#λειτουργία-παραγωγής--production-operations)
-- Legal and privacy: [Όροι, Απόρρητο και Συμμόρφωση / Terms, Privacy and Compliance](#όροι-απόρρητο-και-συμμόρφωση--terms-privacy-and-compliance)
+- [Αρχική σελίδα τεκμηρίωσης](docs/index.html)
+- [Οδηγός χρήσης](docs/learn.html)
+- [Εγκατάσταση και ρύθμιση](docs/Installation-and-Setup.html)
+- [Αναβάθμιση](docs/upgrade-packages.html)
+- [Ασφάλεια, απόρρητο και συμμόρφωση](docs/Security-Privacy-and-Compliance.html)
+- [Υποστήριξη έργου](docs/sponsor.html)
 
-## Βασικές Οθόνες / Key Screenshots
+## English
 
-Πλήρης gallery σελίδα:
+**LabSchool Exams** is an open-source Laravel application for knowledge assessment. It is designed for schools, training organizations, and educational activities that need quiz creation, participant flows, results, statistics, PDFs, and certificates.
 
-- [docs/showcase.html](docs/showcase.html)
+Participants do not need to create an account. They can join with a temporary PIN, a personalized link, or another access flow configured by the quiz creator.
 
-### 1. Registration
+**Core features**
 
-![Registration](docs/screenshots/01.register.jpg)
+- Quiz creation and editing.
+- Single-answer and multiple-answer questions.
+- Examinee management, PIN access, personalized links, and anonymous flows.
+- Quiz display templates.
+- Results, statistics, exports, PDFs, and certificates.
+- Teacher and administrator roles.
+- Security, privacy, and operational controls.
 
-### 2. Login
+**Documentation**
 
-![Login](docs/screenshots/02.login.jpg)
+- [Documentation home](docs/index.html)
+- [User guide](docs/learn.html)
+- [Installation and setup](docs/Installation-and-Setup.html)
+- [Upgrade packages](docs/upgrade-packages.html)
+- [Security, privacy and compliance](docs/Security-Privacy-and-Compliance.html)
+- [Support the project](docs/sponsor.html)
 
-### 3. Dashboard
-
-![Dashboard](docs/screenshots/03.dashboard.jpg)
-
-### 4. Quizzes Management
-
-![Quizzes](docs/screenshots/04.quizzes.jpg)
-
-### 5. Public Catalogue
-
-![Catalogue](docs/screenshots/05.catalogue.jpg)
-
-### 6. Quiz Screen
-
-![Quiz](docs/screenshots/06.quiz.jpg)
-
-### 7. Quiz Q&A
-
-![Quiz Q&A](docs/screenshots/07.quiz-qa.jpg)
-
-### 8. Quiz Completion
-
-![Quiz Completion](docs/screenshots/08.quiz-fl.jpg)
-
-### 9. Join Entry
-
-![Join](docs/screenshots/join.png)
-
-## Ελληνική Παρουσίαση
-
-Το LabSchool Exams είναι ένα ολοκληρωμένο περιβάλλον για:
-
-- σχεδίαση και οργάνωση quizzes
-- συμμετοχή εξεταζομένων με πολλαπλά μοντέλα πρόσβασης
-- εξαγωγή αναφορών, στατιστικών και πιστοποιητικών
-- ασφαλή διαχείριση δεδομένων και συμμόρφωση με τις απαιτήσεις GDPR
-
-Η εφαρμογή υποστηρίζει τόσο κλειστές εκπαιδευτικές ροές (με λογαριασμούς και κωδικούς) όσο και πιο ανοιχτές ροές (επισκέπτες, δημόσιος κατάλογος, ανώνυμη συμμετοχή), με ελεγχόμενα δικαιώματα ανά ρόλο.
-
-### Βασικές Δυνατότητες
-
-1. Δημιουργία quizzes με μονή ή πολλαπλή σωστή απάντηση.
-2. Κατηγοριοποίηση quizzes και οργάνωση συλλογών.
-3. Εισαγωγή ερωτήσεων από CSV.
-4. Διαχείριση εξεταζομένων με χειροκίνητη καταχώριση ή CSV import.
-5. Συμμετοχή επισκεπτών όπου επιτρέπεται, με ελεγχόμενους υπογεγραμμένους συνδέσμους.
-6. Δημόσιος κατάλογος quizzes με δυνατότητα άμεσης εκκίνησης.
-7. Στατιστικά ανά ερώτηση και εξαγωγές σε Excel/PDF.
-8. Πιστοποιητικά επιτυχίας PDF και δημόσια επαλήθευση με signed URL.
-9. Ρόλοι χρηστών, όρια χρήσης και ροή αιτημάτων αύξησης ορίων.
-10. Πολιτικές ασφαλείας (rate limiting, security headers, CSP, pruning προσωπικών δεδομένων).
-
-### Σελίδες Πληροφοριών Εφαρμογής
-
-Η εφαρμογή περιλαμβάνει έτοιμες σελίδες που ενημερώνουν τελικούς χρήστες και φορείς:
-
-- Πληροφορίες: [resources/views/about.blade.php](resources/views/about.blade.php)
-- Όροι Χρήσης: [resources/views/terms.blade.php](resources/views/terms.blade.php)
-- Πολιτική Απορρήτου: [resources/views/privacy.blade.php](resources/views/privacy.blade.php)
-
-Οι αντίστοιχες δημόσιες διαδρομές είναι:
-
-- /about
-- /terms
-- /privacy
-
-## English Overview
-
-LabSchool Exams is a full-featured assessment platform for:
-
-- authoring and managing quizzes
-- running participant flows with multiple access models
-- exporting analytics, reports, and certificates
-- applying privacy-aware and security-first operational controls
-
-The platform supports both closed educational workflows (accounts and participant codes) and open scenarios (guest participation, public catalogue access, anonymous flows), with role-based governance.
-
-### Core Capabilities
-
-1. Quiz authoring with single or multiple correct answers.
-2. Quiz categorization and collection management.
-3. CSV question import.
-4. Participant registration and CSV-based onboarding.
-5. Signed-link guest participation where enabled.
-6. Public quiz catalogue for direct guest starts.
-7. Question-level analytics and Excel/PDF exports.
-8. PDF success certificates plus signed public verification.
-9. User roles, usage quotas, and quota request workflows.
-10. Security controls (throttling, security headers, CSP, personal-data pruning).
-
-## Technology Stack
-
-- PHP 8.2+
-- Laravel 12
-- MySQL/MariaDB-compatible relational database
-- Vite + npm frontend pipeline
-- DomPDF for PDF rendering
-- Laravel Excel for XLSX exports
-- Pest/PHPUnit for automated testing
-
-## Εγκατάσταση / Installation
-
-### Προαπαιτούμενα / Prerequisites
-
-- PHP 8.2+
-- Composer
-- Node.js + npm
-- Database server (MySQL/MariaDB)
-
-### Βήματα Τοπικής Εγκατάστασης / Local Setup Steps
+## Quick Local Setup
 
 ```bash
 composer install
@@ -160,171 +69,23 @@ npm run build
 php artisan serve
 ```
 
-### Προαιρετικά Seeds για demo/dev / Optional demo/dev seed layers
+Open `http://127.0.0.1:8000` and sign in with the administrator account created during installation.
 
-```bash
-# Demo dataset (shared example quiz)
-php artisan app:install --demo
+## Technology
 
-# Local-only dev helpers
-php artisan app:install --dev
-```
-
-### Single Install Flow
-
-Use the same installer command for clean local setup and first-time server bootstrap:
-
-```bash
-php artisan app:install
-```
-
-The installer:
-
-- runs migrations
-- seeds only the core baseline dataset
-- creates or updates the initial admin account
-- creates the public storage link when needed
-
-You can combine optional datasets when needed:
-
-```bash
-php artisan app:install --demo --dev
-```
-
-### Frontend Development Mode
-
-```bash
-npm run dev
-```
-
-### Schema Dump Workflow
-
-For cleaner fresh installs without removing the historical migration files:
-
-```bash
-php artisan app:schema-dump
-```
-
-Strategy notes: [docs/schema-dump-strategy.md](docs/schema-dump-strategy.md)
-
-## Testing and Quality
-
-### Automated tests
-
-```bash
-php artisan test
-```
-
-### Manual regression references
-
-- [docs/manual-test-matrix.md](docs/manual-test-matrix.md)
-- [docs/quiz-template-smoke-checklist.md](docs/quiz-template-smoke-checklist.md)
-
-CI test workflow: [.github/workflows/tests.yml](.github/workflows/tests.yml)
-
-### Release packages
-
-The project also includes a tag-based GitHub Release workflow:
-
-- [.github/workflows/release.yml](.github/workflows/release.yml)
-- [docs/release-workflow.md](docs/release-workflow.md)
-- [docs/release-checklist.md](docs/release-checklist.md)
-- [docs/changelog-policy.md](docs/changelog-policy.md)
-
-Push a tag such as `v1.2.0` to generate:
-
-- a GitHub Release with generated release notes
-- a downloadable zip package for the in-app Update Center
-- a SHA-256 checksum file for the package
-
-Release packages include built frontend assets, production Composer dependencies, and a `VERSION` file so zip-based installations can report the correct application version.
-
-Release notes can be curated through [CHANGELOG.md](CHANGELOG.md), which also feeds cleaner GitHub Release bodies for the in-app Update Center.
-
-For day-to-day changelog drafting, use:
-
-- [docs/changelog-policy.md](docs/changelog-policy.md)
-- [docs/unreleased-template.md](docs/unreleased-template.md)
-- [docs/update-manifest.md](docs/update-manifest.md)
-
-Note: while the canonical GitHub repository remains private, the in-app Update Center cannot fetch latest release metadata anonymously from GitHub. The release workflow and changelog process still work, but the live release check is intended to become fully effective once the repository is public or a separate update metadata endpoint is introduced.
-
-## Λειτουργία Παραγωγής / Production Operations
-
-### Recommended production baseline
-
-- APP_ENV=production
-- APP_DEBUG=false
-- APP_SOURCE_URL=https://github.com/LabSchool-GR/Exams
-- HTTPS enabled at proxy/server layer
-- writable storage/ and bootstrap/cache/
-- active queue worker for queued mail
-- active scheduler cron job
-
-### Deployment command sequence
-
-```bash
-composer install --no-dev --prefer-dist --optimize-autoloader
-npm ci
-npm run build
-php artisan app:install --force
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-```
-
-### Scheduler entry
-
-```cron
-* * * * * php /path/to/artisan schedule:run >> /dev/null 2>&1
-```
-
-Current scheduled maintenance commands:
-
-- php artisan quiz-attempts:expire
-- php artisan privacy:prune-exam-personal-data
-
-Full operations checklist: [docs/runbook.md](docs/runbook.md)
-
-## Όροι, Απόρρητο και Συμμόρφωση / Terms, Privacy and Compliance
-
-Η εφαρμογή έχει σχεδιαστεί με έμφαση σε εκπαιδευτική δεοντολογία, ασφάλεια και προστασία προσωπικών δεδομένων.
-
-The application is designed with educational governance, security, and data-protection principles in mind.
-
-### Τι καλύπτεται / What is covered
-
-1. Όροι χρήσης για εκπαιδευτικούς, διαχειριστές και εξεταζόμενους.
-2. Περιορισμός πρόσβασης με επιτρεπόμενα email domains (όπου έχει ρυθμιστεί).
-3. Privacy policy aligned with GDPR principles and retention controls.
-4. Security measures such as signed URLs, throttling, secure sessions, and hardened headers.
-5. Open-source obligations and source-availability model for hosted AGPL deployments.
-
-Source pages and legal text resources:
-
-- [resources/views/about.blade.php](resources/views/about.blade.php)
-- [resources/views/terms.blade.php](resources/views/terms.blade.php)
-- [resources/views/privacy.blade.php](resources/views/privacy.blade.php)
-- [resources/lang/el/about.php](resources/lang/el/about.php)
-- [resources/lang/el/terms.php](resources/lang/el/terms.php)
-- [resources/lang/el/privacy.php](resources/lang/el/privacy.php)
-- [resources/lang/en/about.php](resources/lang/en/about.php)
-- [resources/lang/en/terms.php](resources/lang/en/terms.php)
-- [resources/lang/en/privacy.php](resources/lang/en/privacy.php)
-
-## Security Notes
-
-- DomPDF embedded PHP execution is disabled by design.
-- Content-Security-Policy is enforcing by default.
-- You can temporarily switch to report-only mode with SECURITY_CSP_REPORT_ONLY=true for rollout diagnostics.
+- PHP 8.2+
+- Laravel 12
+- MySQL/MariaDB or SQLite
+- Vite and npm
+- DomPDF
+- Laravel Excel
+- Pest/PHPUnit
 
 ## License
 
-This project is licensed under GNU Affero General Public License, version 3 or any later version (AGPL-3.0-or-later).
+This project is licensed under the GNU Affero General Public License v3.0 or later.
 
-If you deploy a modified network-accessible version, you must provide the corresponding source code to users of that service under the same license terms.
-
-See [LICENSE.md](LICENSE.md) for full legal text.
+See [LICENSE.md](LICENSE.md) for the full legal text.
 
 ## Credits
 
