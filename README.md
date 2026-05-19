@@ -37,12 +37,12 @@
 
 | Ενότητα | Σύνδεσμος |
 | --- | --- |
-| Αρχική τεκμηρίωση | [docs/index.html](docs/index.html) |
-| Οδηγός χρήσης | [docs/learn.html](docs/learn.html) |
-| Εγκατάσταση | [docs/Installation-and-Setup.html](docs/Installation-and-Setup.html) |
-| Αναβάθμιση | [docs/upgrade-packages.html](docs/upgrade-packages.html) |
-| Ασφάλεια και απόρρητο | [docs/Security-Privacy-and-Compliance.html](docs/Security-Privacy-and-Compliance.html) |
-| Υποστήριξη έργου | [docs/sponsor.html](docs/sponsor.html) |
+| Αρχική τεκμηρίωση | [Άνοιγμα](https://labschool-gr.github.io/Exams/) |
+| Οδηγός χρήσης | [Άνοιγμα](https://labschool-gr.github.io/Exams/learn.html) |
+| Εγκατάσταση | [Άνοιγμα](https://labschool-gr.github.io/Exams/Installation-and-Setup.html) |
+| Αναβάθμιση | [Άνοιγμα](https://labschool-gr.github.io/Exams/upgrade-packages.html) |
+| Ασφάλεια και απόρρητο | [Άνοιγμα](https://labschool-gr.github.io/Exams/Security-Privacy-and-Compliance.html) |
+| Υποστήριξη έργου | [Άνοιγμα](https://labschool-gr.github.io/Exams/sponsor.html) |
 
 ---
 
@@ -66,12 +66,12 @@ Participants do not need an account. They can join with a temporary PIN, a perso
 
 | Section | Link |
 | --- | --- |
-| Documentation home | [docs/index.html](docs/index.html) |
-| User guide | [docs/learn.html](docs/learn.html) |
-| Installation | [docs/Installation-and-Setup.html](docs/Installation-and-Setup.html) |
-| Upgrade packages | [docs/upgrade-packages.html](docs/upgrade-packages.html) |
-| Security and privacy | [docs/Security-Privacy-and-Compliance.html](docs/Security-Privacy-and-Compliance.html) |
-| Support the project | [docs/sponsor.html](docs/sponsor.html) |
+| Documentation home | [Open](https://labschool-gr.github.io/Exams/) |
+| User guide | [Open](https://labschool-gr.github.io/Exams/learn.html) |
+| Installation | [Open](https://labschool-gr.github.io/Exams/Installation-and-Setup.html) |
+| Upgrade packages | [Open](https://labschool-gr.github.io/Exams/upgrade-packages.html) |
+| Security and privacy | [Open](https://labschool-gr.github.io/Exams/Security-Privacy-and-Compliance.html) |
+| Support the project | [Open](https://labschool-gr.github.io/Exams/sponsor.html) |
 
 ---
 
