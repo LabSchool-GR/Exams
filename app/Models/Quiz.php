@@ -140,13 +140,17 @@ class Quiz extends Model
             return null;
         }
 
-        $expiresAt ??= now()->addMinutes((int) config('security.signed_urls.public_link_ttl_minutes', 10080));
+        $parameters = ['quiz' => $this->id, 'key' => $fingerprint];
 
-        return URL::temporarySignedRoute(
-            'quizzes.public.start',
-            $expiresAt,
-            ['quiz' => $this->id, 'key' => $fingerprint]
-        );
+        if ($expiresAt !== null) {
+            return URL::temporarySignedRoute('quizzes.public.start', $expiresAt, $parameters);
+        }
+
+        $ttlMinutes = (int) config('security.signed_urls.public_link_ttl_minutes', 10080);
+
+        return $ttlMinutes > 0
+            ? URL::temporarySignedRoute('quizzes.public.start', now()->addMinutes($ttlMinutes), $parameters)
+            : URL::signedRoute('quizzes.public.start', $parameters);
     }
 
     /**

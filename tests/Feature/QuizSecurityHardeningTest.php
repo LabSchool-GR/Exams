@@ -132,6 +132,49 @@ it('renders public quiz metadata for messaging link previews', function () {
         ->assertRedirect(route('quiz.start'));
 });
 
+it('can generate non-expiring signed public quiz links when public ttl is zero', function () {
+    /** @var TestCase $this */
+    config()->set('security.signed_urls.public_link_ttl_minutes', 0);
+
+    $owner = User::factory()->create([
+        'role' => 'teacher',
+    ]);
+
+    $category = Category::create([
+        'name' => 'Non Expiring Public Link Category '.uniqid(),
+    ]);
+
+    $quiz = Quiz::create([
+        'title' => 'Non Expiring Public Link Quiz',
+        'description' => 'Public link without expiry test',
+        'category_id' => $category->id,
+        'creator_id' => $owner->id,
+        'quiz_code' => substr(str_shuffle('ABCDEFGHJKLMNPQRSTUVWXYZ23456789'), 0, 8),
+        'max_attempts' => 1,
+        'time_limit' => 600,
+        'is_random_order' => false,
+        'is_random_answers_order' => false,
+        'show_answer_numbering' => false,
+        'allow_guest' => true,
+        'has_timer' => false,
+        'allow_resume' => false,
+        'pass_percentage' => 50,
+        'question_view' => 'default',
+        'status' => 'active',
+        'questions_limit' => null,
+        'is_public' => true,
+        'public_token_hash' => Quiz::generateLinkTokenHash(),
+        'language' => 'el',
+    ]);
+
+    $publicUrl = $quiz->publicAccessUrl();
+
+    expect($publicUrl)->not->toBeNull()
+        ->and(parse_url($publicUrl, PHP_URL_QUERY))->not->toContain('expires=');
+
+    $this->get($publicUrl)->assertRedirect(route('quiz.start'));
+});
+
 it('blocks registered pin access when a quiz allows only personal links', function () {
     /** @var TestCase $this */
     $owner = User::factory()->create([
