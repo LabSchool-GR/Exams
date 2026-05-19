@@ -10,13 +10,13 @@
         </div>
     </div>
 
-    <button class="btn dashboard-btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+    <button type="button" class="btn dashboard-btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
         <i class="fas fa-trash-alt me-2"></i>{{ __('quizzes_cards.delete_button') }}
     </button>
 </section>
 
 <div class="modal fade dashboard-modal" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white">
                 <h5 class="modal-title" id="deleteAccountModalLabel">
@@ -36,7 +36,7 @@
                         <label for="delete_password" class="dashboard-form-label">
                             <i class="fas fa-key text-muted"></i> {{ __('quizzes_cards.password') }}
                         </label>
-                        <input type="password" name="password" id="delete_password" class="form-control dashboard-form-control @error('password', 'userDeletion') is-invalid @enderror" required>
+                        <input type="password" name="password" id="delete_password" class="form-control dashboard-form-control @error('password', 'userDeletion') is-invalid @enderror" autocomplete="current-password" required>
                         @error('password', 'userDeletion')
                             <div class="invalid-feedback d-block mt-1">{{ $message }}</div>
                         @enderror

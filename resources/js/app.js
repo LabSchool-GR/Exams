@@ -937,6 +937,14 @@ function initModalAutoOpen() {
     });
 }
 
+function initBootstrapModals() {
+    document.querySelectorAll('.modal').forEach((modal) => {
+        if (modal.parentElement !== document.body) {
+            document.body.appendChild(modal);
+        }
+    });
+}
+
 function initQuizQuestionRuntime() {
     document.querySelectorAll('[data-quiz-question-runtime]').forEach((container) => {
         if (container.dataset.runtimeBound === 'true') {
@@ -1732,6 +1740,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initTurnstileWidgets();
     initDropdowns();
     initAppModals();
+    initBootstrapModals();
     initModalAutoOpen();
     initQuizQuestionRuntime();
     initQuizDisplayScreen();

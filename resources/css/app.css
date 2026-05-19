@@ -1261,12 +1261,24 @@ h1, h2, h3, h4, h5, h6 {
 .dashboard-modal .modal-content {
     border: 1px solid rgba(184, 71, 79, 0.18);
     border-radius: 1.5rem;
+    max-height: calc(100dvh - 2rem);
     overflow: hidden;
 }
 
 .dashboard-modal .modal-header,
 .dashboard-modal .modal-footer {
     border-color: rgba(24, 49, 83, 0.08);
+}
+
+.dashboard-modal .modal-body {
+    overflow-y: auto;
+}
+
+@media (max-height: 640px) {
+    .dashboard-modal .modal-dialog-centered {
+        align-items: flex-start;
+        min-height: calc(100dvh - var(--bs-modal-margin) * 2);
+    }
 }
 
 .dashboard-form-help {
@@ -1662,7 +1674,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .app-toast-container {
-    z-index: 1100;
+    z-index: 1040;
+    pointer-events: none;
+}
+
+.app-toast-container .toast {
+    pointer-events: auto;
 }
 
 .app-footer-subtle {
