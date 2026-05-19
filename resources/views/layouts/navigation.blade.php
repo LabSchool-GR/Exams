@@ -81,12 +81,12 @@
                                             <i class="fas fa-users-cog me-1"></i> {{ __('navigation.templates') }}
                                         </a>
                                     </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('system_updates.index') }}">
+                                            <i class="fas fa-cloud-arrow-down me-1"></i> {{ __('navigation.system_updates') }}
+                                        </a>
+                                    </li>
                                 @endif
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('system_updates.index') }}">
-                                        <i class="fas fa-cloud-arrow-down me-1"></i> {{ __('navigation.system_updates') }}
-                                    </a>
-                                </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('about') }}">
                                         <i class="fas fa-info-circle me-1"></i> {{ __('navigation.info') }}
