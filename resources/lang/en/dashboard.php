@@ -36,7 +36,7 @@ return [
     'resources_eyebrow' => 'Support and Resources',
     'resources_title' => 'Teacher Guide and Reference',
     'resources_intro' => 'Support material gathered in one place, with quick access to the application team.',
-    'resource_manual_text' => 'Open the teacher usage guide in PDF format.',
+    'resource_manual_text' => 'Open the online teacher user guide.',
     'resource_feedback_text' => 'Send an issue report or suggest a new feature.',
     'updates_title' => 'Application Updates',
     'updates_add' => 'New Update',

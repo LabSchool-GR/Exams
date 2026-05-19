@@ -24,6 +24,7 @@ body {
     background: var(--bg);
     color: var(--ink);
     line-height: 1.55;
+    overflow-x: hidden;
 }
 
 a {
@@ -115,6 +116,7 @@ a {
 
 .hero,
 .panel {
+    min-width: 0;
     border: 1px solid var(--line);
     border-radius: 8px;
     background: var(--panel);
@@ -320,7 +322,9 @@ h1 {
 }
 
 .code-block {
+    max-width: 100%;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     margin: 14px 0;
     padding: 14px 16px;
     border: 1px solid var(--line);
@@ -335,6 +339,7 @@ h1 {
 }
 
 .callout {
+    min-width: 0;
     margin-top: 14px;
     padding: 14px 16px;
     border: 1px solid rgba(15, 95, 128, 0.24);
@@ -545,9 +550,22 @@ h1 {
         padding: 24px;
     }
 
+    .content .panel {
+        padding: 20px;
+    }
+
     h1,
     .page-title {
         font-size: 32px;
+    }
+
+    .content h2 {
+        font-size: 23px;
+    }
+
+    .code-block {
+        padding: 12px;
+        font-size: 13px;
     }
 
     .grid {
@@ -569,5 +587,41 @@ h1 {
     .footer {
         align-items: flex-start;
         flex-direction: column;
+    }
+}
+
+@media (max-width: 520px) {
+    .shell {
+        width: min(100% - 24px, 1120px);
+    }
+
+    .hero {
+        padding: 20px;
+    }
+
+    .content .panel {
+        padding: 18px;
+    }
+
+    h1,
+    .page-title {
+        font-size: 28px;
+    }
+
+    .lead {
+        font-size: 16px;
+    }
+
+    .content h2 {
+        font-size: 21px;
+    }
+
+    .content h3 {
+        font-size: 18px;
+    }
+
+    .code-block {
+        padding: 10px;
+        font-size: 12px;
     }
 }

@@ -226,9 +226,9 @@
             </div>
 
             <div class="dashboard-resource-grid">
-                <a href="{{ asset('storage/docs/labschool_gr_exams.pdf') }}" class="dashboard-resource-link" target="_blank" rel="noopener">
+                <a href="https://labschool-gr.github.io/Exams/learn.html" class="dashboard-resource-link" target="_blank" rel="noopener">
                     <span class="dashboard-resource-link__icon">
-                        <i class="fas fa-file-pdf"></i>
+                        <i class="fas fa-book-open"></i>
                     </span>
                     <span class="dashboard-resource-link__content">
                         <strong>{{ __('dashboard.manual_teacher') }}</strong><br>
