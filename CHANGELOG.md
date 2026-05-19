@@ -26,6 +26,31 @@ The format is intentionally lightweight and release-friendly so entries can be r
 
 ## Unreleased
 
+## [v2.1.1] - 2026-05-19
+
+### Added
+
+- GitHub Pages documentation site with installation, upgrade, security, user-guide, and support pages.
+- Public quiz links can now be configured as non-expiring signed links by setting `SECURITY_PUBLIC_LINK_TTL_MINUTES=0`.
+
+### Changed
+
+- README now points readers to the published documentation pages and uses the compact project logo.
+- Dashboard teacher guide link now opens the online user guide instead of the legacy PDF.
+- Teacher navigation no longer shows the application update center to non-admin accounts.
+- TV Mode typography is smaller and more readable on classroom displays.
+- Participant join page no longer shows a source-code link inside the entry card.
+
+### Fixed
+
+- Account deletion confirmation modal now opens in the correct viewport layer and remains usable on small screens.
+- Password reset emails now include the missing Greek and English body lines.
+- Documentation pages with command examples now adapt better to small mobile screens.
+
+### Security
+
+- Public quiz URLs can remain signed without an expiry timestamp when explicitly configured for permanent guest access.
+
 ## [v2.1.0] - 2026-05-03
 
 ### Added
