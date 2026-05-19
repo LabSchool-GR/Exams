@@ -22,6 +22,7 @@ yarn-error.log
 /storage/logs/*.log
 /storage/framework/views/*.php
 /bootstrap/cache/*.php
+resources/views/quiz/templates/retroAXD3_img/
 /.fleet
 /.idea
 /.nova

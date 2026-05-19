@@ -34,6 +34,6 @@ This wiki is meant to provide a fast operational overview. Detailed technical an
 
 - Laravel 12 application with PHP 8.2+
 - multiple public and authenticated quiz flows
-- template-based quiz presentation, including event-style templates such as `retroAXD3_img`
+- template-based quiz presentation with the default application templates
 - GitHub Actions CI and tag-based release packaging
 - privacy and security controls such as CSP, throttling, and data-pruning jobs

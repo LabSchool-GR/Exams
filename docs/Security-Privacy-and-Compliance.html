@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Security, Privacy and Compliance</title>
+    <meta name="description" content="Security, privacy, and compliance guidance for LabSchool Exams deployments.">
+    <link rel="stylesheet" href="assets/pages.css">
+</head>
+<body>
+    <main class="shell">
+        <header class="topbar" data-page-header></header>
+
+        <section class="hero">
+            <span class="eyebrow" data-i18n="eyebrow">Security</span>
+            <h1 class="page-title" data-i18n="title">Security, Privacy and Compliance</h1>
+            <p class="lead" data-i18n="lead">
+                A practical guide for running LabSchool Exams responsibly in schools, training organizations, and public or private educational activities.
+            </p>
+        </section>
+
+        <section class="content">
+            <article class="panel">
+                <h2 data-i18n="purposeTitle">Purpose of this guide</h2>
+                <p data-i18n="purposeText">This page explains the main security and privacy mechanisms of LabSchool Exams in plain language. It helps administrators and educators understand what the application does, what must be configured, and what should be checked before real use.</p>
+                <div class="callout">
+                    <p data-i18n="legalNote">This page is not legal advice. Each organization remains responsible for its own data-protection policy, consent process, retention rules, and local legal obligations.</p>
+                </div>
+            </article>
+
+            <article class="panel" id="controls">
+                <h2 data-i18n="controlsTitle">A. Application security controls</h2>
+                <p data-i18n="controlsIntro">The application includes controls that reduce common risks in school-oriented and public quiz workflows.</p>
+                <ul>
+                    <li data-i18n="controlHeaders">Security headers are applied to application responses, including <code>X-Content-Type-Options</code>, <code>X-Frame-Options</code>, <code>Referrer-Policy</code>, <code>Permissions-Policy</code>, and cross-origin hardening headers.</li>
+                    <li data-i18n="controlCsp">Content Security Policy is enabled by default. It limits where scripts, styles, frames, fonts, images, and connections may load from.</li>
+                    <li data-i18n="controlNoCache">Runtime quiz pages are marked with no-store cache headers so question and answer content is not kept in browser history caches.</li>
+                    <li data-i18n="controlThrottle">Sensitive flows use throttling, including registration, feedback, quiz PIN validation, and student code validation.</li>
+                    <li data-i18n="controlSigned">Public quiz links, student links, display-session links, and selected PDF links use signed URLs where applicable.</li>
+                    <li data-i18n="controlRoles">Teacher and administrator back-office routes require authentication and verified email. Administrative actions are separated by permissions.</li>
+                </ul>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="privacyTitle">B. Privacy-aware participation</h2>
+                <p data-i18n="privacyIntro">LabSchool Exams is designed so participants do not need to create user accounts just to take a quiz. The quiz creator chooses the participation model that fits the activity.</p>
+                <ul>
+                    <li data-i18n="privacyPin">Participants may join with a temporary quiz PIN or student code.</li>
+                    <li data-i18n="privacySignedLinks">Participants may receive personalized signed links when the process requires controlled individual access.</li>
+                    <li data-i18n="privacyGuest">Guest or anonymous flows can be used where named participation is not necessary.</li>
+                    <li data-i18n="privacyBlind">Participant-name search support uses blind-index style hashing so search can work without relying only on plain text matching.</li>
+                    <li data-i18n="privacyCertificates">Certificates and attempt PDFs are protected by eligibility checks and signed or controlled access routes where applicable.</li>
+                </ul>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="retentionTitle">C. Data retention and scheduled cleanup</h2>
+                <p data-i18n="retentionIntro">Security is not only about login screens. In an educational platform, old personal data should not remain forever without reason.</p>
+                <ul>
+                    <li data-i18n="retentionAttempts">Old quiz attempt personal data can be anonymized by the scheduled <code>privacy:prune-exam-personal-data</code> command.</li>
+                    <li data-i18n="retentionStudents">Stale student registry rows can be pruned when they are no longer linked to recent or active attempts.</li>
+                    <li data-i18n="retentionDisplay">Temporary second-screen display sessions and anonymous pool reservations are pruned by <code>runtime:prune-temporary-state</code>.</li>
+                    <li data-i18n="retentionExpire">Timed quiz attempts are finalized by <code>quiz-attempts:expire</code>.</li>
+                </ul>
+                <pre class="code-block"><code>php artisan schedule:list
+php artisan privacy:prune-exam-personal-data
+php artisan runtime:prune-temporary-state</code></pre>
+                <div class="callout">
+                    <p data-i18n="retentionScheduler">For production, the Laravel scheduler must run every minute. If it stops, attempt expiry and privacy cleanup may drift from the intended policy.</p>
+                </div>
+            </article>
+
+            <article class="panel" id="operator">
+                <h2 data-i18n="operatorTitle">D. What the operator must configure</h2>
+                <p data-i18n="operatorIntro">The application provides safeguards, but the organization running it must configure the deployment correctly.</p>
+                <ul>
+                    <li data-i18n="operatorHttps">Use HTTPS in production. HSTS is sent when the request is already served securely.</li>
+                    <li data-i18n="operatorDebug">Keep <code>APP_ENV=production</code> and <code>APP_DEBUG=false</code> on a public server.</li>
+                    <li data-i18n="operatorSource">Set <code>APP_SOURCE_URL</code> to the canonical repository or release source, especially because the project is AGPL-licensed.</li>
+                    <li data-i18n="operatorMail">Configure mail correctly if registration, feedback, quota requests, or notifications are used.</li>
+                    <li data-i18n="operatorQueue">Run the queue worker when mail or other queued tasks use the database queue.</li>
+                    <li data-i18n="operatorDomains">Review <code>SECURITY_REGISTRATION_ALLOWED_EMAIL_DOMAINS</code> when teacher registration should be limited to specific domains such as <code>sch.gr</code>.</li>
+                    <li data-i18n="operatorTurnstile">Configure Cloudflare Turnstile keys if bot protection is required for registration.</li>
+                </ul>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="envTitle">E. Useful security settings</h2>
+                <p data-i18n="envIntro">These environment values are the main knobs an administrator may need to review.</p>
+                <pre class="code-block"><code>APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://your-domain.example
+APP_SOURCE_URL=https://github.com/LabSchool-GR/Exams
+SESSION_SECURE_COOKIE=true
+
+SECURITY_REGISTRATION_ALLOWED_EMAIL_DOMAINS=sch.gr
+SECURITY_REGISTRATION_THROTTLE=5,1
+SECURITY_FEEDBACK_THROTTLE=3,10
+SECURITY_QUIZ_CODE_THROTTLE=10,1
+SECURITY_STUDENT_CODE_THROTTLE=5,1
+
+SECURITY_CSP_ENABLED=true
+SECURITY_CSP_REPORT_ONLY=false
+SECURITY_CSP_REPORT_URI=
+
+SECURITY_ANONYMIZE_ATTEMPTS_AFTER_DAYS=180
+SECURITY_PRUNE_STUDENTS_AFTER_DAYS=180
+SECURITY_PRUNE_DISPLAY_SESSIONS_AFTER_HOURS=48</code></pre>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="legalTitle">F. Public information pages</h2>
+                <p data-i18n="legalIntro">The application includes public pages that explain the service, terms, and privacy notice. These should be reviewed and adapted by each deployment where needed.</p>
+                <ul>
+                    <li><code>/about</code></li>
+                    <li><code>/terms</code></li>
+                    <li><code>/privacy</code></li>
+                </ul>
+                <p data-i18n="legalSource">The footer also exposes license and source-code references. If a modified version is offered over a network, the AGPL license requires the corresponding source code to be available under the same license terms.</p>
+            </article>
+
+            <article class="panel" id="checklist">
+                <h2 data-i18n="checklistTitle">G. Checklist before real use or release</h2>
+                <ol>
+                    <li data-i18n="checkHeaders">Open an authenticated page and a public quiz page and confirm that security headers are present.</li>
+                    <li data-i18n="checkCsp">Confirm CSP is enforced, especially after template or JavaScript changes.</li>
+                    <li data-i18n="checkGuest">Confirm guest and public routes do not show teacher-only controls.</li>
+                    <li data-i18n="checkSigned">Test public quiz links, student links, signed PDF links, certificates, and verification flows.</li>
+                    <li data-i18n="checkScheduler">Confirm the scheduler and queue worker are running.</li>
+                    <li data-i18n="checkMail">Confirm mail delivery or log-mail behavior.</li>
+                    <li data-i18n="checkExports">Test PDF and Excel exports after framework, dependency, or template upgrades.</li>
+                    <li data-i18n="checkLegal">Review /about, /terms, and /privacy before public deployment.</li>
+                </ol>
+            </article>
+        </section>
+
+        <footer data-page-footer></footer>
+    </main>
+
+    <script>
+        window.ExamsPage = {
+            translations: {
+                en: {
+                    pageTitle: "Security, Privacy and Compliance",
+                    description: "Security, privacy, and compliance guidance for LabSchool Exams deployments.",
+                    eyebrow: "Security",
+                    title: "Security, Privacy and Compliance",
+                    lead: "A practical guide for running LabSchool Exams responsibly in schools, training organizations, and public or private educational activities.",
+                    controlsButton: "Application controls",
+                    operatorButton: "Operator duties",
+                    checklistButton: "Checklist",
+                    purposeTitle: "Purpose of this guide",
+                    purposeText: "This page explains the main security and privacy mechanisms of LabSchool Exams in plain language. It helps administrators and educators understand what the application does, what must be configured, and what should be checked before real use.",
+                    legalNote: "This page is not legal advice. Each organization remains responsible for its own data-protection policy, consent process, retention rules, and local legal obligations.",
+                    controlsTitle: "A. Application security controls",
+                    controlsIntro: "The application includes controls that reduce common risks in school-oriented and public quiz workflows.",
+                    controlHeaders: "Security headers are applied to application responses, including X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy, and cross-origin hardening headers.",
+                    controlCsp: "Content Security Policy is enabled by default. It limits where scripts, styles, frames, fonts, images, and connections may load from.",
+                    controlNoCache: "Runtime quiz pages are marked with no-store cache headers so question and answer content is not kept in browser history caches.",
+                    controlThrottle: "Sensitive flows use throttling, including registration, feedback, quiz PIN validation, and student code validation.",
+                    controlSigned: "Public quiz links, student links, display-session links, and selected PDF links use signed URLs where applicable.",
+                    controlRoles: "Teacher and administrator back-office routes require authentication and verified email. Administrative actions are separated by permissions.",
+                    privacyTitle: "B. Privacy-aware participation",
+                    privacyIntro: "LabSchool Exams is designed so participants do not need to create user accounts just to take a quiz. The quiz creator chooses the participation model that fits the activity.",
+                    privacyPin: "Participants may join with a temporary quiz PIN or student code.",
+                    privacySignedLinks: "Participants may receive personalized signed links when the process requires controlled individual access.",
+                    privacyGuest: "Guest or anonymous flows can be used where named participation is not necessary.",
+                    privacyBlind: "Participant-name search support uses blind-index style hashing so search can work without relying only on plain text matching.",
+                    privacyCertificates: "Certificates and attempt PDFs are protected by eligibility checks and signed or controlled access routes where applicable.",
+                    retentionTitle: "C. Data retention and scheduled cleanup",
+                    retentionIntro: "Security is not only about login screens. In an educational platform, old personal data should not remain forever without reason.",
+                    retentionAttempts: "Old quiz attempt personal data can be anonymized by the scheduled privacy:prune-exam-personal-data command.",
+                    retentionStudents: "Stale student registry rows can be pruned when they are no longer linked to recent or active attempts.",
+                    retentionDisplay: "Temporary second-screen display sessions and anonymous pool reservations are pruned by runtime:prune-temporary-state.",
+                    retentionExpire: "Timed quiz attempts are finalized by quiz-attempts:expire.",
+                    retentionScheduler: "For production, the Laravel scheduler must run every minute. If it stops, attempt expiry and privacy cleanup may drift from the intended policy.",
+                    operatorTitle: "D. What the operator must configure",
+                    operatorIntro: "The application provides safeguards, but the organization running it must configure the deployment correctly.",
+                    operatorHttps: "Use HTTPS in production. HSTS is sent when the request is already served securely.",
+                    operatorDebug: "Keep APP_ENV=production and APP_DEBUG=false on a public server.",
+                    operatorSource: "Set APP_SOURCE_URL to the canonical repository or release source, especially because the project is AGPL-licensed.",
+                    operatorMail: "Configure mail correctly if registration, feedback, quota requests, or notifications are used.",
+                    operatorQueue: "Run the queue worker when mail or other queued tasks use the database queue.",
+                    operatorDomains: "Review SECURITY_REGISTRATION_ALLOWED_EMAIL_DOMAINS when teacher registration should be limited to specific domains such as sch.gr.",
+                    operatorTurnstile: "Configure Cloudflare Turnstile keys if bot protection is required for registration.",
+                    envTitle: "E. Useful security settings",
+                    envIntro: "These environment values are the main knobs an administrator may need to review.",
+                    legalTitle: "F. Public information pages",
+                    legalIntro: "The application includes public pages that explain the service, terms, and privacy notice. These should be reviewed and adapted by each deployment where needed.",
+                    legalSource: "The footer also exposes license and source-code references. If a modified version is offered over a network, the AGPL license requires the corresponding source code to be available under the same license terms.",
+                    checklistTitle: "G. Checklist before real use or release",
+                    checkHeaders: "Open an authenticated page and a public quiz page and confirm that security headers are present.",
+                    checkCsp: "Confirm CSP is enforced, especially after template or JavaScript changes.",
+                    checkGuest: "Confirm guest and public routes do not show teacher-only controls.",
+                    checkSigned: "Test public quiz links, student links, signed PDF links, certificates, and verification flows.",
+                    checkScheduler: "Confirm the scheduler and queue worker are running.",
+                    checkMail: "Confirm mail delivery or log-mail behavior.",
+                    checkExports: "Test PDF and Excel exports after framework, dependency, or template upgrades.",
+                    checkLegal: "Review /about, /terms, and /privacy before public deployment."
+                },
+                el: {
+                    pageTitle: "Ασφάλεια, Απόρρητο και Συμμόρφωση",
+                    description: "Οδηγός ασφάλειας, απορρήτου και συμμόρφωσης για εγκαταστάσεις LabSchool Exams.",
+                    eyebrow: "Ασφάλεια",
+                    title: "Ασφάλεια, Απόρρητο και Συμμόρφωση",
+                    lead: "Πρακτικός οδηγός για υπεύθυνη λειτουργία του LabSchool Exams σε σχολεία, φορείς κατάρτισης και δημόσιες ή ιδιωτικές εκπαιδευτικές δράσεις.",
+                    controlsButton: "Έλεγχοι εφαρμογής",
+                    operatorButton: "Ευθύνες διαχειριστή",
+                    checklistButton: "Checklist",
+                    purposeTitle: "Σκοπός του οδηγού",
+                    purposeText: "Η σελίδα εξηγεί με απλή γλώσσα τους βασικούς μηχανισμούς ασφάλειας και απορρήτου του LabSchool Exams. Βοηθά διαχειριστές και εκπαιδευτικούς να κατανοήσουν τι κάνει η εφαρμογή, τι πρέπει να ρυθμιστεί και τι πρέπει να ελεγχθεί πριν από πραγματική χρήση.",
+                    legalNote: "Η σελίδα δεν αποτελεί νομική συμβουλή. Κάθε οργανισμός παραμένει υπεύθυνος για τη δική του πολιτική προστασίας δεδομένων, τη διαδικασία ενημέρωσης ή συναίνεσης, τους χρόνους διατήρησης και τις τοπικές νομικές υποχρεώσεις.",
+                    controlsTitle: "Α. Έλεγχοι ασφάλειας της εφαρμογής",
+                    controlsIntro: "Η εφαρμογή περιλαμβάνει ελέγχους που μειώνουν συνηθισμένους κινδύνους σε σχολικές και δημόσιες ροές δοκιμασιών.",
+                    controlHeaders: "Εφαρμόζονται security headers στις απαντήσεις της εφαρμογής, όπως X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy και cross-origin hardening headers.",
+                    controlCsp: "Το Content Security Policy είναι ενεργό από προεπιλογή. Περιορίζει από πού μπορούν να φορτωθούν scripts, styles, frames, fonts, εικόνες και συνδέσεις.",
+                    controlNoCache: "Οι runtime σελίδες δοκιμασίας έχουν no-store cache headers, ώστε το περιεχόμενο ερωτήσεων και απαντήσεων να μη μένει στο browser history cache.",
+                    controlThrottle: "Ευαίσθητες ροές χρησιμοποιούν throttling, όπως εγγραφή, feedback, έλεγχος quiz PIN και έλεγχος κωδικού μαθητή.",
+                    controlSigned: "Public quiz links, student links, display-session links και επιλεγμένα PDF links χρησιμοποιούν signed URLs όπου εφαρμόζεται.",
+                    controlRoles: "Οι σελίδες εκπαιδευτικού και διαχειριστή απαιτούν authentication και verified email. Οι διαχειριστικές ενέργειες χωρίζονται με permissions.",
+                    privacyTitle: "Β. Συμμετοχή με σεβασμό στο απόρρητο",
+                    privacyIntro: "Το LabSchool Exams έχει σχεδιαστεί ώστε οι εξεταζόμενοι να μη χρειάζεται να δημιουργούν λογαριασμό μόνο για να συμμετάσχουν σε μια δοκιμασία. Ο δημιουργός της δοκιμασίας επιλέγει το μοντέλο συμμετοχής που ταιριάζει στη δράση.",
+                    privacyPin: "Οι συμμετέχοντες μπορούν να μπουν με προσωρινό quiz PIN ή κωδικό μαθητή.",
+                    privacySignedLinks: "Οι συμμετέχοντες μπορούν να λάβουν προσωποποιημένα signed links όταν η διαδικασία απαιτεί ελεγχόμενη ατομική πρόσβαση.",
+                    privacyGuest: "Guest ή anonymous ροές μπορούν να χρησιμοποιηθούν όταν δεν είναι απαραίτητη η επώνυμη συμμετοχή.",
+                    privacyBlind: "Η αναζήτηση ονομάτων συμμετεχόντων υποστηρίζεται με blind-index style hashing, ώστε η αναζήτηση να λειτουργεί χωρίς να βασίζεται μόνο σε απλό plain text matching.",
+                    privacyCertificates: "Τα πιστοποιητικά και τα attempt PDFs προστατεύονται με eligibility checks και signed ή ελεγχόμενες διαδρομές πρόσβασης όπου εφαρμόζεται.",
+                    retentionTitle: "Γ. Διατήρηση δεδομένων και προγραμματισμένος καθαρισμός",
+                    retentionIntro: "Η ασφάλεια δεν αφορά μόνο τις οθόνες σύνδεσης. Σε μια εκπαιδευτική πλατφόρμα, παλιά προσωπικά δεδομένα δεν πρέπει να παραμένουν για πάντα χωρίς λόγο.",
+                    retentionAttempts: "Παλιά προσωπικά δεδομένα προσπαθειών μπορούν να ανωνυμοποιούνται από την προγραμματισμένη εντολή privacy:prune-exam-personal-data.",
+                    retentionStudents: "Παλιές εγγραφές εξεταζόμενων μπορούν να καθαρίζονται όταν δεν συνδέονται πλέον με πρόσφατες ή ενεργές προσπάθειες.",
+                    retentionDisplay: "Προσωρινές second-screen display sessions και anonymous pool reservations καθαρίζονται από την εντολή runtime:prune-temporary-state.",
+                    retentionExpire: "Χρονομετρημένες προσπάθειες ολοκληρώνονται από την εντολή quiz-attempts:expire.",
+                    retentionScheduler: "Σε production, ο Laravel scheduler πρέπει να εκτελείται κάθε λεπτό. Αν σταματήσει, η λήξη προσπαθειών και ο καθαρισμός προσωπικών δεδομένων μπορεί να αποκλίνουν από την αναμενόμενη πολιτική.",
+                    operatorTitle: "Δ. Τι πρέπει να ρυθμίσει ο διαχειριστής;",
+                    operatorIntro: "Η εφαρμογή παρέχει δικλείδες προστασίας, αλλά ο οργανισμός που τη λειτουργεί πρέπει να ρυθμίσει σωστά την εγκατάσταση.",
+                    operatorHttps: "Χρησιμοποιήστε HTTPS σε production. Το HSTS στέλνεται όταν το request εξυπηρετείται ήδη με ασφάλεια.",
+                    operatorDebug: "Κρατήστε APP_ENV=production και APP_DEBUG=false σε δημόσιο server.",
+                    operatorSource: "Ορίστε APP_SOURCE_URL προς το canonical repository ή release source, ειδικά επειδή το έργο διατίθεται με άδεια AGPL.",
+                    operatorMail: "Ρυθμίστε σωστά το mail αν χρησιμοποιούνται εγγραφές, feedback, αιτήματα quota ή ειδοποιήσεις.",
+                    operatorQueue: "Τρέξτε queue worker όταν το mail ή άλλες queued εργασίες χρησιμοποιούν database queue.",
+                    operatorDomains: "Ελέγξτε το SECURITY_REGISTRATION_ALLOWED_EMAIL_DOMAINS όταν η εγγραφή εκπαιδευτικών πρέπει να περιορίζεται σε συγκεκριμένα domains όπως sch.gr.",
+                    operatorTurnstile: "Ρυθμίστε Cloudflare Turnstile keys αν απαιτείται bot protection στην εγγραφή.",
+                    envTitle: "Ε. Χρήσιμες ρυθμίσεις ασφάλειας",
+                    envIntro: "Οι παρακάτω environment τιμές είναι οι βασικοί διακόπτες που μπορεί να χρειαστεί να ελέγξει ένας διαχειριστής.",
+                    legalTitle: "ΣΤ. Δημόσιες ενημερωτικές σελίδες",
+                    legalIntro: "Η εφαρμογή περιλαμβάνει δημόσιες σελίδες που εξηγούν την υπηρεσία, τους όρους και την πολιτική απορρήτου. Κάθε εγκατάσταση πρέπει να τις ελέγχει και να τις προσαρμόζει όπου χρειάζεται.",
+                    legalSource: "Το footer εμφανίζει επίσης αναφορές άδειας και πηγαίου κώδικα. Αν μια τροποποιημένη έκδοση προσφέρεται μέσω δικτύου, η άδεια AGPL απαιτεί να είναι διαθέσιμος ο αντίστοιχος πηγαίος κώδικας με τους ίδιους όρους.",
+                    checklistTitle: "Ζ. Checklist πριν από πραγματική χρήση ή release",
+                    checkHeaders: "Ανοίξτε μια authenticated σελίδα και μια public quiz σελίδα και επιβεβαιώστε ότι υπάρχουν security headers.",
+                    checkCsp: "Επιβεβαιώστε ότι το CSP εφαρμόζεται, ειδικά μετά από αλλαγές σε templates ή JavaScript.",
+                    checkGuest: "Επιβεβαιώστε ότι guest και public routes δεν εμφανίζουν λειτουργίες μόνο για εκπαιδευτικούς.",
+                    checkSigned: "Δοκιμάστε public quiz links, student links, signed PDF links, πιστοποιητικά και verification flows.",
+                    checkScheduler: "Επιβεβαιώστε ότι scheduler και queue worker εκτελούνται.",
+                    checkMail: "Επιβεβαιώστε mail delivery ή log-mail behavior.",
+                    checkExports: "Δοκιμάστε PDF και Excel exports μετά από framework, dependency ή template upgrades.",
+                    checkLegal: "Ελέγξτε /about, /terms και /privacy πριν από δημόσια διάθεση."
+                }
+            }
+        };
+    </script>
+    <script src="assets/pages.js"></script>
+</body>
+</html>

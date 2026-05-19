@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quiz Display Templates</title>
+    <meta name="description" content="How teachers select quiz display templates and how administrators create, edit, assign, and maintain templates in LabSchool Exams.">
+    <link rel="stylesheet" href="assets/pages.css">
+</head>
+<body>
+    <main class="shell">
+        <header class="topbar" data-page-header></header>
+
+        <section class="hero">
+            <span class="eyebrow" data-i18n="eyebrow">Fifth guide</span>
+            <h1 class="page-title" data-i18n="title">Quiz Display Templates</h1>
+            <p class="lead" data-i18n="lead">
+                This page explains how the visual style of a quiz is chosen, what the teacher sees when selecting a template, and how administrators manage the templates that are available in the platform.
+            </p>
+
+        </section>
+
+        <section class="content">
+            <article class="panel">
+                <h2 data-i18n="purposeTitle">What a template changes</h2>
+                <p data-i18n="purposeTextOne">
+                    A quiz template controls how the participant sees the quiz: the start page, the question page, the answer choices, and the result page. The content remains the same, but the presentation can be simple, image-based, or designed for a special event.
+                </p>
+                <p data-i18n="purposeTextTwo">
+                    For the teacher, the important point is simple: when creating or editing a quiz, the field "Question style" decides which display template the examinees will experience.
+                </p>
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <strong data-i18n="purposeStepOneTitle">Basic template</strong>
+                        <p data-i18n="purposeStepOneText">A clear layout for ordinary text-based questions.</p>
+                    </div>
+                    <div class="guide-step">
+                        <strong data-i18n="purposeStepTwoTitle">Image template</strong>
+                        <p data-i18n="purposeStepTwoText">A layout that can show an image next to the question.</p>
+                    </div>
+                    <div class="guide-step">
+                        <strong data-i18n="purposeStepThreeTitle">Custom template</strong>
+                        <p data-i18n="purposeStepThreeText">A special visual experience prepared and assigned by an administrator.</p>
+                    </div>
+                </div>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="teacherTitle">What the teacher chooses</h2>
+                <p data-i18n="teacherTextOne">
+                    In the quiz creation and editing form, the teacher chooses the template from the available list. If a template supports images, the question image that was uploaded in the question editor can appear in the participant view.
+                </p>
+                <p data-i18n="teacherTextTwo">
+                    The teacher does not need to manage the template files. They only choose the style that matches the lesson: simple and focused for a regular assessment, image-based for visual material, or event-style when the activity needs a stronger visual identity.
+                </p>
+                <div class="callout">
+                    <p data-i18n="teacherNote">Only templates that are common or assigned to the teacher are available in the quiz form.</p>
+                </div>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="adminListTitle">Administrator template list</h2>
+                <p data-i18n="adminListTextOne">
+                    Administrators have a separate template management page. There they can see every template with its name, description, internal code, availability, and assigned users.
+                </p>
+                <p data-i18n="adminListTextTwo">
+                    A common template is visible to all teachers. A non-common template is available only to the selected users. This lets the platform keep standard templates for everyone, while also supporting special templates for a specific school activity or event.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz-templates/21 quiz-templates.jpg" alt="Quiz template management list">
+                    <figcaption data-i18n="adminListCaption">The template list shows the code, whether the template is common or assigned, and the users who can use it.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="editTitle">Creating or editing a template record</h2>
+                <p data-i18n="editTextOne">
+                    When an administrator creates or edits a template, they define the template code, name, and description. The code is important because it connects the database record with the matching view files of the template.
+                </p>
+                <p data-i18n="editTextTwo">
+                    The administrator then decides whether the template is available to all users. If it is not common, specific teachers can be selected from the user list.
+                </p>
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <strong data-i18n="editStepOneTitle">Code</strong>
+                        <p data-i18n="editStepOneText">The technical identifier used by the application to find the template.</p>
+                    </div>
+                    <div class="guide-step">
+                        <strong data-i18n="editStepTwoTitle">Name and description</strong>
+                        <p data-i18n="editStepTwoText">The human-friendly information shown to administrators.</p>
+                    </div>
+                    <div class="guide-step">
+                        <strong data-i18n="editStepThreeTitle">Availability</strong>
+                        <p data-i18n="editStepThreeText">Either common for everyone or assigned to selected teachers.</p>
+                    </div>
+                </div>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz-templates/22 quiz-templates-add-edit.jpg" alt="Edit quiz template form">
+                    <figcaption data-i18n="editCaption">The edit form controls the template details and who can use it.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="filesTitle">The files behind a template</h2>
+                <p data-i18n="filesTextOne">
+                    A display template is not only a name in the database. It also has view files that describe the participant screens. The usual files cover the start screen, the question screen, the student view, and the result screen.
+                </p>
+                <p data-i18n="filesTextTwo">
+                    This is why template work should be done carefully: the administrator can register and assign a template, but the visual behavior depends on the matching files existing in the application.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz-templates/23 quiz-templates-files.jpg" alt="Quiz template files">
+                    <figcaption data-i18n="filesCaption">A template folder usually contains separate files for the start, question, student, and result screens.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="demoTitle">How templates affect the participant view</h2>
+                <p data-i18n="demoTextOne">
+                    The same quiz can feel very different depending on the selected template. A calm image-based template is useful for a lesson where the student needs to observe a painting, map, diagram, or photograph.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz-templates/24 quiz-templates-demo1.jpg" alt="Image-based quiz template demo">
+                    <figcaption data-i18n="demoCaptionOne">An image-based template can place the question image beside the possible answers.</figcaption>
+                </figure>
+                <p data-i18n="demoTextTwo">
+                    A custom event template can use a stronger visual style, different colors, larger typography, and a more playful layout. This is useful for public events, competitions, workshops, or themed activities.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz-templates/25 quiz-templates-demo2.jpg" alt="Custom event quiz template demo">
+                    <figcaption data-i18n="demoCaptionTwo">A custom template can give the quiz a completely different atmosphere while keeping the same quiz logic.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="bestTitle">A practical way to choose</h2>
+                <p data-i18n="bestTextOne">
+                    For everyday tests, choose the simplest template that keeps attention on the questions. If the question needs visual observation, choose a template that supports images. If the quiz is part of a presentation or event, a custom template can make the activity feel more complete.
+                </p>
+                <p data-i18n="bestTextTwo">
+                    The safest habit is to preview or test the quiz after changing the template, especially when questions include images or when the quiz will be shown to many people at once.
+                </p>
+            </article>
+        </section>
+
+        <footer data-page-footer></footer>
+    </main>
+
+    <script>
+        window.ExamsPage = {
+            translations: {
+                en: {
+                    pageTitle: "Quiz Display Templates",
+                    description: "How teachers select quiz display templates and how administrators create, edit, assign, and maintain templates in LabSchool Exams.",
+                    eyebrow: "Fifth guide",
+                    title: "Quiz Display Templates",
+                    lead: "This page explains how the visual style of a quiz is chosen, what the teacher sees when selecting a template, and how administrators manage the templates that are available in the platform.",
+                    purposeTitle: "What a template changes",
+                    purposeTextOne: "A quiz template controls how the participant sees the quiz: the start page, the question page, the answer choices, and the result page. The content remains the same, but the presentation can be simple, image-based, or designed for a special event.",
+                    purposeTextTwo: "For the teacher, the important point is simple: when creating or editing a quiz, the field \"Question style\" decides which display template the examinees will experience.",
+                    purposeStepOneTitle: "Basic template",
+                    purposeStepOneText: "A clear layout for ordinary text-based questions.",
+                    purposeStepTwoTitle: "Image template",
+                    purposeStepTwoText: "A layout that can show an image next to the question.",
+                    purposeStepThreeTitle: "Custom template",
+                    purposeStepThreeText: "A special visual experience prepared and assigned by an administrator.",
+                    teacherTitle: "What the teacher chooses",
+                    teacherTextOne: "In the quiz creation and editing form, the teacher chooses the template from the available list. If a template supports images, the question image that was uploaded in the question editor can appear in the participant view.",
+                    teacherTextTwo: "The teacher does not need to manage the template files. They only choose the style that matches the lesson: simple and focused for a regular assessment, image-based for visual material, or event-style when the activity needs a stronger visual identity.",
+                    teacherNote: "Only templates that are common or assigned to the teacher are available in the quiz form.",
+                    adminListTitle: "Administrator template list",
+                    adminListTextOne: "Administrators have a separate template management page. There they can see every template with its name, description, internal code, availability, and assigned users.",
+                    adminListTextTwo: "A common template is visible to all teachers. A non-common template is available only to the selected users. This lets the platform keep standard templates for everyone, while also supporting special templates for a specific school activity or event.",
+                    adminListCaption: "The template list shows the code, whether the template is common or assigned, and the users who can use it.",
+                    editTitle: "Creating or editing a template record",
+                    editTextOne: "When an administrator creates or edits a template, they define the template code, name, and description. The code is important because it connects the database record with the matching view files of the template.",
+                    editTextTwo: "The administrator then decides whether the template is available to all users. If it is not common, specific teachers can be selected from the user list.",
+                    editStepOneTitle: "Code",
+                    editStepOneText: "The technical identifier used by the application to find the template.",
+                    editStepTwoTitle: "Name and description",
+                    editStepTwoText: "The human-friendly information shown to administrators.",
+                    editStepThreeTitle: "Availability",
+                    editStepThreeText: "Either common for everyone or assigned to selected teachers.",
+                    editCaption: "The edit form controls the template details and who can use it.",
+                    filesTitle: "The files behind a template",
+                    filesTextOne: "A display template is not only a name in the database. It also has view files that describe the participant screens. The usual files cover the start screen, the question screen, the student view, and the result screen.",
+                    filesTextTwo: "This is why template work should be done carefully: the administrator can register and assign a template, but the visual behavior depends on the matching files existing in the application.",
+                    filesCaption: "A template folder usually contains separate files for the start, question, student, and result screens.",
+                    demoTitle: "How templates affect the participant view",
+                    demoTextOne: "The same quiz can feel very different depending on the selected template. A calm image-based template is useful for a lesson where the student needs to observe a painting, map, diagram, or photograph.",
+                    demoCaptionOne: "An image-based template can place the question image beside the possible answers.",
+                    demoTextTwo: "A custom event template can use a stronger visual style, different colors, larger typography, and a more playful layout. This is useful for public events, competitions, workshops, or themed activities.",
+                    demoCaptionTwo: "A custom template can give the quiz a completely different atmosphere while keeping the same quiz logic.",
+                    bestTitle: "A practical way to choose",
+                    bestTextOne: "For everyday tests, choose the simplest template that keeps attention on the questions. If the question needs visual observation, choose a template that supports images. If the quiz is part of a presentation or event, a custom template can make the activity feel more complete.",
+                    bestTextTwo: "The safest habit is to preview or test the quiz after changing the template, especially when questions include images or when the quiz will be shown to many people at once."
+                },
+                el: {
+                    pageTitle: "Πρότυπα Εμφάνισης Quiz",
+                    description: "Πώς οι εκπαιδευτικοί επιλέγουν πρότυπα εμφάνισης quiz και πώς οι διαχειριστές δημιουργούν, επεξεργάζονται, αναθέτουν και συντηρούν πρότυπα στο LabSchool Exams.",
+                    eyebrow: "Πέμπτος οδηγός",
+                    title: "Πρότυπα Εμφάνισης Quiz",
+                    lead: "Η σελίδα αυτή εξηγεί πώς επιλέγεται το οπτικό στυλ ενός quiz, τι βλέπει ο εκπαιδευτικός όταν διαλέγει πρότυπο και πώς οι διαχειριστές διαχειρίζονται τα διαθέσιμα πρότυπα της πλατφόρμας.",
+                    purposeTitle: "Τι αλλάζει ένα πρότυπο;",
+                    purposeTextOne: "Το πρότυπο εμφάνισης quiz καθορίζει πώς βλέπει ο συμμετέχων τη δοκιμασία: την αρχική σελίδα, τη σελίδα ερώτησης, τις επιλογές απάντησης και τη σελίδα αποτελέσματος. Το περιεχόμενο παραμένει το ίδιο, αλλά η παρουσίαση μπορεί να είναι απλή, με εικόνες ή σχεδιασμένη για μια ειδική εκδήλωση.",
+                    purposeTextTwo: "Για τον εκπαιδευτικό, το βασικό είναι απλό: κατά τη δημιουργία ή επεξεργασία του quiz, το πεδίο \"Στυλ Ερωτήσεων\" καθορίζει ποιο πρότυπο εμφάνισης θα δουν οι εξεταζόμενοι.",
+                    purposeStepOneTitle: "Βασικό πρότυπο",
+                    purposeStepOneText: "Καθαρή εμφάνιση για συνηθισμένες ερωτήσεις κειμένου.",
+                    purposeStepTwoTitle: "Πρότυπο με εικόνες",
+                    purposeStepTwoText: "Εμφάνιση που μπορεί να δείχνει εικόνα δίπλα στην ερώτηση.",
+                    purposeStepThreeTitle: "Προσαρμοσμένο πρότυπο",
+                    purposeStepThreeText: "Ειδική οπτική εμπειρία που έχει ετοιμαστεί και ανατεθεί από διαχειριστή.",
+                    teacherTitle: "Τι επιλέγει ο εκπαιδευτικός;",
+                    teacherTextOne: "Στη φόρμα δημιουργίας και επεξεργασίας quiz, ο εκπαιδευτικός επιλέγει το πρότυπο από τη διαθέσιμη λίστα. Αν ένα πρότυπο υποστηρίζει εικόνες, η εικόνα που ανέβηκε στην ερώτηση μπορεί να εμφανιστεί στην οθόνη του συμμετέχοντα.",
+                    teacherTextTwo: "Ο εκπαιδευτικός δεν χρειάζεται να διαχειριστεί τα αρχεία του προτύπου. Επιλέγει μόνο το στυλ που ταιριάζει στο μάθημα: απλό και συγκεντρωμένο για μια κανονική αξιολόγηση, με εικόνα για οπτικό υλικό ή event-style όταν η δραστηριότητα χρειάζεται πιο έντονη οπτική ταυτότητα.",
+                    teacherNote: "Στη φόρμα του quiz εμφανίζονται μόνο τα πρότυπα που είναι κοινά ή έχουν ανατεθεί στον συγκεκριμένο εκπαιδευτικό.",
+                    adminListTitle: "Λίστα προτύπων διαχειριστή",
+                    adminListTextOne: "Οι διαχειριστές έχουν ξεχωριστή σελίδα διαχείρισης προτύπων. Εκεί βλέπουν κάθε πρότυπο με όνομα, περιγραφή, εσωτερικό κωδικό, διαθεσιμότητα και ανατεθειμένους χρήστες.",
+                    adminListTextTwo: "Ένα κοινό πρότυπο είναι ορατό σε όλους τους εκπαιδευτικούς. Ένα μη κοινό πρότυπο είναι διαθέσιμο μόνο στους επιλεγμένους χρήστες. Έτσι η πλατφόρμα κρατά βασικά πρότυπα για όλους, αλλά υποστηρίζει και ειδικά πρότυπα για συγκεκριμένη σχολική δράση ή εκδήλωση.",
+                    adminListCaption: "Η λίστα προτύπων δείχνει τον κωδικό, αν το πρότυπο είναι κοινό ή ανατεθειμένο, και τους χρήστες που μπορούν να το χρησιμοποιήσουν.",
+                    editTitle: "Δημιουργία ή επεξεργασία εγγραφής προτύπου",
+                    editTextOne: "Όταν ο διαχειριστής δημιουργεί ή επεξεργάζεται ένα πρότυπο, ορίζει τον κωδικό, το όνομα και την περιγραφή. Ο κωδικός είναι σημαντικός γιατί συνδέει την εγγραφή της βάσης με τα αντίστοιχα αρχεία εμφάνισης του προτύπου.",
+                    editTextTwo: "Στη συνέχεια ο διαχειριστής αποφασίζει αν το πρότυπο θα είναι διαθέσιμο σε όλους τους χρήστες. Αν δεν είναι κοινό, μπορούν να επιλεγούν συγκεκριμένοι εκπαιδευτικοί από τη λίστα χρηστών.",
+                    editStepOneTitle: "Κωδικός",
+                    editStepOneText: "Το τεχνικό αναγνωριστικό που χρησιμοποιεί η εφαρμογή για να βρει το πρότυπο.",
+                    editStepTwoTitle: "Όνομα και περιγραφή",
+                    editStepTwoText: "Οι φιλικές πληροφορίες που εμφανίζονται στους διαχειριστές.",
+                    editStepThreeTitle: "Διαθεσιμότητα",
+                    editStepThreeText: "Είτε κοινό για όλους είτε ανατεθειμένο σε επιλεγμένους εκπαιδευτικούς.",
+                    editCaption: "Η φόρμα επεξεργασίας ορίζει τα στοιχεία του προτύπου και ποιοι μπορούν να το χρησιμοποιούν.",
+                    filesTitle: "Τα αρχεία πίσω από ένα πρότυπο",
+                    filesTextOne: "Ένα πρότυπο εμφάνισης δεν είναι μόνο ένα όνομα στη βάση δεδομένων. Έχει και αρχεία προβολής που περιγράφουν τις οθόνες του συμμετέχοντα. Συνήθως υπάρχουν αρχεία για την αρχική οθόνη, την ερώτηση, την οθόνη μαθητή και το αποτέλεσμα.",
+                    filesTextTwo: "Για αυτό η εργασία με πρότυπα χρειάζεται προσοχή: ο διαχειριστής μπορεί να καταχωρίσει και να αναθέσει ένα πρότυπο, αλλά η οπτική συμπεριφορά εξαρτάται από το αν υπάρχουν τα αντίστοιχα αρχεία μέσα στην εφαρμογή.",
+                    filesCaption: "Ένας φάκελος προτύπου συνήθως περιέχει ξεχωριστά αρχεία για αρχική οθόνη, ερώτηση, μαθητή και αποτέλεσμα.",
+                    demoTitle: "Πώς επηρεάζουν τα πρότυπα την οθόνη του συμμετέχοντα;",
+                    demoTextOne: "Το ίδιο quiz μπορεί να δίνει πολύ διαφορετική αίσθηση ανάλογα με το επιλεγμένο πρότυπο. Ένα ήρεμο πρότυπο με εικόνες είναι χρήσιμο σε μάθημα όπου ο μαθητής πρέπει να παρατηρήσει πίνακα, χάρτη, διάγραμμα ή φωτογραφία.",
+                    demoCaptionOne: "Ένα πρότυπο με εικόνες μπορεί να τοποθετήσει την εικόνα της ερώτησης δίπλα στις πιθανές απαντήσεις.",
+                    demoTextTwo: "Ένα προσαρμοσμένο πρότυπο εκδήλωσης μπορεί να χρησιμοποιεί πιο έντονο οπτικό ύφος, διαφορετικά χρώματα, μεγαλύτερη τυπογραφία και πιο παιχνιδιάρικη διάταξη. Είναι χρήσιμο για δημόσιες εκδηλώσεις, διαγωνισμούς, εργαστήρια ή θεματικές δραστηριότητες.",
+                    demoCaptionTwo: "Ένα προσαρμοσμένο πρότυπο μπορεί να δώσει στο quiz εντελώς διαφορετική ατμόσφαιρα, κρατώντας την ίδια λογική λειτουργίας.",
+                    bestTitle: "Ένας πρακτικός τρόπος επιλογής",
+                    bestTextOne: "Για καθημερινές δοκιμασίες, επιλέγουμε το πιο απλό πρότυπο που κρατά την προσοχή στις ερωτήσεις. Αν η ερώτηση χρειάζεται οπτική παρατήρηση, επιλέγουμε πρότυπο που υποστηρίζει εικόνες. Αν το quiz είναι μέρος παρουσίασης ή εκδήλωσης, ένα προσαρμοσμένο πρότυπο μπορεί να κάνει τη δραστηριότητα πιο ολοκληρωμένη.",
+                    bestTextTwo: "Η πιο ασφαλής συνήθεια είναι να κάνουμε προεπισκόπηση ή δοκιμή του quiz μετά την αλλαγή προτύπου, ειδικά όταν οι ερωτήσεις περιλαμβάνουν εικόνες ή όταν το quiz θα προβληθεί σε πολλά άτομα ταυτόχρονα."
+                }
+            }
+        };
+    </script>
+    <script src="assets/pages.js"></script>
+</body>
+</html>

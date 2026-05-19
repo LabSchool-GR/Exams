@@ -39,9 +39,9 @@ Template changes often introduce issues in these areas:
 - transitions that interfere with submit or navigation behavior
 - selected-answer styling that is visible for one color only
 
-## For Public Event Templates
+## For Custom Public Event Templates
 
-Event templates such as `retroAXD3_img` should also be checked for:
+Custom templates that are added locally beyond the default application templates should also be checked for:
 
 - social preview metadata
 - public-share presentation quality

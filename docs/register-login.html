@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User Registration and Login</title>
+    <meta name="description" content="How educators register, verify email, sign in, and reset their password in LabSchool Exams.">
+    <link rel="stylesheet" href="assets/pages.css">
+</head>
+<body>
+    <main class="shell">
+        <header class="topbar" data-page-header></header>
+
+        <section class="hero">
+            <span class="eyebrow" data-i18n="eyebrow">First guide</span>
+            <h1 class="page-title" data-i18n="title">User Registration and Login</h1>
+            <p class="lead" data-i18n="lead">
+                This page explains, in plain teacher-friendly language, how an educator creates an account, confirms the email address, signs in, and resets a forgotten password.
+            </p>
+        </section>
+
+        <section class="content">
+            <article class="panel">
+                <h2 data-i18n="overviewTitle">What this process is for</h2>
+                <p data-i18n="overviewText">
+                    The account is for the educator who creates and manages quizzes. Students or examinees do not need to create an account for taking a quiz.
+                </p>
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <strong data-i18n="stepOneTitle">1. Register</strong>
+                        <p data-i18n="stepOneText">Fill in your name, institutional email, and a personal password for this application.</p>
+                    </div>
+                    <div class="guide-step">
+                        <strong data-i18n="stepTwoTitle">2. Verify email</strong>
+                        <p data-i18n="stepTwoText">Open the message sent to your email and confirm the address.</p>
+                    </div>
+                    <div class="guide-step">
+                        <strong data-i18n="stepThreeTitle">3. Sign in</strong>
+                        <p data-i18n="stepThreeText">Use your email and the password you created for LabSchool Exams.</p>
+                    </div>
+                </div>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="registerTitle">Registering as an educator</h2>
+                <p data-i18n="registerTextOne">
+                    On the registration page, the educator enters full name, institutional email, password, and password confirmation. The password should be a separate personal password for LabSchool Exams, not the password used for another service.
+                </p>
+                <p data-i18n="registerTextTwo">
+                    The page also shows the default account limits, such as the number of quizzes, questions, answers, and examinees available to the new account. If more limits are needed later, the educator can request them after registration.
+                </p>
+                <p data-i18n="registerTextThree">
+                    Before submitting the form, the educator accepts the Terms of Use and Privacy Notice and completes the security check.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/register-login/01 register.jpg" alt="Educator registration screen">
+                    <figcaption data-i18n="registerCaption">Educator registration form with account limits and security check.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="verifyTitle">Confirming the email address</h2>
+                <p data-i18n="verifyTextOne">
+                    After registration, LabSchool Exams asks the educator to verify the email address. This protects the account and confirms that the address really belongs to the user.
+                </p>
+                <p data-i18n="verifyTextTwo">
+                    The educator opens the email message and clicks the verification button. If the message does not arrive, the application can send a new verification email from the verification screen.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/register-login/02 verify-email.jpg" alt="Email verification message">
+                    <figcaption data-i18n="verifyMailCaption">The verification email includes a button and a fallback link.</figcaption>
+                </figure>
+                <figure class="guide-figure">
+                    <img src="screenshots/register-login/03 verify-email.jpg" alt="Email verification screen">
+                    <figcaption data-i18n="verifyScreenCaption">The application screen can resend the verification email if needed.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="loginTitle">Signing in and reaching the dashboard</h2>
+                <p data-i18n="loginTextOne">
+                    Once the email has been verified, the educator signs in with the institutional email and the password created during registration.
+                </p>
+                <p data-i18n="loginTextTwo">
+                    After login, the dashboard opens. From there the educator can go to the personal quiz collection, create quizzes, review activity, and see the account limits.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/register-login/04 dashboard.jpg" alt="Teacher dashboard after login">
+                    <figcaption data-i18n="dashboardCaption">The first dashboard view after successful registration and login.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="forgotTitle">If the educator forgets the password</h2>
+                <p data-i18n="forgotTextOne">
+                    From the login page, the educator chooses the forgotten-password option and writes the email address used for the account.
+                </p>
+                <p data-i18n="forgotTextTwo">
+                    The application sends a reset link. The educator opens that link, enters a new password, confirms it, and then signs in again with the new password.
+                </p>
+                <div class="callout">
+                    <p data-i18n="forgotNote">Only the password changes. The quizzes, reports, and account data remain connected to the same educator account.</p>
+                </div>
+                <figure class="guide-figure">
+                    <img src="screenshots/register-login/04 forgot-password.jpg" alt="Forgot password form">
+                    <figcaption data-i18n="forgotCaption">The educator requests a password reset link by entering the account email.</figcaption>
+                </figure>
+                <figure class="guide-figure">
+                    <img src="screenshots/register-login/05 reset-password.jpg" alt="Reset password form">
+                    <figcaption data-i18n="resetCaption">The reset page asks for a new password and confirmation.</figcaption>
+                </figure>
+            </article>
+        </section>
+
+        <footer data-page-footer></footer>
+    </main>
+
+    <script>
+        window.ExamsPage = {
+            translations: {
+                en: {
+                    pageTitle: "User Registration and Login",
+                    description: "How educators register, verify email, sign in, and reset their password in LabSchool Exams.",
+                    eyebrow: "First guide",
+                    title: "User Registration and Login",
+                    lead: "This page explains, in plain teacher-friendly language, how an educator creates an account, confirms the email address, signs in, and resets a forgotten password.",
+                    overviewTitle: "What this process is for",
+                    overviewText: "The account is for the educator who creates and manages quizzes. Students or examinees do not need to create an account for taking a quiz.",
+                    stepOneTitle: "1. Register",
+                    stepOneText: "Fill in your name, institutional email, and a personal password for this application.",
+                    stepTwoTitle: "2. Verify email",
+                    stepTwoText: "Open the message sent to your email and confirm the address.",
+                    stepThreeTitle: "3. Sign in",
+                    stepThreeText: "Use your email and the password you created for LabSchool Exams.",
+                    registerTitle: "Registering as an educator",
+                    registerTextOne: "On the registration page, the educator enters full name, institutional email, password, and password confirmation. The password should be a separate personal password for LabSchool Exams, not the password used for another service.",
+                    registerTextTwo: "The page also shows the default account limits, such as the number of quizzes, questions, answers, and examinees available to the new account. If more limits are needed later, the educator can request them after registration.",
+                    registerTextThree: "Before submitting the form, the educator accepts the Terms of Use and Privacy Notice and completes the security check.",
+                    registerCaption: "Educator registration form with account limits and security check.",
+                    verifyTitle: "Confirming the email address",
+                    verifyTextOne: "After registration, LabSchool Exams asks the educator to verify the email address. This protects the account and confirms that the address really belongs to the user.",
+                    verifyTextTwo: "The educator opens the email message and clicks the verification button. If the message does not arrive, the application can send a new verification email from the verification screen.",
+                    verifyMailCaption: "The verification email includes a button and a fallback link.",
+                    verifyScreenCaption: "The application screen can resend the verification email if needed.",
+                    loginTitle: "Signing in and reaching the dashboard",
+                    loginTextOne: "Once the email has been verified, the educator signs in with the institutional email and the password created during registration.",
+                    loginTextTwo: "After login, the dashboard opens. From there the educator can go to the personal quiz collection, create quizzes, review activity, and see the account limits.",
+                    dashboardCaption: "The first dashboard view after successful registration and login.",
+                    forgotTitle: "If the educator forgets the password",
+                    forgotTextOne: "From the login page, the educator chooses the forgotten-password option and writes the email address used for the account.",
+                    forgotTextTwo: "The application sends a reset link. The educator opens that link, enters a new password, confirms it, and then signs in again with the new password.",
+                    forgotNote: "Only the password changes. The quizzes, reports, and account data remain connected to the same educator account.",
+                    forgotCaption: "The educator requests a password reset link by entering the account email.",
+                    resetCaption: "The reset page asks for a new password and confirmation."
+                },
+                el: {
+                    pageTitle: "Εγγραφή και Σύνδεση Χρηστών",
+                    description: "Πώς γίνεται η εγγραφή, η επιβεβαίωση email, η σύνδεση και η επαναφορά κωδικού στο LabSchool Exams.",
+                    eyebrow: "Πρώτος οδηγός",
+                    title: "Εγγραφή και Σύνδεση Χρηστών",
+                    lead: "Η σελίδα αυτή εξηγεί με απλό τρόπο, όπως θα το έλεγε ένας καθηγητής, πώς ένας εκπαιδευτικός δημιουργεί λογαριασμό, επιβεβαιώνει το email του, συνδέεται και επαναφέρει τον κωδικό του αν τον ξεχάσει.",
+                    overviewTitle: "Σε τι χρησιμεύει αυτή η διαδικασία;",
+                    overviewText: "Ο λογαριασμός αφορά τον εκπαιδευτικό που δημιουργεί και διαχειρίζεται quiz. Οι μαθητές ή οι εξεταζόμενοι δεν χρειάζεται να δημιουργήσουν λογαριασμό για να συμμετάσχουν σε ένα quiz.",
+                    stepOneTitle: "1. Εγγραφή",
+                    stepOneText: "Συμπληρώνετε ονοματεπώνυμο, υπηρεσιακό email και έναν προσωπικό κωδικό για την εφαρμογή.",
+                    stepTwoTitle: "2. Επιβεβαίωση email",
+                    stepTwoText: "Ανοίγετε το μήνυμα που στάλθηκε στο email σας και επιβεβαιώνετε τη διεύθυνση.",
+                    stepThreeTitle: "3. Σύνδεση",
+                    stepThreeText: "Χρησιμοποιείτε το email σας και τον κωδικό που δημιουργήσατε για το LabSchool Exams.",
+                    registerTitle: "Εγγραφή εκπαιδευτικού",
+                    registerTextOne: "Στη σελίδα εγγραφής ο εκπαιδευτικός συμπληρώνει ονοματεπώνυμο, υπηρεσιακό email, κωδικό και επιβεβαίωση κωδικού. Ο κωδικός πρέπει να είναι ένας ξεχωριστός προσωπικός κωδικός για το LabSchool Exams, όχι ο κωδικός που χρησιμοποιείται σε άλλη υπηρεσία.",
+                    registerTextTwo: "Στην ίδια σελίδα εμφανίζονται και τα προεπιλεγμένα όρια του λογαριασμού, όπως πόσα quiz, ερωτήσεις, απαντήσεις και εξεταζόμενους μπορεί να χρησιμοποιήσει αρχικά ο νέος λογαριασμός. Αν χρειαστούν περισσότερα όρια αργότερα, ο εκπαιδευτικός μπορεί να τα ζητήσει μετά την εγγραφή.",
+                    registerTextThree: "Πριν γίνει η εγγραφή, ο εκπαιδευτικός αποδέχεται τους Όρους Χρήσης και την Πολιτική Απορρήτου και ολοκληρώνει τον έλεγχο ασφαλείας.",
+                    registerCaption: "Η φόρμα εγγραφής εκπαιδευτικού με τα όρια λογαριασμού και τον έλεγχο ασφαλείας.",
+                    verifyTitle: "Επιβεβαίωση διεύθυνσης email",
+                    verifyTextOne: "Μετά την εγγραφή, το LabSchool Exams ζητά από τον εκπαιδευτικό να επιβεβαιώσει τη διεύθυνση email. Έτσι προστατεύεται ο λογαριασμός και επιβεβαιώνεται ότι η διεύθυνση ανήκει πράγματι στον χρήστη.",
+                    verifyTextTwo: "Ο εκπαιδευτικός ανοίγει το μήνυμα που έλαβε και πατά το κουμπί επιβεβαίωσης. Αν το μήνυμα δεν έρθει, η εφαρμογή μπορεί να στείλει ξανά email επιβεβαίωσης από την αντίστοιχη οθόνη.",
+                    verifyMailCaption: "Το email επιβεβαίωσης περιλαμβάνει κουμπί και εναλλακτικό σύνδεσμο.",
+                    verifyScreenCaption: "Η οθόνη της εφαρμογής επιτρέπει επανάληψη αποστολής email επιβεβαίωσης.",
+                    loginTitle: "Σύνδεση και είσοδος στον πίνακα ελέγχου",
+                    loginTextOne: "Αφού επιβεβαιωθεί το email, ο εκπαιδευτικός συνδέεται με το υπηρεσιακό email και τον κωδικό που δημιούργησε κατά την εγγραφή.",
+                    loginTextTwo: "Μετά τη σύνδεση ανοίγει ο πίνακας ελέγχου. Από εκεί ο εκπαιδευτικός μπορεί να πάει στην προσωπική συλλογή quiz, να δημιουργήσει quiz, να δει τη δραστηριότητά του και να ελέγξει τα όρια του λογαριασμού.",
+                    dashboardCaption: "Η πρώτη εικόνα του πίνακα ελέγχου μετά από επιτυχημένη εγγραφή και σύνδεση.",
+                    forgotTitle: "Αν ο εκπαιδευτικός ξεχάσει τον κωδικό;",
+                    forgotTextOne: "Από τη σελίδα σύνδεσης ο εκπαιδευτικός επιλέγει τη διαδικασία ξεχασμένου κωδικού και γράφει το email του λογαριασμού.",
+                    forgotTextTwo: "Η εφαρμογή στέλνει σύνδεσμο επαναφοράς. Ο εκπαιδευτικός ανοίγει τον σύνδεσμο, ορίζει νέο κωδικό, τον επιβεβαιώνει και στη συνέχεια συνδέεται ξανά με τον νέο κωδικό.",
+                    forgotNote: "Αλλάζει μόνο ο κωδικός. Τα quiz, οι αναφορές και τα δεδομένα του λογαριασμού παραμένουν συνδεδεμένα με τον ίδιο εκπαιδευτικό.",
+                    forgotCaption: "Ο εκπαιδευτικός ζητά σύνδεσμο επαναφοράς γράφοντας το email του λογαριασμού.",
+                    resetCaption: "Η σελίδα επαναφοράς ζητά νέο κωδικό και επιβεβαίωση."
+                }
+            }
+        };
+    </script>
+    <script src="assets/pages.js"></script>
+</body>
+</html>

@@ -52,12 +52,8 @@
 
 - `default`
 - `default_img`
-- `newdefault`
-- `alexpolis_img`
-- `exakoustou_img`
-- `retropc_img`
-- `uni_img`
-- `retroAXD3_img`
+- `default`
+- `default_img`
 
 Οι αλλαγές σε template συνήθως επηρεάζουν:
 

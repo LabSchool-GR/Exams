@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Administrator Options</title>
+    <meta name="description" content="How administrators manage users, limits, categories, templates, updates, system checks, and wider data access in LabSchool Exams.">
+    <link rel="stylesheet" href="assets/pages.css">
+</head>
+<body>
+    <main class="shell">
+        <header class="topbar" data-page-header></header>
+
+        <section class="hero">
+            <span class="eyebrow" data-i18n="eyebrow">Eighth guide</span>
+            <h1 class="page-title" data-i18n="title">Administrator Options</h1>
+            <p class="lead" data-i18n="lead">
+                This page explains the administrator role: user management, usage limits, categories, templates, updates, system checks, and the wider access needed to support and protect the platform.
+            </p>
+
+        </section>
+
+        <section class="content">
+            <article class="panel">
+                <h2 data-i18n="roleTitle">What the administrator role means</h2>
+                <p data-i18n="roleTextOne">
+                    The administrator is responsible for the health of the whole LabSchool Exams installation. For that reason, the administrator can access all quizzes, questions, participants, attempts, templates, and related management areas when support or data protection requires it.
+                </p>
+                <p data-i18n="roleTextTwo">
+                    This wider access should be used carefully. It exists so the administrator can correct configuration issues, support teachers, investigate operational problems, and protect assessment data.
+                </p>
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <strong data-i18n="roleStepOneTitle">Support</strong>
+                        <p data-i18n="roleStepOneText">Help teachers when a quiz, user account, or result flow needs attention.</p>
+                    </div>
+                    <div class="guide-step">
+                        <strong data-i18n="roleStepTwoTitle">Security</strong>
+                        <p data-i18n="roleStepTwoText">Check access, roles, public links, and sensitive settings.</p>
+                    </div>
+                    <div class="guide-step">
+                        <strong data-i18n="roleStepThreeTitle">Continuity</strong>
+                        <p data-i18n="roleStepThreeText">Keep categories, templates, updates, and user limits consistent.</p>
+                    </div>
+                </div>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="quizTitle">Administrator-only quiz settings</h2>
+                <p data-i18n="quizTextOne">
+                    Some quiz options are visible only to administrators because they affect security, public access, anonymity, or special execution flows. These include certificate verification, second-screen mode, anonymous bulk examination, and public anonymous pools.
+                </p>
+                <p data-i18n="quizTextTwo">
+                    These options are powerful and should be enabled only when the teacher understands the flow. For example, public anonymous access changes how participants enter and how results are stored.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/admin/47 admin-edit-quiz.jpg" alt="Administrator-only quiz settings">
+                    <figcaption data-i18n="quizCaption">Administrator-only quiz options control advanced public, anonymous, verification, and display-mode behavior.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="categoriesTitle">Managing categories</h2>
+                <p data-i18n="categoriesTextOne">
+                    Categories help organize quizzes into clear thematic groups. Administrators can create, edit, and delete categories so the quiz collection remains easy to search and consistent across users.
+                </p>
+                <p data-i18n="categoriesTextTwo">
+                    Before deleting a category, the administrator should check whether quizzes already use it. A category is not only a label; it helps teachers keep their material organized.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/admin/48 admin-categories.jpg" alt="Category management">
+                    <figcaption data-i18n="categoriesCaption">The category list shows each thematic group and how many quizzes are connected to it.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="usersTitle">User management and roles</h2>
+                <p data-i18n="usersTextOne">
+                    In user management, the administrator can see teacher and administrator accounts, create new users, review user details, edit accounts, and remove users when appropriate.
+                </p>
+                <p data-i18n="usersTextTwo">
+                    Roles decide what each account can do. A teacher works mainly with their own quizzes and classroom flows. An administrator has platform-level access and can manage users, templates, updates, and cross-user data when needed.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/admin/49 admin-users.jpg" alt="User management list">
+                    <figcaption data-i18n="usersCaption">The user list shows account roles, limits, and management actions.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="limitsTitle">Usage limits per user</h2>
+                <p data-i18n="limitsTextOne">
+                    Each teacher account can have limits for how many quizzes they may create, how many questions each quiz may contain, how many answers each question may have, and how many examinees may be registered per quiz.
+                </p>
+                <p data-i18n="limitsTextTwo">
+                    These limits protect the installation from accidental overuse and help keep the free classroom workflow balanced. When a teacher needs more capacity, the administrator can review the request and adjust the account.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/admin/50 admin-users-edit.jpg" alt="Edit user limits">
+                    <figcaption data-i18n="limitsCaption">The edit user page controls role, account details, and usage limits.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="templatesTitle">Managing quiz templates</h2>
+                <p data-i18n="templatesTextOne">
+                    Administrators manage the display templates that teachers can use in quizzes. A template can be common for all teachers or assigned only to selected users.
+                </p>
+                <p data-i18n="templatesTextTwo">
+                    This is useful when the platform needs a standard set of templates for everyday use, but also special templates for events, projects, or selected teachers.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/admin/51 admin-quiz-templates.jpg" alt="Administrator quiz template management">
+                    <figcaption data-i18n="templatesCaption">Template management controls shared and assigned quiz display templates.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="updatesTitle">Application updates and operational checks</h2>
+                <p data-i18n="updatesTextOne">
+                    The update center helps the administrator see the installed version, check the latest published release, and download an available update package.
+                </p>
+                <p data-i18n="updatesTextTwo">
+                    Administrators can also publish application update notes for users. This keeps teachers informed about new features, fixes, and important operational changes.
+                </p>
+                <div class="callout">
+                    <p data-i18n="updatesNote">The administrator should treat updates as an operational task: check the version, keep backups where needed, and apply changes at a suitable time.</p>
+                </div>
+                <figure class="guide-figure">
+                    <img src="screenshots/admin/52 admin-system-updates.jpg" alt="Application update center">
+                    <figcaption data-i18n="updatesCaption">The update center compares the installed version with the latest published release.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="responsibilityTitle">Responsible administrator access</h2>
+                <p data-i18n="responsibilityTextOne">
+                    Because administrators can see and manage data across the installation, the role should be assigned only to trusted users. Access to quizzes, questions, participants, and results should always serve a clear operational or educational purpose.
+                </p>
+                <p data-i18n="responsibilityTextTwo">
+                    A practical rule is simple: use administrator access to support users, keep the system secure, correct problems, and maintain continuity. Avoid unnecessary viewing, exporting, or sharing of assessment data.
+                </p>
+            </article>
+        </section>
+
+        <footer data-page-footer></footer>
+    </main>
+
+    <script>
+        window.ExamsPage = {
+            translations: {
+                en: {
+                    pageTitle: "Administrator Options",
+                    description: "How administrators manage users, limits, categories, templates, updates, system checks, and wider data access in LabSchool Exams.",
+                    eyebrow: "Eighth guide",
+                    title: "Administrator Options",
+                    lead: "This page explains the administrator role: user management, usage limits, categories, templates, updates, system checks, and the wider access needed to support and protect the platform.",
+                    roleTitle: "What the administrator role means",
+                    roleTextOne: "The administrator is responsible for the health of the whole LabSchool Exams installation. For that reason, the administrator can access all quizzes, questions, participants, attempts, templates, and related management areas when support or data protection requires it.",
+                    roleTextTwo: "This wider access should be used carefully. It exists so the administrator can correct configuration issues, support teachers, investigate operational problems, and protect assessment data.",
+                    roleStepOneTitle: "Support",
+                    roleStepOneText: "Help teachers when a quiz, user account, or result flow needs attention.",
+                    roleStepTwoTitle: "Security",
+                    roleStepTwoText: "Check access, roles, public links, and sensitive settings.",
+                    roleStepThreeTitle: "Continuity",
+                    roleStepThreeText: "Keep categories, templates, updates, and user limits consistent.",
+                    quizTitle: "Administrator-only quiz settings",
+                    quizTextOne: "Some quiz options are visible only to administrators because they affect security, public access, anonymity, or special execution flows. These include certificate verification, second-screen mode, anonymous bulk examination, and public anonymous pools.",
+                    quizTextTwo: "These options are powerful and should be enabled only when the teacher understands the flow. For example, public anonymous access changes how participants enter and how results are stored.",
+                    quizCaption: "Administrator-only quiz options control advanced public, anonymous, verification, and display-mode behavior.",
+                    categoriesTitle: "Managing categories",
+                    categoriesTextOne: "Categories help organize quizzes into clear thematic groups. Administrators can create, edit, and delete categories so the quiz collection remains easy to search and consistent across users.",
+                    categoriesTextTwo: "Before deleting a category, the administrator should check whether quizzes already use it. A category is not only a label; it helps teachers keep their material organized.",
+                    categoriesCaption: "The category list shows each thematic group and how many quizzes are connected to it.",
+                    usersTitle: "User management and roles",
+                    usersTextOne: "In user management, the administrator can see teacher and administrator accounts, create new users, review user details, edit accounts, and remove users when appropriate.",
+                    usersTextTwo: "Roles decide what each account can do. A teacher works mainly with their own quizzes and classroom flows. An administrator has platform-level access and can manage users, templates, updates, and cross-user data when needed.",
+                    usersCaption: "The user list shows account roles, limits, and management actions.",
+                    limitsTitle: "Usage limits per user",
+                    limitsTextOne: "Each teacher account can have limits for how many quizzes they may create, how many questions each quiz may contain, how many answers each question may have, and how many examinees may be registered per quiz.",
+                    limitsTextTwo: "These limits protect the installation from accidental overuse and help keep the free classroom workflow balanced. When a teacher needs more capacity, the administrator can review the request and adjust the account.",
+                    limitsCaption: "The edit user page controls role, account details, and usage limits.",
+                    templatesTitle: "Managing quiz templates",
+                    templatesTextOne: "Administrators manage the display templates that teachers can use in quizzes. A template can be common for all teachers or assigned only to selected users.",
+                    templatesTextTwo: "This is useful when the platform needs a standard set of templates for everyday use, but also special templates for events, projects, or selected teachers.",
+                    templatesCaption: "Template management controls shared and assigned quiz display templates.",
+                    updatesTitle: "Application updates and operational checks",
+                    updatesTextOne: "The update center helps the administrator see the installed version, check the latest published release, and download an available update package.",
+                    updatesTextTwo: "Administrators can also publish application update notes for users. This keeps teachers informed about new features, fixes, and important operational changes.",
+                    updatesNote: "The administrator should treat updates as an operational task: check the version, keep backups where needed, and apply changes at a suitable time.",
+                    updatesCaption: "The update center compares the installed version with the latest published release.",
+                    responsibilityTitle: "Responsible administrator access",
+                    responsibilityTextOne: "Because administrators can see and manage data across the installation, the role should be assigned only to trusted users. Access to quizzes, questions, participants, and results should always serve a clear operational or educational purpose.",
+                    responsibilityTextTwo: "A practical rule is simple: use administrator access to support users, keep the system secure, correct problems, and maintain continuity. Avoid unnecessary viewing, exporting, or sharing of assessment data."
+                },
+                el: {
+                    pageTitle: "Επιλογές Διαχειριστών",
+                    description: "Πώς οι διαχειριστές διαχειρίζονται χρήστες, όρια, κατηγορίες, πρότυπα, ενημερώσεις, λειτουργικούς ελέγχους και ευρύτερη πρόσβαση δεδομένων στο LabSchool Exams.",
+                    eyebrow: "Όγδοος οδηγός",
+                    title: "Επιλογές Διαχειριστών",
+                    lead: "Η σελίδα αυτή εξηγεί τον ρόλο του διαχειριστή: διαχείριση χρηστών, όρια χρήσης, κατηγορίες, πρότυπα, ενημερώσεις, λειτουργικούς ελέγχους και την ευρύτερη πρόσβαση που χρειάζεται για υποστήριξη και προστασία της πλατφόρμας.",
+                    roleTitle: "Τι σημαίνει ο ρόλος του διαχειριστή;",
+                    roleTextOne: "Ο διαχειριστής είναι υπεύθυνος για την καλή λειτουργία ολόκληρης της εγκατάστασης LabSchool Exams. Για αυτό μπορεί να έχει πρόσβαση σε όλα τα quiz, ερωτήσεις, συμμετέχοντες, προσπάθειες, πρότυπα και σχετικές περιοχές διαχείρισης όταν το απαιτεί η υποστήριξη ή η προστασία των δεδομένων.",
+                    roleTextTwo: "Αυτή η ευρύτερη πρόσβαση πρέπει να χρησιμοποιείται με προσοχή. Υπάρχει ώστε ο διαχειριστής να διορθώνει ρυθμίσεις, να υποστηρίζει εκπαιδευτικούς, να διερευνά λειτουργικά προβλήματα και να προστατεύει δεδομένα αξιολόγησης.",
+                    roleStepOneTitle: "Υποστήριξη",
+                    roleStepOneText: "Βοήθεια σε εκπαιδευτικούς όταν ένα quiz, ένας λογαριασμός ή μια ροή αποτελεσμάτων χρειάζεται έλεγχο.",
+                    roleStepTwoTitle: "Ασφάλεια",
+                    roleStepTwoText: "Έλεγχος πρόσβασης, ρόλων, δημόσιων συνδέσμων και ευαίσθητων ρυθμίσεων.",
+                    roleStepThreeTitle: "Συνέχεια λειτουργίας",
+                    roleStepThreeText: "Συντήρηση κατηγοριών, προτύπων, ενημερώσεων και ορίων χρήσης.",
+                    quizTitle: "Ρυθμίσεις quiz μόνο για διαχειριστές",
+                    quizTextOne: "Ορισμένες επιλογές quiz εμφανίζονται μόνο στους διαχειριστές επειδή επηρεάζουν την ασφάλεια, τη δημόσια πρόσβαση, την ανωνυμία ή ειδικές ροές εκτέλεσης. Σε αυτές περιλαμβάνονται η δημόσια επαλήθευση βεβαιώσεων, η λειτουργία δεύτερης οθόνης, η ανώνυμη μαζική εξέταση και το δημόσιο ανώνυμο σύνολο.",
+                    quizTextTwo: "Οι επιλογές αυτές είναι ισχυρές και πρέπει να ενεργοποιούνται μόνο όταν ο εκπαιδευτικός κατανοεί τη ροή. Για παράδειγμα, η δημόσια ανώνυμη πρόσβαση αλλάζει τον τρόπο εισόδου των συμμετεχόντων και τον τρόπο αποθήκευσης των αποτελεσμάτων.",
+                    quizCaption: "Οι επιλογές quiz μόνο για διαχειριστές ελέγχουν προηγμένη δημόσια, ανώνυμη, επαληθεύσιμη και display-mode συμπεριφορά.",
+                    categoriesTitle: "Διαχείριση κατηγοριών",
+                    categoriesTextOne: "Οι κατηγορίες βοηθούν στην οργάνωση των quiz σε καθαρές θεματικές ομάδες. Οι διαχειριστές μπορούν να δημιουργούν, να επεξεργάζονται και να διαγράφουν κατηγορίες, ώστε η συλλογή quiz να παραμένει εύκολη στην αναζήτηση και συνεπής για όλους τους χρήστες.",
+                    categoriesTextTwo: "Πριν από τη διαγραφή μιας κατηγορίας, ο διαχειριστής πρέπει να ελέγχει αν χρησιμοποιείται ήδη από quiz. Η κατηγορία δεν είναι απλώς μια ετικέτα· βοηθά τους εκπαιδευτικούς να οργανώνουν το υλικό τους.",
+                    categoriesCaption: "Η λίστα κατηγοριών δείχνει κάθε θεματική ομάδα και πόσα quiz συνδέονται με αυτή.",
+                    usersTitle: "Διαχείριση χρηστών και ρόλων",
+                    usersTextOne: "Στη διαχείριση χρηστών, ο διαχειριστής βλέπει λογαριασμούς εκπαιδευτικών και διαχειριστών, δημιουργεί νέους χρήστες, ελέγχει στοιχεία, επεξεργάζεται λογαριασμούς και αφαιρεί χρήστες όταν χρειάζεται.",
+                    usersTextTwo: "Οι ρόλοι καθορίζουν τι μπορεί να κάνει κάθε λογαριασμός. Ο εκπαιδευτικός εργάζεται κυρίως με τα δικά του quiz και τις ροές τάξης. Ο διαχειριστής έχει πρόσβαση επιπέδου πλατφόρμας και μπορεί να διαχειρίζεται χρήστες, πρότυπα, ενημερώσεις και δεδομένα άλλων χρηστών όταν υπάρχει ανάγκη.",
+                    usersCaption: "Η λίστα χρηστών δείχνει ρόλους, όρια και ενέργειες διαχείρισης λογαριασμών.",
+                    limitsTitle: "Όρια χρήσης ανά χρήστη",
+                    limitsTextOne: "Κάθε λογαριασμός εκπαιδευτικού μπορεί να έχει όρια για το πόσα quiz μπορεί να δημιουργήσει, πόσες ερωτήσεις μπορεί να έχει κάθε quiz, πόσες απαντήσεις μπορεί να έχει κάθε ερώτηση και πόσοι εξεταζόμενοι μπορούν να καταχωριστούν ανά quiz.",
+                    limitsTextTwo: "Τα όρια αυτά προστατεύουν την εγκατάσταση από ακούσια υπερβολική χρήση και βοηθούν να παραμένει ισορροπημένη η δωρεάν εκπαιδευτική ροή. Όταν ένας εκπαιδευτικός χρειάζεται μεγαλύτερη χωρητικότητα, ο διαχειριστής μπορεί να ελέγξει το αίτημα και να προσαρμόσει τον λογαριασμό.",
+                    limitsCaption: "Η επεξεργασία χρήστη ελέγχει ρόλο, στοιχεία λογαριασμού και όρια χρήσης.",
+                    templatesTitle: "Διαχείριση προτύπων quiz",
+                    templatesTextOne: "Οι διαχειριστές διαχειρίζονται τα πρότυπα εμφάνισης που μπορούν να χρησιμοποιούν οι εκπαιδευτικοί στα quiz. Ένα πρότυπο μπορεί να είναι κοινό για όλους ή να ανατεθεί μόνο σε επιλεγμένους χρήστες.",
+                    templatesTextTwo: "Αυτό είναι χρήσιμο όταν η πλατφόρμα χρειάζεται ένα βασικό σύνολο προτύπων για καθημερινή χρήση, αλλά και ειδικά πρότυπα για εκδηλώσεις, έργα ή επιλεγμένους εκπαιδευτικούς.",
+                    templatesCaption: "Η διαχείριση προτύπων ελέγχει κοινά και ανατεθειμένα πρότυπα εμφάνισης quiz.",
+                    updatesTitle: "Ενημερώσεις εφαρμογής και λειτουργικοί έλεγχοι",
+                    updatesTextOne: "Το κέντρο ενημέρωσης βοηθά τον διαχειριστή να βλέπει την εγκατεστημένη έκδοση, να ελέγχει την τελευταία δημοσιευμένη έκδοση και να κατεβάζει διαθέσιμο πακέτο ενημέρωσης.",
+                    updatesTextTwo: "Οι διαχειριστές μπορούν επίσης να δημοσιεύουν σημειώσεις ενημέρωσης για τους χρήστες. Έτσι οι εκπαιδευτικοί ενημερώνονται για νέες λειτουργίες, διορθώσεις και σημαντικές λειτουργικές αλλαγές.",
+                    updatesNote: "Ο διαχειριστής πρέπει να αντιμετωπίζει τις ενημερώσεις ως λειτουργική εργασία: έλεγχος έκδοσης, αντίγραφα ασφαλείας όπου χρειάζεται και εφαρμογή αλλαγών σε κατάλληλο χρόνο.",
+                    updatesCaption: "Το κέντρο ενημέρωσης συγκρίνει την εγκατεστημένη έκδοση με την τελευταία δημοσιευμένη έκδοση.",
+                    responsibilityTitle: "Υπεύθυνη διαχειριστική πρόσβαση",
+                    responsibilityTextOne: "Επειδή οι διαχειριστές μπορούν να βλέπουν και να διαχειρίζονται δεδομένα σε όλη την εγκατάσταση, ο ρόλος πρέπει να ανατίθεται μόνο σε έμπιστους χρήστες. Η πρόσβαση σε quiz, ερωτήσεις, συμμετέχοντες και αποτελέσματα πρέπει πάντα να εξυπηρετεί σαφή λειτουργικό ή εκπαιδευτικό σκοπό.",
+                    responsibilityTextTwo: "Ένας πρακτικός κανόνας είναι απλός: χρησιμοποιούμε τη διαχειριστική πρόσβαση για υποστήριξη χρηστών, ασφάλεια συστήματος, διόρθωση προβλημάτων και συνέχεια λειτουργίας. Αποφεύγουμε περιττή προβολή, εξαγωγή ή κοινοποίηση δεδομένων αξιολόγησης."
+                }
+            }
+        };
+    </script>
+    <script src="assets/pages.js"></script>
+</body>
+</html>

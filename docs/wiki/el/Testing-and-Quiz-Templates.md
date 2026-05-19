@@ -39,9 +39,9 @@ npm run build
 - transitions που επηρεάζουν submit ή navigation
 - selected-answer styling που ξεχωρίζει μόνο σε ένα χρώμα
 
-## Για δημόσια event templates
+## Για τοπικά custom event templates
 
-Event templates όπως το `retroAXD3_img` χρειάζονται και επιπλέον έλεγχο σε:
+Τα custom templates που προστίθενται τοπικά πέρα από τα βασικά templates της εφαρμογής χρειάζονται και επιπλέον έλεγχο σε:
 
 - social preview metadata
 - ποιότητα εμφάνισης όταν μοιράζονται δημόσια

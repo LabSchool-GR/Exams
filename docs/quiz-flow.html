@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quiz Execution and Flow</title>
+    <meta name="description" content="How participants start, answer, navigate, submit, resume, and complete a quiz in LabSchool Exams.">
+    <link rel="stylesheet" href="assets/pages.css">
+</head>
+<body>
+    <main class="shell">
+        <header class="topbar" data-page-header></header>
+
+        <section class="hero">
+            <span class="eyebrow" data-i18n="eyebrow">Sixth guide</span>
+            <h1 class="page-title" data-i18n="title">Quiz Execution and Flow</h1>
+            <p class="lead" data-i18n="lead">
+                This page follows the participant from the first entry screen to the final result, explaining how starting, answering, skipping, submitting, resuming, and completing a quiz work according to the quiz settings.
+            </p>
+
+        </section>
+
+        <section class="content">
+            <article class="panel">
+                <h2 data-i18n="entryTitle">Entering the quiz</h2>
+                <p data-i18n="entryTextOne">
+                    A participant can enter a quiz in different ways, depending on what the teacher has enabled: by typing the quiz code, by using a personal link, by entering a student PIN, or through a public/guest link.
+                </p>
+                <p data-i18n="entryTextTwo">
+                    When PIN access is used, the participant sees the quiz title and writes the four-digit examination PIN. This confirms which registered examinee is starting the attempt.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz/39 quiz-index.jpg" alt="Quiz code entry screen">
+                    <figcaption data-i18n="entryCaptionOne">The general entry screen accepts the quiz code given by the teacher.</figcaption>
+                </figure>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz/40 quiz-student.jpg" alt="Student PIN entry screen">
+                    <figcaption data-i18n="entryCaptionTwo">With PIN access, the participant enters their four-digit examination code before starting.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="startTitle">Starting the attempt</h2>
+                <p data-i18n="startTextOne">
+                    After the participant is identified, the quiz opens with a short start screen. This screen confirms the quiz title and the participant name, then prepares the attempt before the first question appears.
+                </p>
+                <p data-i18n="startTextTwo">
+                    If the quiz has a timer, the remaining time starts from the configured limit and follows the participant through the questions.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz/26 quiz-start.jpg" alt="Quiz start countdown">
+                    <figcaption data-i18n="startCaption">The start screen gives the participant a short moment before the quiz begins.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="answerTitle">Answering a question</h2>
+                <p data-i18n="answerTextOne">
+                    Each question shows the question text, the possible answers, and, when the selected template supports it, an image. The participant chooses the required number of answers and then submits the answer.
+                </p>
+                <p data-i18n="answerTextTwo">
+                    The page also shows progress and, if active, the remaining time. This helps the participant know where they are in the quiz and how much time is left.
+                </p>
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <strong data-i18n="answerStepOneTitle">Selection</strong>
+                        <p data-i18n="answerStepOneText">The participant marks one or more answers, depending on the question.</p>
+                    </div>
+                    <div class="guide-step">
+                        <strong data-i18n="answerStepTwoTitle">Validation</strong>
+                        <p data-i18n="answerStepTwoText">The application asks for the correct number of selected answers before accepting the response.</p>
+                    </div>
+                    <div class="guide-step">
+                        <strong data-i18n="answerStepThreeTitle">Progress</strong>
+                        <p data-i18n="answerStepThreeText">The progress indicator shows how far the participant has moved through the quiz.</p>
+                    </div>
+                </div>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz/27 quiz-question.jpg" alt="Quiz question screen">
+                    <figcaption data-i18n="answerCaption">The question screen combines answers, image, progress, and timer in one place.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="skipTitle">Skipping and returning to unanswered questions</h2>
+                <p data-i18n="skipTextOne">
+                    If skipping is available in the flow, the participant can leave a question for later. The quiz marks that question as skipped and continues to the next one.
+                </p>
+                <p data-i18n="skipTextTwo">
+                    Before final submission, skipped questions can appear again so the participant can answer them. This prevents accidental omissions while still allowing the participant to move forward when they are unsure.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz/28 quiz-question-after-omission.jpg" alt="Skipped question returned for answer">
+                    <figcaption data-i18n="skipCaption">A skipped question can return as a question that still needs an answer.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="submitTitle">Final submission</h2>
+                <p data-i18n="submitTextOne">
+                    On the last question, the button changes from answer submission to final quiz submission. This is the moment when the attempt is completed and the answers are graded.
+                </p>
+                <p data-i18n="submitTextTwo">
+                    If a timer expires, the application can force the attempt to finish according to the quiz rules. The result then reflects the answers that have been saved up to that point.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz/29 quiz-question-submission.jpg" alt="Final quiz submission screen">
+                    <figcaption data-i18n="submitCaption">On the final step, the participant submits the whole quiz.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="resultTitle">Result and new attempt</h2>
+                <p data-i18n="resultTextOne">
+                    After submission, the result page shows whether the participant passed, how many answers were correct, and the success percentage compared with the required pass percentage.
+                </p>
+                <p data-i18n="resultTextTwo">
+                    If the quiz and the examinee's limits allow another try, a new attempt button is available. Otherwise, the participant can return to the home screen or download the result when this option is shown.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz/30 quiz-result.jpg" alt="Quiz result screen">
+                    <figcaption data-i18n="resultCaptionOne">The result screen summarizes correct answers, percentage, and pass status.</figcaption>
+                </figure>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz/31 quiz-result-new-attempt.jpg" alt="Quiz result with new attempt button">
+                    <figcaption data-i18n="resultCaptionTwo">When attempts remain, the participant may start a new attempt.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="resumeTitle">Continuing an active attempt</h2>
+                <p data-i18n="resumeTextOne">
+                    For safety, the application allows only one active quiz attempt in the same browser session. If the participant opens another tab or returns from an older session, they may see a message that another active attempt already exists.
+                </p>
+                <p data-i18n="resumeTextTwo">
+                    When continuation is allowed, the participant can continue the current attempt. If continuation is not allowed, the quiz follows the teacher's settings and may start a fresh attempt instead.
+                </p>
+                <div class="callout">
+                    <p data-i18n="resumeNote">This protection helps avoid two tabs submitting different answers for the same attempt.</p>
+                </div>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz/32 quiz-another-session-conflict.jpg" alt="Active quiz session conflict">
+                    <figcaption data-i18n="resumeCaption">The active-session message guides the participant back to the running attempt.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="learningTitle">Learning mode</h2>
+                <p data-i18n="learningTextOne">
+                    In learning mode, the quiz behaves more like practice than formal assessment. The participant checks an answer and immediately sees feedback before moving to the next question.
+                </p>
+                <p data-i18n="learningTextTwo">
+                    Learning mode does not save a normal attempt, grade, or statistics. It is useful when the goal is teaching and self-correction rather than assessment.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz/33 quiz-learning-a.jpg" alt="Learning mode answer check">
+                    <figcaption data-i18n="learningCaptionOne">In learning mode, the button checks the answer instead of submitting a graded attempt immediately.</figcaption>
+                </figure>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz/34 quiz-learning-b.jpg" alt="Learning mode feedback">
+                    <figcaption data-i18n="learningCaptionTwo">The participant sees feedback and then continues to the next question.</figcaption>
+                </figure>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz/35 quiz-learning-result.jpg" alt="Learning mode completion screen">
+                    <figcaption data-i18n="learningCaptionThree">At the end of learning mode, the session closes without saving grade or statistics.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="displayTitle">Second-screen flow</h2>
+                <p data-i18n="displayTextOne">
+                    In second-screen mode, the teacher can show the quiz on a shared display while the participant answers from a connected mobile device. The screen first waits for the mobile controller to connect through QR code or link.
+                </p>
+                <p data-i18n="displayTextTwo">
+                    Once connected, the large screen shows the question, progress, timer, and live selection, while the participant controls the answer from the mobile device. This flow is useful for classroom projection or event-style activities.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz/36 quiz-tv-mode.jpg" alt="Second-screen waiting for mobile controller">
+                    <figcaption data-i18n="displayCaptionOne">The shared screen waits for the participant's mobile device to connect.</figcaption>
+                </figure>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz/37 quiz-tv-mode-2.jpg" alt="Second-screen quiz question">
+                    <figcaption data-i18n="displayCaptionTwo">The shared display shows the current question and live answer state.</figcaption>
+                </figure>
+                <figure class="guide-figure">
+                    <img src="screenshots/quiz/38 quiz-tv-mode-result.jpg" alt="Second-screen completion result">
+                    <figcaption data-i18n="displayCaptionThree">After submission, the shared display shows that the attempt was completed.</figcaption>
+                </figure>
+            </article>
+        </section>
+
+        <footer data-page-footer></footer>
+    </main>
+
+    <script>
+        window.ExamsPage = {
+            translations: {
+                en: {
+                    pageTitle: "Quiz Execution and Flow",
+                    description: "How participants start, answer, navigate, submit, resume, and complete a quiz in LabSchool Exams.",
+                    eyebrow: "Sixth guide",
+                    title: "Quiz Execution and Flow",
+                    lead: "This page follows the participant from the first entry screen to the final result, explaining how starting, answering, skipping, submitting, resuming, and completing a quiz work according to the quiz settings.",
+                    entryTitle: "Entering the quiz",
+                    entryTextOne: "A participant can enter a quiz in different ways, depending on what the teacher has enabled: by typing the quiz code, by using a personal link, by entering a student PIN, or through a public/guest link.",
+                    entryTextTwo: "When PIN access is used, the participant sees the quiz title and writes the four-digit examination PIN. This confirms which registered examinee is starting the attempt.",
+                    entryCaptionOne: "The general entry screen accepts the quiz code given by the teacher.",
+                    entryCaptionTwo: "With PIN access, the participant enters their four-digit examination code before starting.",
+                    startTitle: "Starting the attempt",
+                    startTextOne: "After the participant is identified, the quiz opens with a short start screen. This screen confirms the quiz title and the participant name, then prepares the attempt before the first question appears.",
+                    startTextTwo: "If the quiz has a timer, the remaining time starts from the configured limit and follows the participant through the questions.",
+                    startCaption: "The start screen gives the participant a short moment before the quiz begins.",
+                    answerTitle: "Answering a question",
+                    answerTextOne: "Each question shows the question text, the possible answers, and, when the selected template supports it, an image. The participant chooses the required number of answers and then submits the answer.",
+                    answerTextTwo: "The page also shows progress and, if active, the remaining time. This helps the participant know where they are in the quiz and how much time is left.",
+                    answerStepOneTitle: "Selection",
+                    answerStepOneText: "The participant marks one or more answers, depending on the question.",
+                    answerStepTwoTitle: "Validation",
+                    answerStepTwoText: "The application asks for the correct number of selected answers before accepting the response.",
+                    answerStepThreeTitle: "Progress",
+                    answerStepThreeText: "The progress indicator shows how far the participant has moved through the quiz.",
+                    answerCaption: "The question screen combines answers, image, progress, and timer in one place.",
+                    skipTitle: "Skipping and returning to unanswered questions",
+                    skipTextOne: "If skipping is available in the flow, the participant can leave a question for later. The quiz marks that question as skipped and continues to the next one.",
+                    skipTextTwo: "Before final submission, skipped questions can appear again so the participant can answer them. This prevents accidental omissions while still allowing the participant to move forward when they are unsure.",
+                    skipCaption: "A skipped question can return as a question that still needs an answer.",
+                    submitTitle: "Final submission",
+                    submitTextOne: "On the last question, the button changes from answer submission to final quiz submission. This is the moment when the attempt is completed and the answers are graded.",
+                    submitTextTwo: "If a timer expires, the application can force the attempt to finish according to the quiz rules. The result then reflects the answers that have been saved up to that point.",
+                    submitCaption: "On the final step, the participant submits the whole quiz.",
+                    resultTitle: "Result and new attempt",
+                    resultTextOne: "After submission, the result page shows whether the participant passed, how many answers were correct, and the success percentage compared with the required pass percentage.",
+                    resultTextTwo: "If the quiz and the examinee's limits allow another try, a new attempt button is available. Otherwise, the participant can return to the home screen or download the result when this option is shown.",
+                    resultCaptionOne: "The result screen summarizes correct answers, percentage, and pass status.",
+                    resultCaptionTwo: "When attempts remain, the participant may start a new attempt.",
+                    resumeTitle: "Continuing an active attempt",
+                    resumeTextOne: "For safety, the application allows only one active quiz attempt in the same browser session. If the participant opens another tab or returns from an older session, they may see a message that another active attempt already exists.",
+                    resumeTextTwo: "When continuation is allowed, the participant can continue the current attempt. If continuation is not allowed, the quiz follows the teacher's settings and may start a fresh attempt instead.",
+                    resumeNote: "This protection helps avoid two tabs submitting different answers for the same attempt.",
+                    resumeCaption: "The active-session message guides the participant back to the running attempt.",
+                    learningTitle: "Learning mode",
+                    learningTextOne: "In learning mode, the quiz behaves more like practice than formal assessment. The participant checks an answer and immediately sees feedback before moving to the next question.",
+                    learningTextTwo: "Learning mode does not save a normal attempt, grade, or statistics. It is useful when the goal is teaching and self-correction rather than assessment.",
+                    learningCaptionOne: "In learning mode, the button checks the answer instead of submitting a graded attempt immediately.",
+                    learningCaptionTwo: "The participant sees feedback and then continues to the next question.",
+                    learningCaptionThree: "At the end of learning mode, the session closes without saving grade or statistics.",
+                    displayTitle: "Second-screen flow",
+                    displayTextOne: "In second-screen mode, the teacher can show the quiz on a shared display while the participant answers from a connected mobile device. The screen first waits for the mobile controller to connect through QR code or link.",
+                    displayTextTwo: "Once connected, the large screen shows the question, progress, timer, and live selection, while the participant controls the answer from the mobile device. This flow is useful for classroom projection or event-style activities.",
+                    displayCaptionOne: "The shared screen waits for the participant's mobile device to connect.",
+                    displayCaptionTwo: "The shared display shows the current question and live answer state.",
+                    displayCaptionThree: "After submission, the shared display shows that the attempt was completed."
+                },
+                el: {
+                    pageTitle: "Εκτέλεση και Ροή Quiz",
+                    description: "Πώς ξεκινά, απαντά, πλοηγείται, υποβάλλει, συνεχίζει και ολοκληρώνει ο συμμετέχων ένα quiz στο LabSchool Exams.",
+                    eyebrow: "Έκτος οδηγός",
+                    title: "Εκτέλεση και Ροή Quiz",
+                    lead: "Η σελίδα αυτή ακολουθεί τον συμμετέχοντα από την πρώτη οθόνη εισόδου μέχρι το τελικό αποτέλεσμα, εξηγώντας πώς λειτουργεί η έναρξη, η απάντηση, η παράλειψη, η υποβολή, η συνέχιση και η ολοκλήρωση με βάση τις ρυθμίσεις του quiz.",
+                    entryTitle: "Είσοδος στο quiz",
+                    entryTextOne: "Ο συμμετέχων μπορεί να μπει σε ένα quiz με διαφορετικούς τρόπους, ανάλογα με όσα έχει ενεργοποιήσει ο εκπαιδευτικός: πληκτρολογώντας τον κωδικό του quiz, χρησιμοποιώντας προσωπικό σύνδεσμο, γράφοντας το PIN μαθητή ή μέσα από δημόσιο σύνδεσμο/επισκέπτη.",
+                    entryTextTwo: "Όταν χρησιμοποιείται πρόσβαση με PIN, ο συμμετέχων βλέπει τον τίτλο του quiz και γράφει τον τετραψήφιο κωδικό εξέτασης. Έτσι επιβεβαιώνεται ποιος καταχωρισμένος εξεταζόμενος ξεκινά την προσπάθεια.",
+                    entryCaptionOne: "Η γενική οθόνη εισόδου δέχεται τον κωδικό quiz που δίνει ο εκπαιδευτικός.",
+                    entryCaptionTwo: "Με πρόσβαση PIN, ο συμμετέχων γράφει τον τετραψήφιο κωδικό εξέτασης πριν ξεκινήσει.",
+                    startTitle: "Έναρξη προσπάθειας",
+                    startTextOne: "Αφού αναγνωριστεί ο συμμετέχων, το quiz ανοίγει με μια σύντομη αρχική οθόνη. Η οθόνη αυτή επιβεβαιώνει τον τίτλο του quiz και το όνομα του συμμετέχοντα και προετοιμάζει την προσπάθεια πριν εμφανιστεί η πρώτη ερώτηση.",
+                    startTextTwo: "Αν το quiz έχει χρονόμετρο, ο διαθέσιμος χρόνος ξεκινά από το όριο που έχει οριστεί και ακολουθεί τον συμμετέχοντα στις ερωτήσεις.",
+                    startCaption: "Η αρχική οθόνη δίνει στον συμμετέχοντα λίγα δευτερόλεπτα πριν αρχίσει το quiz.",
+                    answerTitle: "Απάντηση σε ερώτηση",
+                    answerTextOne: "Κάθε ερώτηση δείχνει το κείμενο της ερώτησης, τις πιθανές απαντήσεις και, όταν το επιλεγμένο πρότυπο το υποστηρίζει, μια εικόνα. Ο συμμετέχων επιλέγει τον απαιτούμενο αριθμό απαντήσεων και μετά υποβάλλει την απάντηση.",
+                    answerTextTwo: "Η σελίδα δείχνει επίσης την πρόοδο και, αν είναι ενεργό, τον χρόνο που απομένει. Έτσι ο συμμετέχων ξέρει σε ποιο σημείο του quiz βρίσκεται και πόσος χρόνος μένει.",
+                    answerStepOneTitle: "Επιλογή",
+                    answerStepOneText: "Ο συμμετέχων σημειώνει μία ή περισσότερες απαντήσεις, ανάλογα με την ερώτηση.",
+                    answerStepTwoTitle: "Έλεγχος",
+                    answerStepTwoText: "Η εφαρμογή ζητά τον σωστό αριθμό επιλεγμένων απαντήσεων πριν δεχτεί την απόκριση.",
+                    answerStepThreeTitle: "Πρόοδος",
+                    answerStepThreeText: "Η ένδειξη προόδου δείχνει πόσο έχει προχωρήσει ο συμμετέχων στο quiz.",
+                    answerCaption: "Η οθόνη ερώτησης συνδυάζει απαντήσεις, εικόνα, πρόοδο και χρονόμετρο.",
+                    skipTitle: "Παράλειψη και επιστροφή σε αναπάντητες ερωτήσεις",
+                    skipTextOne: "Αν η παράλειψη είναι διαθέσιμη στη ροή, ο συμμετέχων μπορεί να αφήσει μια ερώτηση για αργότερα. Το quiz τη σημειώνει ως παραλειφθείσα και συνεχίζει στην επόμενη.",
+                    skipTextTwo: "Πριν από την τελική υποβολή, οι παραλειφθείσες ερωτήσεις μπορούν να εμφανιστούν ξανά ώστε ο συμμετέχων να τις απαντήσει. Έτσι αποφεύγονται τυχαίες παραλείψεις, χωρίς να σταματά η ροή όταν ο συμμετέχων δεν είναι σίγουρος.",
+                    skipCaption: "Μια παραλειφθείσα ερώτηση μπορεί να επιστρέψει ως ερώτηση που πρέπει ακόμη να απαντηθεί.",
+                    submitTitle: "Τελική υποβολή",
+                    submitTextOne: "Στην τελευταία ερώτηση, το κουμπί αλλάζει από υποβολή απάντησης σε τελική υποβολή quiz. Εκεί ολοκληρώνεται η προσπάθεια και βαθμολογούνται οι απαντήσεις.",
+                    submitTextTwo: "Αν λήξει το χρονόμετρο, η εφαρμογή μπορεί να ολοκληρώσει αναγκαστικά την προσπάθεια σύμφωνα με τους κανόνες του quiz. Το αποτέλεσμα βασίζεται τότε στις απαντήσεις που έχουν αποθηκευτεί μέχρι εκείνη τη στιγμή.",
+                    submitCaption: "Στο τελικό βήμα, ο συμμετέχων υποβάλλει ολόκληρο το quiz.",
+                    resultTitle: "Αποτέλεσμα και νέα προσπάθεια",
+                    resultTextOne: "Μετά την υποβολή, η σελίδα αποτελέσματος δείχνει αν ο συμμετέχων πέτυχε, πόσες απαντήσεις ήταν σωστές και το ποσοστό επιτυχίας σε σχέση με το απαιτούμενο όριο.",
+                    resultTextTwo: "Αν το quiz και τα όρια του εξεταζόμενου επιτρέπουν άλλη προσπάθεια, εμφανίζεται κουμπί νέας προσπάθειας. Διαφορετικά, ο συμμετέχων μπορεί να επιστρέψει στην αρχική ή να κατεβάσει το αποτέλεσμα όταν αυτή η επιλογή εμφανίζεται.",
+                    resultCaptionOne: "Η οθόνη αποτελέσματος συνοψίζει σωστές απαντήσεις, ποσοστό και κατάσταση επιτυχίας.",
+                    resultCaptionTwo: "Όταν απομένουν προσπάθειες, ο συμμετέχων μπορεί να ξεκινήσει νέα προσπάθεια.",
+                    resumeTitle: "Συνέχιση ενεργής προσπάθειας",
+                    resumeTextOne: "Για λόγους ασφάλειας, η εφαρμογή επιτρέπει μόνο μία ενεργή προσπάθεια quiz στην ίδια συνεδρία browser. Αν ο συμμετέχων ανοίξει άλλη καρτέλα ή επιστρέψει από παλαιότερη συνεδρία, μπορεί να δει μήνυμα ότι υπάρχει ήδη ενεργή προσπάθεια.",
+                    resumeTextTwo: "Όταν επιτρέπεται η συνέχιση, ο συμμετέχων μπορεί να συνεχίσει την τρέχουσα προσπάθεια. Αν δεν επιτρέπεται η συνέχιση, το quiz ακολουθεί τις ρυθμίσεις του εκπαιδευτικού και μπορεί να ξεκινήσει νέα προσπάθεια.",
+                    resumeNote: "Αυτή η προστασία βοηθά να μην υποβληθούν διαφορετικές απαντήσεις από δύο καρτέλες για την ίδια προσπάθεια.",
+                    resumeCaption: "Το μήνυμα ενεργής συνεδρίας οδηγεί τον συμμετέχοντα πίσω στην προσπάθεια που τρέχει.",
+                    learningTitle: "Λειτουργία εκμάθησης",
+                    learningTextOne: "Στη λειτουργία εκμάθησης, το quiz λειτουργεί περισσότερο ως εξάσκηση και όχι ως τυπική αξιολόγηση. Ο συμμετέχων ελέγχει μια απάντηση και βλέπει αμέσως ανατροφοδότηση πριν προχωρήσει στην επόμενη ερώτηση.",
+                    learningTextTwo: "Η λειτουργία εκμάθησης δεν αποθηκεύει κανονική προσπάθεια, βαθμολογία ή στατιστικά. Είναι χρήσιμη όταν ο στόχος είναι η διδασκαλία και η αυτοδιόρθωση και όχι η αξιολόγηση.",
+                    learningCaptionOne: "Στη λειτουργία εκμάθησης, το κουμπί ελέγχει την απάντηση αντί να υποβάλει αμέσως βαθμολογημένη προσπάθεια.",
+                    learningCaptionTwo: "Ο συμμετέχων βλέπει ανατροφοδότηση και συνεχίζει στην επόμενη ερώτηση.",
+                    learningCaptionThree: "Στο τέλος της λειτουργίας εκμάθησης, η συνεδρία κλείνει χωρίς αποθήκευση βαθμού ή στατιστικών.",
+                    displayTitle: "Ροή δεύτερης οθόνης",
+                    displayTextOne: "Στη λειτουργία δεύτερης οθόνης, ο εκπαιδευτικός μπορεί να προβάλλει το quiz σε κοινή οθόνη ενώ ο συμμετέχων απαντά από συνδεδεμένο κινητό. Η οθόνη πρώτα περιμένει να συνδεθεί το κινητό χειριστήριο με QR code ή σύνδεσμο.",
+                    displayTextTwo: "Μόλις συνδεθεί, η μεγάλη οθόνη δείχνει την ερώτηση, την πρόοδο, το χρονόμετρο και τη ζωντανή επιλογή, ενώ ο συμμετέχων χειρίζεται την απάντηση από το κινητό. Η ροή αυτή είναι χρήσιμη για προβολή στην τάξη ή για δραστηριότητες τύπου εκδήλωσης.",
+                    displayCaptionOne: "Η κοινή οθόνη περιμένει να συνδεθεί η κινητή συσκευή του συμμετέχοντα.",
+                    displayCaptionTwo: "Η κοινή προβολή δείχνει την τρέχουσα ερώτηση και την κατάσταση της ζωντανής απάντησης.",
+                    displayCaptionThree: "Μετά την υποβολή, η κοινή προβολή δείχνει ότι η προσπάθεια ολοκληρώθηκε."
+                }
+            }
+        };
+    </script>
+    <script src="assets/pages.js"></script>
+</body>
+</html>

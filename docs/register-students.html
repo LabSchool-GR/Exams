@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Examinee Management</title>
+    <meta name="description" content="How educators manage examinees, personal links, PIN access, guest access, CSV import, and anonymous participation modes in LabSchool Exams.">
+    <link rel="stylesheet" href="assets/pages.css">
+</head>
+<body>
+    <main class="shell">
+        <header class="topbar" data-page-header></header>
+
+        <section class="hero">
+            <span class="eyebrow" data-i18n="eyebrow">Fourth guide</span>
+            <h1 class="page-title" data-i18n="title">Examinee Management</h1>
+            <p class="lead" data-i18n="lead">
+                This page explains how a teacher prepares the people who will take a quiz: with student codes, personal links, guest access, CSV import, and anonymous access modes.
+            </p>
+
+        </section>
+
+        <section class="content">
+            <article class="panel">
+                <h2 data-i18n="purposeTitle">What this page is for</h2>
+                <p data-i18n="purposeTextOne">
+                    The examinee management page is where the teacher decides who can enter a quiz. Examinees do not need to create user accounts. They can enter with a PIN, with a personal link, as guests, or through one of the anonymous modes when those options have been enabled for the quiz.
+                </p>
+                <p data-i18n="purposeTextTwo">
+                    In practice, this page is the teacher's control room before the quiz starts: it shows the registered examinees, their codes, their allowed attempts, and the links or PDF cards that can be shared with them.
+                </p>
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <strong data-i18n="purposeStepOneTitle">Registered examinees</strong>
+                        <p data-i18n="purposeStepOneText">Useful when the teacher knows the names of the students and wants individual tracking.</p>
+                    </div>
+                    <div class="guide-step">
+                        <strong data-i18n="purposeStepTwoTitle">Guest access</strong>
+                        <p data-i18n="purposeStepTwoText">Useful for open participation, without storing each student in advance.</p>
+                    </div>
+                    <div class="guide-step">
+                        <strong data-i18n="purposeStepThreeTitle">Anonymous modes</strong>
+                        <p data-i18n="purposeStepThreeText">Useful when the teacher wants participation without personal names.</p>
+                    </div>
+                </div>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="listTitle">The examinee list</h2>
+                <p data-i18n="listTextOne">
+                    The main list shows each examinee with their name, four-digit code, number of attempts, completed attempts, and the maximum attempts allowed. This helps the teacher see immediately who is ready to participate and whether someone has already used their available attempts.
+                </p>
+                <p data-i18n="listTextTwo">
+                    From the same area, the teacher can copy a personal link, download a PDF with the examinee's access information, or remove an examinee when needed. If second-screen mode is available, the controls for that flow also appear here.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/register-students/13 register-students.jpg" alt="Registered examinees list">
+                    <figcaption data-i18n="listCaption">The registered examinees list gathers the student's code, attempts, personal link, PDF, and management actions in one place.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="guestTitle">Guest and public access</h2>
+                <p data-i18n="guestTextOne">
+                    When the quiz allows guest or public access, the teacher can copy a public link and share it with participants. This is helpful for a quick activity where we do not need to prepare a named list beforehand.
+                </p>
+                <p data-i18n="guestTextTwo">
+                    The code <code>0000</code> is reserved for guest access. For that reason, it cannot be used as the code of a registered examinee.
+                </p>
+                <div class="callout">
+                    <p data-i18n="guestNote">Guest access is convenient, but it gives less individual control than registered examinees. If we need personal reports for each student, registered examinees or personal links are usually the better choice.</p>
+                </div>
+                <figure class="guide-figure">
+                    <img src="screenshots/register-students/14 register-students-guest.jpg" alt="Guest access link">
+                    <figcaption data-i18n="guestCaption">A public guest link can be copied and sent to participants when the quiz settings allow it.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="manualTitle">Adding one examinee manually</h2>
+                <p data-i18n="manualTextOne">
+                    For a small class or a controlled activity, the teacher can add examinees one by one. Each examinee needs a name, a four-digit code, and the maximum number of attempts they may use.
+                </p>
+                <p data-i18n="manualTextTwo">
+                    The four-digit code must be unique inside the quiz, and the maximum attempts are usually from 1 to 5. If the quiz uses personal links, the application can create a secure personal link for that examinee.
+                </p>
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <strong data-i18n="manualStepOneTitle">Name</strong>
+                        <p data-i18n="manualStepOneText">Used by the teacher to recognize the examinee in lists and reports.</p>
+                    </div>
+                    <div class="guide-step">
+                        <strong data-i18n="manualStepTwoTitle">Student code</strong>
+                        <p data-i18n="manualStepTwoText">A four-digit PIN used for controlled entry when PIN access is active.</p>
+                    </div>
+                    <div class="guide-step">
+                        <strong data-i18n="manualStepThreeTitle">Max attempts</strong>
+                        <p data-i18n="manualStepThreeText">Defines how many times this examinee may start or complete the quiz.</p>
+                    </div>
+                </div>
+                <figure class="guide-figure">
+                    <img src="screenshots/register-students/15 register-students-add.jpg" alt="Add examinee form">
+                    <figcaption data-i18n="manualCaptionOne">The manual form is best when the teacher wants to prepare specific students.</figcaption>
+                </figure>
+                <figure class="guide-figure">
+                    <img src="screenshots/register-students/16 register-students-student.jpg" alt="Single registered examinee card">
+                    <figcaption data-i18n="manualCaptionTwo">After saving, the examinee appears in the list with their code, attempts, and available actions.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="csvTitle">Importing examinees with CSV</h2>
+                <p data-i18n="csvTextOne">
+                    When the teacher already has a student list in a spreadsheet, CSV import saves time. The file must use the expected columns: <code>student_name,student_code,max_attempts</code>.
+                </p>
+                <p data-i18n="csvTextTwo">
+                    The import accepts up to 30 rows at a time, with UTF-8 text, four-digit codes, and max attempts from 1 to 5. The reserved guest code <code>0000</code> is not accepted, and duplicate codes are rejected.
+                </p>
+                <div class="callout">
+                    <p data-i18n="csvNote">CSV import is available when the quiz supports continuation of incomplete attempts and is not using an anonymous mode.</p>
+                </div>
+                <figure class="guide-figure">
+                    <img src="screenshots/register-students/17 register-students-csv.jpg" alt="CSV import for examinees">
+                    <figcaption data-i18n="csvCaption">The CSV area includes the expected format and a template file so the list can be prepared correctly.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="anonymousTitle">Anonymous bulk mode</h2>
+                <p data-i18n="anonymousTextOne">
+                    In anonymous bulk mode, the teacher does not register named students. Instead, the application creates anonymous positions with automatically assigned codes. This is useful when we want participation without names, but still need controlled access.
+                </p>
+                <p data-i18n="anonymousTextTwo">
+                    The teacher chooses how many anonymous positions to create and how many attempts each position allows. The application can then produce cards or links that are given to participants.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/register-students/18 register-students-anonymous.jpg" alt="Anonymous bulk creation">
+                    <figcaption data-i18n="anonymousCaptionOne">Anonymous bulk mode creates anonymous slots instead of named students.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="publicPoolTitle">Public anonymous pool and second screen</h2>
+                <p data-i18n="publicPoolTextOne">
+                    A public anonymous pool works differently: the teacher shares one public QR or link, and the system gives anonymous positions to participants until the configured capacity is reached. This is useful for open events where we want anonymous submissions without preparing cards for each person.
+                </p>
+                 <figure class="guide-figure">
+                    <img src="screenshots/register-students/19 register-students-anonymous-link.jpg" alt="Anonymous personal link cards">
+                    <figcaption data-i18n="anonymousCaptionTwo">The generated anonymous access information can be distributed as cards or links.</figcaption>
+                </figure>
+                <p data-i18n="publicPoolTextTwo">
+                    Some quizzes may also use a second-screen or television-style flow. In that case, the teacher controls a shared display while participants answer from their own devices. These options are advanced and usually appear only when the quiz settings and user permissions allow them.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/register-students/20 register-students-anonymous-tv-mode.jpg" alt="Anonymous second-screen mode">
+                    <figcaption data-i18n="publicPoolCaption">Public anonymous and display-mode options are useful for events, shared screens, and fast group activities.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="privacyTitle">Deleting and protecting data</h2>
+                <p data-i18n="privacyTextOne">
+                    Removing an examinee is a serious action because it can also remove their attempts and answers for that quiz. Before deleting, the teacher should make sure the information is no longer needed for reports or grading.
+                </p>
+                <p data-i18n="privacyTextTwo">
+                    A simple rule helps: use named examinees when you need personal follow-up, use guest access for quick open activities, and use anonymous modes when the activity should not be connected to student names.
+                </p>
+            </article>
+        </section>
+
+        <footer data-page-footer></footer>
+    </main>
+
+    <script>
+        window.ExamsPage = {
+            translations: {
+                en: {
+                    pageTitle: "Examinee Management",
+                    description: "How educators manage examinees, personal links, PIN access, guest access, CSV import, and anonymous participation modes in LabSchool Exams.",
+                    eyebrow: "Fourth guide",
+                    title: "Examinee Management",
+                    lead: "This page explains how a teacher prepares the people who will take a quiz: with student codes, personal links, guest access, CSV import, and anonymous access modes.",
+                    purposeTitle: "What this page is for",
+                    purposeTextOne: "The examinee management page is where the teacher decides who can enter a quiz. Examinees do not need to create user accounts. They can enter with a PIN, with a personal link, as guests, or through one of the anonymous modes when those options have been enabled for the quiz.",
+                    purposeTextTwo: "In practice, this page is the teacher's control room before the quiz starts: it shows the registered examinees, their codes, their allowed attempts, and the links or PDF cards that can be shared with them.",
+                    purposeStepOneTitle: "Registered examinees",
+                    purposeStepOneText: "Useful when the teacher knows the names of the students and wants individual tracking.",
+                    purposeStepTwoTitle: "Guest access",
+                    purposeStepTwoText: "Useful for open participation, without storing each student in advance.",
+                    purposeStepThreeTitle: "Anonymous modes",
+                    purposeStepThreeText: "Useful when the teacher wants participation without personal names.",
+                    listTitle: "The examinee list",
+                    listTextOne: "The main list shows each examinee with their name, four-digit code, number of attempts, completed attempts, and the maximum attempts allowed. This helps the teacher see immediately who is ready to participate and whether someone has already used their available attempts.",
+                    listTextTwo: "From the same area, the teacher can copy a personal link, download a PDF with the examinee's access information, or remove an examinee when needed. If second-screen mode is available, the controls for that flow also appear here.",
+                    listCaption: "The registered examinees list gathers the student's code, attempts, personal link, PDF, and management actions in one place.",
+                    guestTitle: "Guest and public access",
+                    guestTextOne: "When the quiz allows guest or public access, the teacher can copy a public link and share it with participants. This is helpful for a quick activity where we do not need to prepare a named list beforehand.",
+                    guestTextTwo: "The code 0000 is reserved for guest access. For that reason, it cannot be used as the code of a registered examinee.",
+                    guestNote: "Guest access is convenient, but it gives less individual control than registered examinees. If we need personal reports for each student, registered examinees or personal links are usually the better choice.",
+                    guestCaption: "A public guest link can be copied and sent to participants when the quiz settings allow it.",
+                    manualTitle: "Adding one examinee manually",
+                    manualTextOne: "For a small class or a controlled activity, the teacher can add examinees one by one. Each examinee needs a name, a four-digit code, and the maximum number of attempts they may use.",
+                    manualTextTwo: "The four-digit code must be unique inside the quiz, and the maximum attempts are usually from 1 to 5. If the quiz uses personal links, the application can create a secure personal link for that examinee.",
+                    manualStepOneTitle: "Name",
+                    manualStepOneText: "Used by the teacher to recognize the examinee in lists and reports.",
+                    manualStepTwoTitle: "Student code",
+                    manualStepTwoText: "A four-digit PIN used for controlled entry when PIN access is active.",
+                    manualStepThreeTitle: "Max attempts",
+                    manualStepThreeText: "Defines how many times this examinee may start or complete the quiz.",
+                    manualCaptionOne: "The manual form is best when the teacher wants to prepare specific students.",
+                    manualCaptionTwo: "After saving, the examinee appears in the list with their code, attempts, and available actions.",
+                    csvTitle: "Importing examinees with CSV",
+                    csvTextOne: "When the teacher already has a student list in a spreadsheet, CSV import saves time. The file must use the expected columns: student_name,student_code,max_attempts.",
+                    csvTextTwo: "The import accepts up to 30 rows at a time, with UTF-8 text, four-digit codes, and max attempts from 1 to 5. The reserved guest code 0000 is not accepted, and duplicate codes are rejected.",
+                    csvNote: "CSV import is available when the quiz supports continuation of incomplete attempts and is not using an anonymous mode.",
+                    csvCaption: "The CSV area includes the expected format and a template file so the list can be prepared correctly.",
+                    anonymousTitle: "Anonymous bulk mode",
+                    anonymousTextOne: "In anonymous bulk mode, the teacher does not register named students. Instead, the application creates anonymous positions with automatically assigned codes. This is useful when we want participation without names, but still need controlled access.",
+                    anonymousTextTwo: "The teacher chooses how many anonymous positions to create and how many attempts each position allows. The application can then produce cards or links that are given to participants.",
+                    anonymousCaptionOne: "Anonymous bulk mode creates anonymous slots instead of named students.",
+                    anonymousCaptionTwo: "The generated anonymous access information can be distributed as cards or links.",
+                    publicPoolTitle: "Public anonymous pool and second screen",
+                    publicPoolTextOne: "A public anonymous pool works differently: the teacher shares one public QR or link, and the system gives anonymous positions to participants until the configured capacity is reached. This is useful for open events where we want anonymous submissions without preparing cards for each person.",
+                    publicPoolTextTwo: "Some quizzes may also use a second-screen or television-style flow. In that case, the teacher controls a shared display while participants answer from their own devices. These options are advanced and usually appear only when the quiz settings and user permissions allow them.",
+                    publicPoolCaption: "Public anonymous and display-mode options are useful for events, shared screens, and fast group activities.",
+                    privacyTitle: "Deleting and protecting data",
+                    privacyTextOne: "Removing an examinee is a serious action because it can also remove their attempts and answers for that quiz. Before deleting, the teacher should make sure the information is no longer needed for reports or grading.",
+                    privacyTextTwo: "A simple rule helps: use named examinees when you need personal follow-up, use guest access for quick open activities, and use anonymous modes when the activity should not be connected to student names."
+                },
+                el: {
+                    pageTitle: "Διαχείριση Εξεταζόμενων",
+                    description: "Πώς οι εκπαιδευτικοί διαχειρίζονται εξεταζόμενους, προσωπικούς συνδέσμους, πρόσβαση με PIN, επισκέπτες, CSV και ανώνυμες ροές στο LabSchool Exams.",
+                    eyebrow: "Τέταρτος οδηγός",
+                    title: "Διαχείριση Εξεταζόμενων",
+                    lead: "Η σελίδα αυτή εξηγεί πώς ο εκπαιδευτικός προετοιμάζει τα άτομα που θα συμμετάσχουν σε ένα quiz: με κωδικούς μαθητών, προσωπικούς συνδέσμους, πρόσβαση επισκέπτη, εισαγωγή CSV και ανώνυμες ροές.",
+                    purposeTitle: "Σε τι χρησιμεύει αυτή η σελίδα;",
+                    purposeTextOne: "Η διαχείριση εξεταζόμενων είναι το σημείο όπου ο εκπαιδευτικός αποφασίζει ποιος μπορεί να μπει σε ένα quiz. Οι εξεταζόμενοι δεν χρειάζεται να δημιουργήσουν λογαριασμό χρήστη. Μπορούν να μπουν με PIN, με προσωπικό σύνδεσμο, ως επισκέπτες ή μέσα από ανώνυμη ροή όταν αυτές οι επιλογές έχουν ενεργοποιηθεί στο quiz.",
+                    purposeTextTwo: "Στην πράξη, αυτή η σελίδα είναι το κέντρο ελέγχου του εκπαιδευτικού πριν ξεκινήσει η δοκιμασία: δείχνει τους καταχωρισμένους εξεταζόμενους, τους κωδικούς τους, τις επιτρεπόμενες προσπάθειες και τους συνδέσμους ή τις κάρτες PDF που μπορούν να μοιραστούν.",
+                    purposeStepOneTitle: "Καταχωρισμένοι εξεταζόμενοι",
+                    purposeStepOneText: "Χρήσιμο όταν ο εκπαιδευτικός γνωρίζει τα ονόματα των μαθητών και θέλει ατομική παρακολούθηση.",
+                    purposeStepTwoTitle: "Πρόσβαση επισκέπτη",
+                    purposeStepTwoText: "Χρήσιμο για ανοιχτή συμμετοχή, χωρίς να περαστεί από πριν κάθε μαθητής.",
+                    purposeStepThreeTitle: "Ανώνυμες ροές",
+                    purposeStepThreeText: "Χρήσιμο όταν θέλουμε συμμετοχή χωρίς προσωπικά ονόματα.",
+                    listTitle: "Η λίστα εξεταζόμενων",
+                    listTextOne: "Η βασική λίστα δείχνει κάθε εξεταζόμενο με το όνομα, τον τετραψήφιο κωδικό, το πλήθος προσπαθειών, τις ολοκληρωμένες προσπάθειες και το μέγιστο πλήθος προσπαθειών που επιτρέπεται. Έτσι ο εκπαιδευτικός βλέπει άμεσα ποιος είναι έτοιμος να συμμετάσχει και αν κάποιος έχει ήδη χρησιμοποιήσει τις διαθέσιμες προσπάθειές του.",
+                    listTextTwo: "Από το ίδιο σημείο, ο εκπαιδευτικός μπορεί να αντιγράψει προσωπικό σύνδεσμο, να κατεβάσει PDF με τα στοιχεία πρόσβασης του εξεταζόμενου ή να αφαιρέσει έναν εξεταζόμενο όταν χρειάζεται. Αν είναι διαθέσιμη η λειτουργία δεύτερης οθόνης, εμφανίζονται εδώ και τα σχετικά χειριστήρια.",
+                    listCaption: "Η λίστα εξεταζόμενων συγκεντρώνει κωδικό μαθητή, προσπάθειες, προσωπικό σύνδεσμο, PDF και ενέργειες διαχείρισης.",
+                    guestTitle: "Πρόσβαση επισκέπτη και δημόσιος σύνδεσμος",
+                    guestTextOne: "Όταν το quiz επιτρέπει πρόσβαση επισκέπτη ή δημόσια πρόσβαση, ο εκπαιδευτικός μπορεί να αντιγράψει έναν δημόσιο σύνδεσμο και να τον στείλει στους συμμετέχοντες. Αυτό βοηθά σε μια γρήγορη δραστηριότητα όπου δεν χρειάζεται να προετοιμάσουμε ονομαστική λίστα από πριν.",
+                    guestTextTwo: "Ο κωδικός 0000 είναι δεσμευμένος για την πρόσβαση επισκέπτη. Για αυτό δεν μπορεί να χρησιμοποιηθεί ως κωδικός καταχωρισμένου εξεταζόμενου.",
+                    guestNote: "Η πρόσβαση επισκέπτη είναι βολική, αλλά δίνει λιγότερο ατομικό έλεγχο από τους καταχωρισμένους εξεταζόμενους. Αν χρειαζόμαστε προσωπική αναφορά για κάθε μαθητή, συνήθως είναι καλύτερη επιλογή οι καταχωρισμένοι εξεταζόμενοι ή οι προσωπικοί σύνδεσμοι.",
+                    guestCaption: "Ο δημόσιος σύνδεσμος επισκέπτη μπορεί να αντιγραφεί και να σταλεί στους συμμετέχοντες όταν το επιτρέπουν οι ρυθμίσεις του quiz.",
+                    manualTitle: "Προσθήκη ενός εξεταζόμενου",
+                    manualTextOne: "Για ένα μικρό τμήμα ή μια ελεγχόμενη δραστηριότητα, ο εκπαιδευτικός μπορεί να προσθέσει εξεταζόμενους έναν έναν. Κάθε εξεταζόμενος χρειάζεται όνομα, τετραψήφιο κωδικό και μέγιστο αριθμό προσπαθειών.",
+                    manualTextTwo: "Ο τετραψήφιος κωδικός πρέπει να είναι μοναδικός μέσα στο quiz και οι μέγιστες προσπάθειες είναι συνήθως από 1 έως 5. Αν το quiz χρησιμοποιεί προσωπικούς συνδέσμους, η εφαρμογή μπορεί να δημιουργήσει ασφαλή προσωπικό σύνδεσμο για τον εξεταζόμενο.",
+                    manualStepOneTitle: "Όνομα",
+                    manualStepOneText: "Χρησιμοποιείται από τον εκπαιδευτικό για να αναγνωρίζει τον εξεταζόμενο σε λίστες και αναφορές.",
+                    manualStepTwoTitle: "Κωδικός μαθητή",
+                    manualStepTwoText: "Ένα τετραψήφιο PIN για ελεγχόμενη είσοδο, όταν η πρόσβαση με PIN είναι ενεργή.",
+                    manualStepThreeTitle: "Μέγιστες προσπάθειες",
+                    manualStepThreeText: "Ορίζει πόσες φορές μπορεί αυτός ο εξεταζόμενος να ξεκινήσει ή να ολοκληρώσει το quiz.",
+                    manualCaptionOne: "Η χειροκίνητη φόρμα είναι ιδανική όταν ο εκπαιδευτικός θέλει να προετοιμάσει συγκεκριμένους μαθητές.",
+                    manualCaptionTwo: "Μετά την αποθήκευση, ο εξεταζόμενος εμφανίζεται στη λίστα με κωδικό, προσπάθειες και διαθέσιμες ενέργειες.",
+                    csvTitle: "Εισαγωγή εξεταζόμενων με CSV",
+                    csvTextOne: "Όταν ο εκπαιδευτικός έχει ήδη λίστα μαθητών σε υπολογιστικό φύλλο, η εισαγωγή CSV εξοικονομεί χρόνο. Το αρχείο πρέπει να έχει τις αναμενόμενες στήλες: student_name,student_code,max_attempts.",
+                    csvTextTwo: "Η εισαγωγή δέχεται έως 30 γραμμές κάθε φορά, με κείμενο UTF-8, τετραψήφιους κωδικούς και προσπάθειες από 1 έως 5. Ο δεσμευμένος κωδικός επισκέπτη 0000 δεν γίνεται δεκτός και οι διπλοί κωδικοί απορρίπτονται.",
+                    csvNote: "Η εισαγωγή CSV είναι διαθέσιμη όταν το quiz υποστηρίζει συνέχιση ημιτελούς προσπάθειας και δεν χρησιμοποιεί ανώνυμη ροή.",
+                    csvCaption: "Η περιοχή CSV δείχνει την αναμενόμενη μορφή και δίνει αρχείο προτύπου ώστε η λίστα να ετοιμαστεί σωστά.",
+                    anonymousTitle: "Ανώνυμη μαζική εξέταση",
+                    anonymousTextOne: "Στην ανώνυμη μαζική εξέταση, ο εκπαιδευτικός δεν καταχωρίζει ονομαστικούς μαθητές. Αντί για αυτό, η εφαρμογή δημιουργεί ανώνυμες θέσεις με αυτόματους κωδικούς. Είναι χρήσιμο όταν θέλουμε συμμετοχή χωρίς ονόματα, αλλά εξακολουθούμε να χρειαζόμαστε ελεγχόμενη πρόσβαση.",
+                    anonymousTextTwo: "Ο εκπαιδευτικός επιλέγει πόσες ανώνυμες θέσεις θα δημιουργηθούν και πόσες προσπάθειες θα επιτρέπονται σε κάθε θέση. Στη συνέχεια η εφαρμογή μπορεί να παράγει κάρτες ή συνδέσμους που δίνονται στους συμμετέχοντες.",
+                    anonymousCaptionOne: "Η ανώνυμη μαζική εξέταση δημιουργεί ανώνυμες θέσεις αντί για ονομαστικούς μαθητές.",
+                    anonymousCaptionTwo: "Τα ανώνυμα στοιχεία πρόσβασης μπορούν να διανεμηθούν ως κάρτες ή σύνδεσμοι.",
+                    publicPoolTitle: "Δημόσιο ανώνυμο σύνολο και δεύτερη οθόνη",
+                    publicPoolTextOne: "Το δημόσιο ανώνυμο σύνολο λειτουργεί διαφορετικά: ο εκπαιδευτικός μοιράζεται ένα δημόσιο QR ή σύνδεσμο και το σύστημα δίνει ανώνυμες θέσεις στους συμμετέχοντες μέχρι να συμπληρωθεί η χωρητικότητα. Είναι χρήσιμο για ανοιχτές εκδηλώσεις όπου θέλουμε ανώνυμες υποβολές χωρίς να ετοιμάσουμε κάρτες για κάθε άτομο.",
+                    publicPoolTextTwo: "Ορισμένα quiz μπορούν επίσης να χρησιμοποιήσουν ροή δεύτερης οθόνης ή τηλεόρασης. Σε αυτή την περίπτωση, ο εκπαιδευτικός ελέγχει μια κοινή οθόνη ενώ οι συμμετέχοντες απαντούν από τις δικές τους συσκευές. Αυτές οι επιλογές είναι προχωρημένες και συνήθως εμφανίζονται μόνο όταν το επιτρέπουν οι ρυθμίσεις του quiz και τα δικαιώματα χρήστη.",
+                    publicPoolCaption: "Οι επιλογές δημόσιας ανώνυμης συμμετοχής και προβολής είναι χρήσιμες για εκδηλώσεις, κοινές οθόνες και γρήγορες ομαδικές δραστηριότητες.",
+                    privacyTitle: "Διαγραφή και προστασία δεδομένων",
+                    privacyTextOne: "Η αφαίρεση ενός εξεταζόμενου είναι σοβαρή ενέργεια, γιατί μπορεί να αφαιρέσει και τις προσπάθειες και τις απαντήσεις του για το συγκεκριμένο quiz. Πριν από τη διαγραφή, ο εκπαιδευτικός πρέπει να βεβαιώνεται ότι οι πληροφορίες δεν χρειάζονται πλέον για αναφορές ή βαθμολόγηση.",
+                    privacyTextTwo: "Ένας απλός κανόνας βοηθά: χρησιμοποιούμε ονομαστικούς εξεταζόμενους όταν χρειαζόμαστε ατομική παρακολούθηση, πρόσβαση επισκέπτη για γρήγορες ανοιχτές δραστηριότητες και ανώνυμες ροές όταν η δραστηριότητα δεν πρέπει να συνδεθεί με ονόματα μαθητών."
+                }
+            }
+        };
+    </script>
+    <script src="assets/pages.js"></script>
+</body>
+</html>

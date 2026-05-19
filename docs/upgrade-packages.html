@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Upgrade Packages</title>
+    <meta name="description" content="Understand and apply LabSchool Exams upgrade packages safely.">
+    <link rel="stylesheet" href="assets/pages.css">
+</head>
+<body>
+    <main class="shell">
+        <header class="topbar" data-page-header></header>
+
+        <section class="hero">
+            <span class="eyebrow" data-i18n="eyebrow">Upgrade</span>
+            <h1 class="page-title" data-i18n="title">Upgrade Packages</h1>
+            <p class="lead" data-i18n="lead">
+                A clear guide for updating an existing LabSchool Exams installation with full packages or incremental upgrade packages.
+            </p>
+        </section>
+
+        <section class="content">
+            <article class="panel">
+                <h2 data-i18n="whatTitle">What the upgrade system provides</h2>
+                <p data-i18n="whatText">LabSchool Exams releases can provide two package types. The full package is used for a fresh installation or full application replacement. The incremental upgrade package is smaller and is used only when the installed version matches the supported starting version.</p>
+                <div class="callout">
+                    <p data-i18n="firstPath">The first supported incremental path is v2.0.0 to v2.1.0.</p>
+                </div>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="packagesTitle">Packages in a v2.1.0 release</h2>
+                <p data-i18n="packagesIntro">For v2.1.0, the release workflow publishes these files.</p>
+                <pre class="code-block"><code>labschool-exams-v2.1.0-full.zip
+labschool-exams-v2.1.0-full.zip.sha256
+labschool-exams-v2.0.0-to-v2.1.0-upgrade.zip
+labschool-exams-v2.0.0-to-v2.1.0-upgrade.zip.sha256
+update.json</code></pre>
+                <ul>
+                    <li data-i18n="packageFull">Use the full package when you install from scratch or when no matching incremental package exists.</li>
+                    <li data-i18n="packageUpgrade">Use the upgrade package only when the currently installed version is exactly the package <code>from_version</code>.</li>
+                    <li data-i18n="packageHash">Use the SHA-256 checksum file to confirm that the downloaded package was not corrupted.</li>
+                    <li data-i18n="packageManifest">Use <code>update.json</code> when the in-app Update Center reads update metadata from a public manifest.</li>
+                </ul>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="insideTitle">What is inside an incremental package</h2>
+                <p data-i18n="insideText">The incremental package contains the application files that changed between the two supported versions, plus release metadata needed by the operator.</p>
+                <ul>
+                    <li data-i18n="insideFiles">Added, copied, renamed, or modified files between the two versions.</li>
+                    <li data-i18n="insideAssets">Built frontend assets under <code>public/build</code>.</li>
+                    <li data-i18n="insideVersion">A top-level <code>VERSION</code> file for the target version.</li>
+                    <li data-i18n="insideManifest"><code>upgrade-manifest.json</code>, <code>deleted-files.txt</code>, and <code>UPGRADE.md</code>.</li>
+                </ul>
+                <div class="callout">
+                    <p data-i18n="insideExcludes">The package does not include local runtime data such as .env, storage/, or public/storage. It also excludes repository-only files such as .github/ and tests/.</p>
+                </div>
+            </article>
+
+            <article class="panel" id="before">
+                <h2 data-i18n="beforeTitle">A. Before upgrading</h2>
+                <p data-i18n="beforeIntro">Treat every upgrade like a short maintenance procedure. Do not start by copying files. First confirm the version, take backups, and make sure you can return to the previous state if something unexpected happens.</p>
+                <ol>
+                    <li data-i18n="beforeVersion">Check the installed application version from the footer, the Update Center, <code>APP_VERSION</code>, or the packaged <code>VERSION</code> file.</li>
+                    <li data-i18n="beforeMatch">Confirm that the upgrade package starts from that exact version. For example, use <code>v2.0.0-to-v2.1.0</code> only on an installed <code>v2.0.0</code> instance.</li>
+                    <li data-i18n="beforeBackupDb">Back up the database before changing files or running migrations.</li>
+                    <li data-i18n="beforeBackupFiles">Back up the application files, especially <code>.env</code>, <code>storage/</code>, and <code>public/storage</code>.</li>
+                    <li data-i18n="beforeWindow">Choose a quiet time window, because users should not be taking quizzes while the update is being applied.</li>
+                </ol>
+            </article>
+
+            <article class="panel" id="steps">
+                <h2 data-i18n="stepsTitle">B. Applying an incremental upgrade</h2>
+                <p data-i18n="stepsIntro">The example below describes the professional path for an existing installation. On shared hosting, some commands may be run from a hosting terminal, SSH, or a deployment panel.</p>
+
+                <h3 data-i18n="stepOneTitle">1. Put the application in maintenance mode</h3>
+                <pre class="code-block"><code>php artisan down</code></pre>
+
+                <h3 data-i18n="stepTwoTitle">2. Extract the upgrade package</h3>
+                <p data-i18n="stepTwoText">Extract the upgrade package over the existing installation. Do not replace <code>.env</code>, <code>storage/</code>, or <code>public/storage</code>. These contain local configuration and runtime data.</p>
+
+                <h3 data-i18n="stepThreeTitle">3. Remove deleted files when needed</h3>
+                <p data-i18n="stepThreeText">Open <code>deleted-files.txt</code>. If it lists paths, remove those old files from the installed application. If it is empty, there is nothing to remove.</p>
+
+                <h3 data-i18n="stepFourTitle">4. Check whether Composer is required</h3>
+                <p data-i18n="stepFourText">Open <code>upgrade-manifest.json</code>. Run Composer only when <code>composer_install_required</code> is true.</p>
+                <pre class="code-block"><code>composer install --no-dev --prefer-dist --optimize-autoloader</code></pre>
+
+                <h3 data-i18n="stepFiveTitle">5. Run migrations and rebuild caches</h3>
+                <pre class="code-block"><code>php artisan migrate --force
+php artisan optimize:clear
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache</code></pre>
+
+                <h3 data-i18n="stepSixTitle">6. Bring the application back online</h3>
+                <pre class="code-block"><code>php artisan up</code></pre>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="fullTitle">C. When to use the full package</h2>
+                <p data-i18n="fullText">Use the full package when you are making a fresh installation, when your installed version does not match an incremental package, or when you intentionally want to replace the application code as a whole. Keep local files such as <code>.env</code>, <code>storage/</code>, and <code>public/storage</code> safe.</p>
+                <p data-i18n="fullInstall">For a fresh installation, follow the installation guide. For a replacement of an existing installation, use the same backup and maintenance-mode discipline as an incremental upgrade.</p>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="updateCenterTitle">D. Update Center and update.json</h2>
+                <p data-i18n="updateCenterText">The in-app Update Center can show the latest version and, when available, the matching upgrade package. It compares the installed version with the <code>from_version</code> values in <code>update.json</code>. The full package remains available as a fallback.</p>
+                <pre class="code-block"><code>APP_UPDATE_MANIFEST_URL=https://updates.example.org/exams/update.json</code></pre>
+                <p data-i18n="updateCenterPublic">If package links point to private GitHub release URLs, anonymous installations cannot download them. Publish the manifest and packages at a public endpoint when deployed instances must reach them directly.</p>
+            </article>
+
+            <article class="panel" id="verify">
+                <h2 data-i18n="verifyTitle">E. Verification after the upgrade</h2>
+                <p data-i18n="verifyIntro">After the application comes back online, do a short but meaningful smoke test before telling users that the system is ready.</p>
+                <ol>
+                    <li data-i18n="verifyLogin">Teacher login works and the dashboard loads.</li>
+                    <li data-i18n="verifyVersion">The footer or Update Center reports the expected target version.</li>
+                    <li data-i18n="verifyQuiz">Quiz create, edit, and list pages load correctly.</li>
+                    <li data-i18n="verifyJoin">A student or guest participation link opens and can start a quiz.</li>
+                    <li data-i18n="verifyPdf">Printable quiz PDF, attempt PDF, and certificate verification still work.</li>
+                    <li data-i18n="verifyMail">If mail is used, confirm that one log-mail or SMTP flow is recorded correctly.</li>
+                </ol>
+            </article>
+        </section>
+
+        <footer data-page-footer></footer>
+    </main>
+
+    <script>
+        window.ExamsPage = {
+            translations: {
+                en: {
+                    pageTitle: "Upgrade Packages",
+                    description: "Understand and apply LabSchool Exams upgrade packages safely.",
+                    eyebrow: "Upgrade",
+                    title: "Upgrade Packages",
+                    lead: "A clear guide for updating an existing LabSchool Exams installation with full packages or incremental upgrade packages.",
+                    beforeButton: "Before upgrading",
+                    stepsButton: "Upgrade steps",
+                    verifyButton: "Verification",
+                    whatTitle: "What the upgrade system provides",
+                    whatText: "LabSchool Exams releases can provide two package types. The full package is used for a fresh installation or full application replacement. The incremental upgrade package is smaller and is used only when the installed version matches the supported starting version.",
+                    firstPath: "The first supported incremental path is v2.0.0 to v2.1.0.",
+                    packagesTitle: "Packages in a v2.1.0 release",
+                    packagesIntro: "For v2.1.0, the release workflow publishes these files.",
+                    packageFull: "Use the full package when you install from scratch or when no matching incremental package exists.",
+                    packageUpgrade: "Use the upgrade package only when the currently installed version is exactly the package from_version.",
+                    packageHash: "Use the SHA-256 checksum file to confirm that the downloaded package was not corrupted.",
+                    packageManifest: "Use update.json when the in-app Update Center reads update metadata from a public manifest.",
+                    insideTitle: "What is inside an incremental package",
+                    insideText: "The incremental package contains the application files that changed between the two supported versions, plus release metadata needed by the operator.",
+                    insideFiles: "Added, copied, renamed, or modified files between the two versions.",
+                    insideAssets: "Built frontend assets under public/build.",
+                    insideVersion: "A top-level VERSION file for the target version.",
+                    insideManifest: "upgrade-manifest.json, deleted-files.txt, and UPGRADE.md.",
+                    insideExcludes: "The package does not include local runtime data such as .env, storage/, or public/storage. It also excludes repository-only files such as .github/ and tests/.",
+                    beforeTitle: "A. Before upgrading",
+                    beforeIntro: "Treat every upgrade like a short maintenance procedure. Do not start by copying files. First confirm the version, take backups, and make sure you can return to the previous state if something unexpected happens.",
+                    beforeVersion: "Check the installed application version from the footer, the Update Center, APP_VERSION, or the packaged VERSION file.",
+                    beforeMatch: "Confirm that the upgrade package starts from that exact version. For example, use v2.0.0-to-v2.1.0 only on an installed v2.0.0 instance.",
+                    beforeBackupDb: "Back up the database before changing files or running migrations.",
+                    beforeBackupFiles: "Back up the application files, especially .env, storage/, and public/storage.",
+                    beforeWindow: "Choose a quiet time window, because users should not be taking quizzes while the update is being applied.",
+                    stepsTitle: "B. Applying an incremental upgrade",
+                    stepsIntro: "The example below describes the professional path for an existing installation. On shared hosting, some commands may be run from a hosting terminal, SSH, or a deployment panel.",
+                    stepOneTitle: "1. Put the application in maintenance mode",
+                    stepTwoTitle: "2. Extract the upgrade package",
+                    stepTwoText: "Extract the upgrade package over the existing installation. Do not replace .env, storage/, or public/storage. These contain local configuration and runtime data.",
+                    stepThreeTitle: "3. Remove deleted files when needed",
+                    stepThreeText: "Open deleted-files.txt. If it lists paths, remove those old files from the installed application. If it is empty, there is nothing to remove.",
+                    stepFourTitle: "4. Check whether Composer is required",
+                    stepFourText: "Open upgrade-manifest.json. Run Composer only when composer_install_required is true.",
+                    stepFiveTitle: "5. Run migrations and rebuild caches",
+                    stepSixTitle: "6. Bring the application back online",
+                    fullTitle: "C. When to use the full package",
+                    fullText: "Use the full package when you are making a fresh installation, when your installed version does not match an incremental package, or when you intentionally want to replace the application code as a whole. Keep local files such as .env, storage/, and public/storage safe.",
+                    fullInstall: "For a fresh installation, follow the installation guide. For a replacement of an existing installation, use the same backup and maintenance-mode discipline as an incremental upgrade.",
+                    updateCenterTitle: "D. Update Center and update.json",
+                    updateCenterText: "The in-app Update Center can show the latest version and, when available, the matching upgrade package. It compares the installed version with the from_version values in update.json. The full package remains available as a fallback.",
+                    updateCenterPublic: "If package links point to private GitHub release URLs, anonymous installations cannot download them. Publish the manifest and packages at a public endpoint when deployed instances must reach them directly.",
+                    verifyTitle: "E. Verification after the upgrade",
+                    verifyIntro: "After the application comes back online, do a short but meaningful smoke test before telling users that the system is ready.",
+                    verifyLogin: "Teacher login works and the dashboard loads.",
+                    verifyVersion: "The footer or Update Center reports the expected target version.",
+                    verifyQuiz: "Quiz create, edit, and list pages load correctly.",
+                    verifyJoin: "A student or guest participation link opens and can start a quiz.",
+                    verifyPdf: "Printable quiz PDF, attempt PDF, and certificate verification still work.",
+                    verifyMail: "If mail is used, confirm that one log-mail or SMTP flow is recorded correctly."
+                },
+                el: {
+                    pageTitle: "Πακέτα Αναβάθμισης",
+                    description: "Κατανοήστε και εφαρμόστε με ασφάλεια τα πακέτα αναβάθμισης του LabSchool Exams.",
+                    eyebrow: "Αναβάθμιση",
+                    title: "Πακέτα Αναβάθμισης",
+                    lead: "Ένας καθαρός οδηγός για ενημέρωση υπάρχουσας εγκατάστασης LabSchool Exams με πλήρη πακέτα ή incremental πακέτα αναβάθμισης.",
+                    beforeButton: "Πριν την αναβάθμιση",
+                    stepsButton: "Βήματα αναβάθμισης",
+                    verifyButton: "Έλεγχος",
+                    whatTitle: "Τι προσφέρει το σύστημα αναβάθμισης;",
+                    whatText: "Οι εκδόσεις του LabSchool Exams μπορούν να παρέχουν δύο τύπους πακέτων. Το πλήρες πακέτο χρησιμοποιείται για νέα εγκατάσταση ή πλήρη αντικατάσταση της εφαρμογής. Το incremental πακέτο είναι μικρότερο και χρησιμοποιείται μόνο όταν η εγκατεστημένη έκδοση ταιριάζει με την υποστηριζόμενη αρχική έκδοση.",
+                    firstPath: "Η πρώτη υποστηριζόμενη incremental διαδρομή είναι από v2.0.0 σε v2.1.0.",
+                    packagesTitle: "Πακέτα σε έκδοση v2.1.0",
+                    packagesIntro: "Για την v2.1.0, το release workflow δημοσιεύει τα παρακάτω αρχεία.",
+                    packageFull: "Χρησιμοποιήστε το πλήρες πακέτο όταν εγκαθιστάτε από την αρχή ή όταν δεν υπάρχει incremental πακέτο που να ταιριάζει.",
+                    packageUpgrade: "Χρησιμοποιήστε το πακέτο αναβάθμισης μόνο όταν η τρέχουσα εγκατεστημένη έκδοση είναι ακριβώς το from_version του πακέτου.",
+                    packageHash: "Χρησιμοποιήστε το SHA-256 checksum για να επιβεβαιώσετε ότι το αρχείο που κατεβάσατε δεν αλλοιώθηκε.",
+                    packageManifest: "Χρησιμοποιήστε το update.json όταν το Update Center της εφαρμογής διαβάζει μεταδεδομένα ενημέρωσης από δημόσιο manifest.",
+                    insideTitle: "Τι περιέχει ένα incremental πακέτο;",
+                    insideText: "Το incremental πακέτο περιέχει τα αρχεία της εφαρμογής που άλλαξαν ανάμεσα στις δύο υποστηριζόμενες εκδόσεις, μαζί με μεταδεδομένα που χρειάζεται ο υπεύθυνος εγκατάστασης.",
+                    insideFiles: "Αρχεία που προστέθηκαν, αντιγράφηκαν, μετονομάστηκαν ή τροποποιήθηκαν ανάμεσα στις δύο εκδόσεις.",
+                    insideAssets: "Built frontend assets στον φάκελο public/build.",
+                    insideVersion: "Αρχείο VERSION στην κορυφή του πακέτου για την έκδοση στόχο.",
+                    insideManifest: "upgrade-manifest.json, deleted-files.txt και UPGRADE.md.",
+                    insideExcludes: "Το πακέτο δεν περιλαμβάνει τοπικά runtime δεδομένα όπως .env, storage/ ή public/storage. Επίσης δεν περιλαμβάνει repository-only αρχεία όπως .github/ και tests/.",
+                    beforeTitle: "Α. Πριν την αναβάθμιση",
+                    beforeIntro: "Αντιμετωπίστε κάθε αναβάθμιση σαν σύντομη διαδικασία συντήρησης. Μην ξεκινάτε αντιγράφοντας αρχεία. Πρώτα επιβεβαιώστε την έκδοση, πάρτε αντίγραφα ασφαλείας και βεβαιωθείτε ότι μπορείτε να επιστρέψετε στην προηγούμενη κατάσταση αν συμβεί κάτι απρόβλεπτο.",
+                    beforeVersion: "Ελέγξτε την εγκατεστημένη έκδοση από το footer, το Update Center, το APP_VERSION ή το αρχείο VERSION του πακέτου.",
+                    beforeMatch: "Επιβεβαιώστε ότι το πακέτο αναβάθμισης ξεκινά από αυτή ακριβώς την έκδοση. Για παράδειγμα, χρησιμοποιήστε v2.0.0-to-v2.1.0 μόνο σε εγκατάσταση v2.0.0.",
+                    beforeBackupDb: "Πάρτε αντίγραφο ασφαλείας της βάσης πριν αλλάξετε αρχεία ή τρέξετε migrations.",
+                    beforeBackupFiles: "Πάρτε αντίγραφο ασφαλείας των αρχείων της εφαρμογής, ειδικά των .env, storage/ και public/storage.",
+                    beforeWindow: "Επιλέξτε ήσυχο χρονικό παράθυρο, γιατί οι χρήστες δεν πρέπει να κάνουν δοκιμασίες ενώ εφαρμόζεται η ενημέρωση.",
+                    stepsTitle: "Β. Εφαρμογή incremental αναβάθμισης",
+                    stepsIntro: "Το παρακάτω παράδειγμα περιγράφει την επαγγελματική διαδρομή για υπάρχουσα εγκατάσταση. Σε shared hosting, κάποιες εντολές μπορεί να εκτελεστούν από hosting terminal, SSH ή deployment panel.",
+                    stepOneTitle: "1. Βάλτε την εφαρμογή σε maintenance mode",
+                    stepTwoTitle: "2. Αποσυμπιέστε το πακέτο αναβάθμισης",
+                    stepTwoText: "Αποσυμπιέστε το πακέτο αναβάθμισης πάνω στην υπάρχουσα εγκατάσταση. Μην αντικαταστήσετε .env, storage/ ή public/storage. Αυτά περιέχουν τοπικές ρυθμίσεις και runtime δεδομένα.",
+                    stepThreeTitle: "3. Αφαιρέστε διαγραμμένα αρχεία όπου χρειάζεται",
+                    stepThreeText: "Ανοίξτε το deleted-files.txt. Αν περιέχει διαδρομές, αφαιρέστε αυτά τα παλιά αρχεία από την εγκατάσταση. Αν είναι κενό, δεν χρειάζεται διαγραφή.",
+                    stepFourTitle: "4. Ελέγξτε αν χρειάζεται Composer",
+                    stepFourText: "Ανοίξτε το upgrade-manifest.json. Τρέξτε Composer μόνο όταν το composer_install_required είναι true.",
+                    stepFiveTitle: "5. Τρέξτε migrations και ξαναχτίστε caches",
+                    stepSixTitle: "6. Επαναφέρετε την εφαρμογή online",
+                    fullTitle: "Γ. Πότε χρησιμοποιούμε το πλήρες πακέτο;",
+                    fullText: "Χρησιμοποιήστε το πλήρες πακέτο όταν κάνετε νέα εγκατάσταση, όταν η εγκατεστημένη έκδοση δεν ταιριάζει με incremental πακέτο ή όταν θέλετε συνειδητά να αντικαταστήσετε συνολικά τον κώδικα της εφαρμογής. Κρατήστε ασφαλή τα τοπικά αρχεία όπως .env, storage/ και public/storage.",
+                    fullInstall: "Για νέα εγκατάσταση, ακολουθήστε τον οδηγό εγκατάστασης. Για αντικατάσταση υπάρχουσας εγκατάστασης, κρατήστε την ίδια πειθαρχία αντιγράφων ασφαλείας και maintenance mode όπως σε incremental αναβάθμιση.",
+                    updateCenterTitle: "Δ. Update Center και update.json",
+                    updateCenterText: "Το Update Center της εφαρμογής μπορεί να δείχνει τη νεότερη έκδοση και, όταν υπάρχει, το πακέτο αναβάθμισης που ταιριάζει. Συγκρίνει την εγκατεστημένη έκδοση με τις τιμές from_version στο update.json. Το πλήρες πακέτο παραμένει διαθέσιμο ως εναλλακτική.",
+                    updateCenterPublic: "Αν οι σύνδεσμοι των πακέτων δείχνουν σε private GitHub release URLs, οι ανώνυμες εγκαταστάσεις δεν μπορούν να τα κατεβάσουν. Δημοσιεύστε το manifest και τα πακέτα σε δημόσιο endpoint όταν οι εγκατεστημένες εφαρμογές πρέπει να έχουν άμεση πρόσβαση.",
+                    verifyTitle: "Ε. Έλεγχος μετά την αναβάθμιση",
+                    verifyIntro: "Αφού η εφαρμογή επιστρέψει online, κάντε έναν σύντομο αλλά ουσιαστικό smoke test πριν ενημερώσετε τους χρήστες ότι το σύστημα είναι έτοιμο.",
+                    verifyLogin: "Η σύνδεση εκπαιδευτικού λειτουργεί και φορτώνει το dashboard.",
+                    verifyVersion: "Το footer ή το Update Center δείχνει την αναμενόμενη έκδοση στόχο.",
+                    verifyQuiz: "Οι σελίδες δημιουργίας, επεξεργασίας και λίστας δοκιμασιών φορτώνουν σωστά.",
+                    verifyJoin: "Ένας σύνδεσμος συμμετοχής μαθητή ή επισκέπτη ανοίγει και μπορεί να ξεκινήσει δοκιμασία.",
+                    verifyPdf: "Το PDF δοκιμασίας, το PDF προσπάθειας και η επαλήθευση πιστοποιητικού συνεχίζουν να λειτουργούν.",
+                    verifyMail: "Αν χρησιμοποιείται mail, επιβεβαιώστε ότι μία ροή log-mail ή SMTP καταγράφεται σωστά."
+                }
+            }
+        };
+    </script>
+    <script src="assets/pages.js"></script>
+</body>
+</html>

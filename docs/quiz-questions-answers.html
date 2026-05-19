@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quiz Questions and Answers</title>
+    <meta name="description" content="How educators add, edit, delete, and import quiz questions and answers in LabSchool Exams.">
+    <link rel="stylesheet" href="assets/pages.css">
+</head>
+<body>
+    <main class="shell">
+        <header class="topbar" data-page-header></header>
+
+        <section class="hero">
+            <span class="eyebrow" data-i18n="eyebrow">Third guide</span>
+            <h1 class="page-title" data-i18n="title">Quiz Questions and Answers</h1>
+            <p class="lead" data-i18n="lead">
+                This page explains how a teacher manages the questions of a quiz, adds possible answers, marks the correct answer or answers, and imports questions in bulk.
+            </p>
+
+        </section>
+
+        <section class="content">
+            <article class="panel">
+                <h2 data-i18n="listTitle">The question list of a quiz</h2>
+                <p data-i18n="listTextOne">
+                    Each quiz has its own question list. From this page, the teacher can add a new question, edit an existing one, or delete a question that is no longer needed.
+                </p>
+                <p data-i18n="listTextTwo">
+                    Every question card shows the question text and how many correct answers it has. This helps the teacher quickly check whether the quiz is ready before sending it to examinees.
+                </p>
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <strong data-i18n="listStepOneTitle">New question</strong>
+                        <p data-i18n="listStepOneText">Opens the form where the teacher writes the question and its answers.</p>
+                    </div>
+                    <div class="guide-step">
+                        <strong data-i18n="listStepTwoTitle">Edit question</strong>
+                        <p data-i18n="listStepTwoText">Allows changes to the question text, image, answers, and correct choices.</p>
+                    </div>
+                    <div class="guide-step">
+                        <strong data-i18n="listStepThreeTitle">Delete question</strong>
+                        <p data-i18n="listStepThreeText">Removes the question from the quiz after confirmation.</p>
+                    </div>
+                </div>
+                <figure class="guide-figure">
+                    <img src="screenshots/questions/10 questions.jpg" alt="Quiz questions list">
+                    <figcaption data-i18n="listCaption">The question list includes edit and delete actions, plus the number of correct answers.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="createTitle">Creating a question</h2>
+                <p data-i18n="createTextOne">
+                    To create a question, the teacher writes the question text and then adds the possible answers. The form starts with answer rows ready to complete, and more answers can be added when the account limit allows it.
+                </p>
+                <p data-i18n="createTextTwo">
+                    At least two answers are required, and at least one answer must be marked as correct. If a question has more than one correct answer, the teacher simply marks all the correct choices.
+                </p>
+                <div class="callout">
+                    <p data-i18n="createNote">For regular teacher accounts, the maximum number of answers per question follows the account limits. Administrators are not restricted by the same teacher limit.</p>
+                </div>
+                <figure class="guide-figure">
+                    <img src="screenshots/questions/11 create question.jpg" alt="Create question form">
+                    <figcaption data-i18n="createCaption">The question form: question text, optional image area, answer rows, and correct-answer checkboxes.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="imageTitle">Question images</h2>
+                <p data-i18n="imageTextOne">
+                    If the quiz uses an image-based display template, the teacher can add an optional image to each question. This is useful for paintings, maps, diagrams, screenshots, or any visual material that the participant must observe.
+                </p>
+                <p data-i18n="imageTextTwo">
+                    When editing a question that already has an image, the teacher can replace it or remove the existing image. The image has a small file-size limit so the quiz remains fast for participants.
+                </p>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="editTitle">Editing questions and answers</h2>
+                <p data-i18n="editTextOne">
+                    Editing a question uses the same form as creation, but with the current data already filled in. The teacher can correct wording, add or remove answers, and change which answers are marked as correct.
+                </p>
+                <p data-i18n="editTextTwo">
+                    The application keeps the answer structure consistent: empty answer rows are ignored, invalid answer references are rejected, and the number of correct answers is recalculated after saving.
+                </p>
+                <figure class="guide-figure">
+                    <img src="screenshots/questions/12 edit question.jpg" alt="Edit question form">
+                    <figcaption data-i18n="editCaption">Editing an existing question with an image and answer list.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="csvTitle">Bulk import with CSV</h2>
+                <p data-i18n="csvTextOne">
+                    When a teacher has many questions ready in a spreadsheet, the CSV import can create several questions at once. The expected format is simple: question text, answer columns, and a final column that says which answer numbers are correct.
+                </p>
+                <p data-i18n="csvTextTwo">
+                    The CSV headers must follow this pattern: <code>text, answer_1, answer_2, ..., correct_answers</code>. The <code>correct_answers</code> value can be a single number such as <code>1</code>, or multiple numbers such as <code>1,3</code>.
+                </p>
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <strong data-i18n="csvStepOneTitle">Use UTF-8</strong>
+                        <p data-i18n="csvStepOneText">Save the CSV as UTF-8 so Greek and English text import correctly.</p>
+                    </div>
+                    <div class="guide-step">
+                        <strong data-i18n="csvStepTwoTitle">Up to 20 rows</strong>
+                        <p data-i18n="csvStepTwoText">Each import accepts up to 20 question rows.</p>
+                    </div>
+                    <div class="guide-step">
+                        <strong data-i18n="csvStepThreeTitle">Respect limits</strong>
+                        <p data-i18n="csvStepThreeText">Teacher account limits still apply to total questions and answers.</p>
+                    </div>
+                </div>
+                <figure class="guide-figure">
+                    <img src="screenshots/questions/10 questions.jpg" alt="CSV import panel under question list">
+                    <figcaption data-i18n="csvCaption">The CSV import panel appears under the question list and includes a template download link.</figcaption>
+                </figure>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="lockedTitle">When question editing is locked</h2>
+                <p data-i18n="lockedText">
+                    If a quiz already has locked content, submitted attempts, or data that must remain stable, the application can stop question editing. This protects previous results and prevents changes that would make reports unreliable.
+                </p>
+            </article>
+        </section>
+
+        <footer data-page-footer></footer>
+    </main>
+
+    <script>
+        window.ExamsPage = {
+            translations: {
+                en: {
+                    pageTitle: "Quiz Questions and Answers",
+                    description: "How educators add, edit, delete, and import quiz questions and answers in LabSchool Exams.",
+                    eyebrow: "Third guide",
+                    title: "Quiz Questions and Answers",
+                    lead: "This page explains how a teacher manages the questions of a quiz, adds possible answers, marks the correct answer or answers, and imports questions in bulk.",
+                    listTitle: "The question list of a quiz",
+                    listTextOne: "Each quiz has its own question list. From this page, the teacher can add a new question, edit an existing one, or delete a question that is no longer needed.",
+                    listTextTwo: "Every question card shows the question text and how many correct answers it has. This helps the teacher quickly check whether the quiz is ready before sending it to examinees.",
+                    listStepOneTitle: "New question",
+                    listStepOneText: "Opens the form where the teacher writes the question and its answers.",
+                    listStepTwoTitle: "Edit question",
+                    listStepTwoText: "Allows changes to the question text, image, answers, and correct choices.",
+                    listStepThreeTitle: "Delete question",
+                    listStepThreeText: "Removes the question from the quiz after confirmation.",
+                    listCaption: "The question list includes edit and delete actions, plus the number of correct answers.",
+                    createTitle: "Creating a question",
+                    createTextOne: "To create a question, the teacher writes the question text and then adds the possible answers. The form starts with answer rows ready to complete, and more answers can be added when the account limit allows it.",
+                    createTextTwo: "At least two answers are required, and at least one answer must be marked as correct. If a question has more than one correct answer, the teacher simply marks all the correct choices.",
+                    createNote: "For regular teacher accounts, the maximum number of answers per question follows the account limits. Administrators are not restricted by the same teacher limit.",
+                    createCaption: "The question form: question text, optional image area, answer rows, and correct-answer checkboxes.",
+                    imageTitle: "Question images",
+                    imageTextOne: "If the quiz uses an image-based display template, the teacher can add an optional image to each question. This is useful for paintings, maps, diagrams, screenshots, or any visual material that the participant must observe.",
+                    imageTextTwo: "When editing a question that already has an image, the teacher can replace it or remove the existing image. The image has a small file-size limit so the quiz remains fast for participants.",
+                    editTitle: "Editing questions and answers",
+                    editTextOne: "Editing a question uses the same form as creation, but with the current data already filled in. The teacher can correct wording, add or remove answers, and change which answers are marked as correct.",
+                    editTextTwo: "The application keeps the answer structure consistent: empty answer rows are ignored, invalid answer references are rejected, and the number of correct answers is recalculated after saving.",
+                    editCaption: "Editing an existing question with an image and answer list.",
+                    csvTitle: "Bulk import with CSV",
+                    csvTextOne: "When a teacher has many questions ready in a spreadsheet, the CSV import can create several questions at once. The expected format is simple: question text, answer columns, and a final column that says which answer numbers are correct.",
+                    csvTextTwo: "The CSV headers must follow this pattern: text, answer_1, answer_2, ..., correct_answers. The correct_answers value can be a single number such as 1, or multiple numbers such as 1,3.",
+                    csvStepOneTitle: "Use UTF-8",
+                    csvStepOneText: "Save the CSV as UTF-8 so Greek and English text import correctly.",
+                    csvStepTwoTitle: "Up to 20 rows",
+                    csvStepTwoText: "Each import accepts up to 20 question rows.",
+                    csvStepThreeTitle: "Respect limits",
+                    csvStepThreeText: "Teacher account limits still apply to total questions and answers.",
+                    csvCaption: "The CSV import panel appears under the question list and includes a template download link.",
+                    lockedTitle: "When question editing is locked",
+                    lockedText: "If a quiz already has locked content, submitted attempts, or data that must remain stable, the application can stop question editing. This protects previous results and prevents changes that would make reports unreliable."
+                },
+                el: {
+                    pageTitle: "Ερωτήσεις και Απαντήσεις Quiz",
+                    description: "Πώς οι εκπαιδευτικοί προσθέτουν, επεξεργάζονται, διαγράφουν και εισάγουν ερωτήσεις και απαντήσεις σε quiz του LabSchool Exams.",
+                    eyebrow: "Τρίτος οδηγός",
+                    title: "Ερωτήσεις και Απαντήσεις Quiz",
+                    lead: "Η σελίδα αυτή εξηγεί πώς ο εκπαιδευτικός διαχειρίζεται τις ερωτήσεις ενός quiz, προσθέτει πιθανές απαντήσεις, σημειώνει τη σωστή ή τις σωστές απαντήσεις και εισάγει ερωτήσεις μαζικά.",
+                    listTitle: "Η λίστα ερωτήσεων ενός quiz",
+                    listTextOne: "Κάθε quiz έχει τη δική του λίστα ερωτήσεων. Από αυτή τη σελίδα ο εκπαιδευτικός μπορεί να προσθέσει νέα ερώτηση, να επεξεργαστεί μια υπάρχουσα ή να διαγράψει μια ερώτηση που δεν χρειάζεται πλέον.",
+                    listTextTwo: "Κάθε πλαίσιο ερώτησης δείχνει το κείμενο της ερώτησης και πόσες σωστές απαντήσεις έχει. Έτσι ο εκπαιδευτικός ελέγχει γρήγορα αν το quiz είναι έτοιμο πριν το δώσει στους εξεταζόμενους.",
+                    listStepOneTitle: "Νέα ερώτηση",
+                    listStepOneText: "Ανοίγει τη φόρμα όπου ο εκπαιδευτικός γράφει την ερώτηση και τις απαντήσεις της.",
+                    listStepTwoTitle: "Επεξεργασία ερώτησης",
+                    listStepTwoText: "Επιτρέπει αλλαγές στο κείμενο, στην εικόνα, στις απαντήσεις και στις σωστές επιλογές.",
+                    listStepThreeTitle: "Διαγραφή ερώτησης",
+                    listStepThreeText: "Αφαιρεί την ερώτηση από το quiz μετά από επιβεβαίωση.",
+                    listCaption: "Η λίστα ερωτήσεων περιλαμβάνει επεξεργασία, διαγραφή και πλήθος σωστών απαντήσεων.",
+                    createTitle: "Δημιουργία ερώτησης",
+                    createTextOne: "Για να δημιουργηθεί μια ερώτηση, ο εκπαιδευτικός γράφει πρώτα το κείμενο της ερώτησης και στη συνέχεια προσθέτει τις πιθανές απαντήσεις. Η φόρμα ξεκινά με έτοιμες γραμμές απαντήσεων και μπορούν να προστεθούν περισσότερες όταν το επιτρέπει το όριο του λογαριασμού.",
+                    createTextTwo: "Απαιτούνται τουλάχιστον δύο απαντήσεις και τουλάχιστον μία πρέπει να σημειωθεί ως σωστή. Αν η ερώτηση έχει περισσότερες από μία σωστές απαντήσεις, ο εκπαιδευτικός σημειώνει όλες τις σωστές επιλογές.",
+                    createNote: "Για τους απλούς εκπαιδευτικούς, το μέγιστο πλήθος απαντήσεων ανά ερώτηση ακολουθεί τα όρια του λογαριασμού. Οι διαχειριστές δεν περιορίζονται από το ίδιο όριο εκπαιδευτικού.",
+                    createCaption: "Η φόρμα ερώτησης: κείμενο ερώτησης, προαιρετική εικόνα, γραμμές απαντήσεων και επιλογές σωστής απάντησης.",
+                    imageTitle: "Εικόνες ερωτήσεων",
+                    imageTextOne: "Αν το quiz χρησιμοποιεί πρότυπο εμφάνισης με εικόνες, ο εκπαιδευτικός μπορεί να προσθέσει προαιρετική εικόνα σε κάθε ερώτηση. Αυτό είναι χρήσιμο για πίνακες ζωγραφικής, χάρτες, διαγράμματα, screenshots ή οποιοδήποτε οπτικό υλικό πρέπει να παρατηρήσει ο συμμετέχων.",
+                    imageTextTwo: "Όταν γίνεται επεξεργασία ερώτησης που έχει ήδη εικόνα, ο εκπαιδευτικός μπορεί να την αντικαταστήσει ή να τη διαγράψει. Η εικόνα έχει μικρό όριο μεγέθους για να παραμένει το quiz γρήγορο για τους συμμετέχοντες.",
+                    editTitle: "Επεξεργασία ερωτήσεων και απαντήσεων",
+                    editTextOne: "Η επεξεργασία ερώτησης χρησιμοποιεί την ίδια φόρμα με τη δημιουργία, αλλά με συμπληρωμένα τα υπάρχοντα δεδομένα. Ο εκπαιδευτικός μπορεί να διορθώσει διατύπωση, να προσθέσει ή να αφαιρέσει απαντήσεις και να αλλάξει ποιες απαντήσεις είναι σωστές.",
+                    editTextTwo: "Η εφαρμογή κρατά τη δομή των απαντήσεων συνεπή: οι κενές γραμμές απαντήσεων αγνοούνται, οι μη έγκυρες αναφορές απαντήσεων απορρίπτονται και το πλήθος σωστών απαντήσεων υπολογίζεται ξανά μετά την αποθήκευση.",
+                    editCaption: "Επεξεργασία υπάρχουσας ερώτησης με εικόνα και λίστα απαντήσεων.",
+                    csvTitle: "Μαζική εισαγωγή με CSV",
+                    csvTextOne: "Όταν ο εκπαιδευτικός έχει πολλές ερωτήσεις έτοιμες σε υπολογιστικό φύλλο, η εισαγωγή CSV μπορεί να δημιουργήσει πολλές ερωτήσεις μαζί. Η αναμενόμενη μορφή είναι απλή: κείμενο ερώτησης, στήλες απαντήσεων και μια τελική στήλη που δηλώνει ποιοι αριθμοί απαντήσεων είναι σωστοί.",
+                    csvTextTwo: "Οι επικεφαλίδες του CSV πρέπει να ακολουθούν το μοτίβο: text, answer_1, answer_2, ..., correct_answers. Η τιμή correct_answers μπορεί να είναι ένας αριθμός, όπως 1, ή περισσότεροι αριθμοί, όπως 1,3.",
+                    csvStepOneTitle: "Χρήση UTF-8",
+                    csvStepOneText: "Αποθηκεύουμε το CSV ως UTF-8 ώστε ελληνικά και αγγλικά κείμενα να εισαχθούν σωστά.",
+                    csvStepTwoTitle: "Έως 20 γραμμές",
+                    csvStepTwoText: "Κάθε εισαγωγή δέχεται έως 20 γραμμές ερωτήσεων.",
+                    csvStepThreeTitle: "Τήρηση ορίων",
+                    csvStepThreeText: "Τα όρια του λογαριασμού εκπαιδευτικού συνεχίζουν να ισχύουν για το σύνολο ερωτήσεων και απαντήσεων.",
+                    csvCaption: "Η ενότητα εισαγωγής CSV εμφανίζεται κάτω από τη λίστα ερωτήσεων και περιλαμβάνει σύνδεσμο για πρότυπο αρχείο.",
+                    lockedTitle: "Όταν κλειδώνει η επεξεργασία ερωτήσεων",
+                    lockedText: "Αν ένα quiz έχει ήδη κλειδωμένο περιεχόμενο, υποβλημένες προσπάθειες ή δεδομένα που πρέπει να μείνουν σταθερά, η εφαρμογή μπορεί να σταματήσει την επεξεργασία ερωτήσεων. Έτσι προστατεύονται τα προηγούμενα αποτελέσματα και αποφεύγονται αλλαγές που θα έκαναν τις αναφορές αναξιόπιστες."
+                }
+            }
+        };
+    </script>
+    <script src="assets/pages.js"></script>
+</body>
+</html>

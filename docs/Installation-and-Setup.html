@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Installation and Setup</title>
+    <meta name="description" content="Install LabSchool Exams locally with XAMPP or on a production server.">
+    <link rel="stylesheet" href="assets/pages.css">
+</head>
+<body>
+    <main class="shell">
+        <header class="topbar" data-page-header></header>
+
+        <section class="hero">
+            <span class="eyebrow" data-i18n="eyebrow">Installation</span>
+            <h1 class="page-title" data-i18n="title">Installation and Setup</h1>
+            <p class="lead" data-i18n="lead">
+                A practical step-by-step guide for installing LabSchool Exams locally with XAMPP and deploying it on a server.
+            </p>
+        </section>
+
+        <section class="content">
+            <article class="panel">
+                <h2 data-i18n="requirementsTitle">Before you start</h2>
+                <p data-i18n="requirementsIntro">LabSchool Exams is a Laravel application. You need a Laravel-ready environment and a writable application directory.</p>
+                <ul>
+                    <li data-i18n="reqPhp">PHP 8.2 or newer with common Laravel extensions enabled.</li>
+                    <li data-i18n="reqComposer">Composer for PHP dependencies.</li>
+                    <li data-i18n="reqNode">Node.js and npm for frontend assets.</li>
+                    <li data-i18n="reqDb">SQLite for a quick local install, or MySQL/MariaDB for XAMPP and production.</li>
+                    <li data-i18n="reqWritable">Write access to <code>storage/</code> and <code>bootstrap/cache/</code>.</li>
+                </ul>
+                <div class="callout">
+                    <p data-i18n="installerNote">The project has one repeatable installer: <code>php artisan app:install</code>. It generates the app key when needed, runs migrations, seeds the core data, creates or updates the first administrator, and creates the public storage link.</p>
+                </div>
+            </article>
+
+            <article class="panel" id="local">
+                <h2 data-i18n="localTitle">A. Local installation</h2>
+                <p data-i18n="localIntro">This flow is suitable for Windows/XAMPP development, testing, and demonstrations.</p>
+
+                <h3 data-i18n="localToolsTitle">What to install on your computer</h3>
+                <p data-i18n="localToolsIntro">Before you install the application itself, prepare the computer that will host it. In a school lab this can be the teacher computer, the lab server, or another stable computer that stays open during the assessment.</p>
+                <ul>
+                    <li data-i18n="localToolXampp">Install XAMPP from apachefriends.org. XAMPP gives you Apache, PHP, MySQL/MariaDB, and phpMyAdmin in one package.</li>
+                    <li data-i18n="localToolComposer">Install Composer from getcomposer.org. Composer downloads and prepares the Laravel/PHP dependencies.</li>
+                    <li data-i18n="localToolNode">Install Node.js LTS from nodejs.org. It includes npm, which builds the frontend files used by the interface.</li>
+                    <li data-i18n="localToolGit">Install Git from git-scm.com if you want to clone the repository instead of extracting a release zip.</li>
+                </ul>
+                <div class="callout">
+                    <p data-i18n="localNetworkNote">A local installation does not mean that only one person can use it. If the host computer is connected to the same local network, other computers in the lab can open the application from the host computer address. This is useful for a school computer lab, an ICT training room, a language school, or a small internal seminar.</p>
+                </div>
+
+                <h3 data-i18n="localStepOneTitle">1. Place the project in XAMPP</h3>
+                <p data-i18n="localStepOneText">Clone or extract the project under <code>C:\xampp\htdocs\exams</code>, then open PowerShell in that folder.</p>
+                <pre class="code-block"><code>cd C:\xampp\htdocs\exams</code></pre>
+
+                <h3 data-i18n="localStepTwoTitle">2. Install dependencies</h3>
+                <pre class="code-block"><code>composer install
+npm install</code></pre>
+
+                <h3 data-i18n="localStepThreeTitle">3. Create the environment file</h3>
+                <p data-i18n="localStepThreeText">Copy the example environment file. For the fastest local setup you may keep SQLite, or switch to MySQL/MariaDB if you want to use the XAMPP database server.</p>
+                <pre class="code-block"><code>Copy-Item .env.example .env</code></pre>
+
+                <h3 data-i18n="localSqliteTitle">Option A: quick local setup with SQLite</h3>
+                <p data-i18n="localSqliteText">Keep <code>DB_CONNECTION=sqlite</code>. If the database file does not exist, create <code>database/database.sqlite</code>.</p>
+                <pre class="code-block"><code>New-Item database\database.sqlite -ItemType File</code></pre>
+
+                <h3 data-i18n="localMysqlTitle">Option B: local setup with XAMPP MySQL</h3>
+                <p data-i18n="localMysqlText">Start Apache and MySQL from the XAMPP Control Panel. Create a database, for example <code>exams</code>, in phpMyAdmin and update these values in <code>.env</code>.</p>
+                <pre class="code-block"><code>DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=exams
+DB_USERNAME=root
+DB_PASSWORD=</code></pre>
+
+                <h3 data-i18n="localInstallTitle">4. Run the application installer</h3>
+                <p data-i18n="localInstallText">Choose the first administrator account while installing. Add <code>--demo</code> if you want the shared example quiz data.</p>
+                <pre class="code-block"><code>php artisan app:install --admin-email=admin@example.test --admin-name="System Administrator" --admin-password="change-this-password"
+
+php artisan app:install --demo --admin-email=admin@example.test --admin-password="change-this-password"</code></pre>
+
+                <h3 data-i18n="localAssetsTitle">5. Build assets and open the app</h3>
+                <pre class="code-block"><code>npm run build
+php artisan serve</code></pre>
+                <p data-i18n="localOpenText">Open <code>http://127.0.0.1:8000</code> and sign in with the administrator account you created.</p>
+
+                <h3 data-i18n="localNetworkTitle">Permanent local network address with XAMPP</h3>
+                <p data-i18n="localNetworkText">When the project is inside <code>C:\xampp\htdocs\exams</code> and Apache is running, the host computer can open <code>http://localhost/exams</code>. The rest of the computers in the same local network can open the application from the host computer IP, for example <code>http://192.168.1.20/exams</code>.</p>
+                <pre class="code-block"><code>APP_URL=http://192.168.1.20/exams</code></pre>
+                <div class="callout">
+                    <p data-i18n="localRewriteBaseText">Because the application is served from the <code>/exams</code> folder, confirm that <code>public/.htaccess</code> includes <code>RewriteBase /exams</code> immediately after <code>RewriteEngine On</code>. Keep the rest of the Laravel rewrite rules unchanged.</p>
+                </div>
+                <pre class="code-block"><code>&lt;IfModule mod_rewrite.c&gt;
+    RewriteEngine On
+    RewriteBase /exams
+&lt;/IfModule&gt;</code></pre>
+                <p data-i18n="localNetworkSafety">For a stable lab address, reserve a fixed local IP for the host computer from the router or set a static IP, and allow Apache through the Windows firewall on the private network.</p>
+
+                <h3 data-i18n="localDevServerTitle">Temporary test address with artisan serve</h3>
+                <p data-i18n="localDevServerText">If you only want a quick test without Apache, you can start Laravel with host binding and give the other computers the address with port 8000.</p>
+                <pre class="code-block"><code>php artisan serve --host=0.0.0.0 --port=8000</code></pre>
+                <p data-i18n="localDevServerSafety">Use this only on a trusted local network. For public access through the internet, use the server installation flow with HTTPS and production settings.</p>
+            </article>
+
+            <article class="panel" id="server">
+                <h2 data-i18n="serverTitle">B. Server installation</h2>
+                <p data-i18n="serverIntro">Use this flow for a real deployment on shared hosting, a VPS, or a managed server.</p>
+
+                <h3 data-i18n="serverStepOneTitle">1. Upload or pull the release</h3>
+                <p data-i18n="serverStepOneText">Place the application outside the public web root when possible. The web server document root should point to the Laravel <code>public/</code> directory.</p>
+
+                <h3 data-i18n="serverStepTwoTitle">2. Prepare production environment values</h3>
+                <p data-i18n="serverStepTwoText">Create <code>.env</code> from <code>.env.example</code> and set production values before running the installer.</p>
+                <pre class="code-block"><code>APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://your-domain.example
+APP_SOURCE_URL=https://github.com/LabSchool-GR/Exams
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database
+DB_USERNAME=your_user
+DB_PASSWORD=your_password
+
+SESSION_SECURE_COOKIE=true</code></pre>
+
+                <h3 data-i18n="serverStepThreeTitle">3. Install production dependencies and assets</h3>
+                <p data-i18n="serverStepThreeText">If you install from a prepared release package, production dependencies and built assets may already be included. If you install from source, run these commands on the server or in your build pipeline.</p>
+                <pre class="code-block"><code>composer install --no-dev --prefer-dist --optimize-autoloader
+npm ci
+npm run build</code></pre>
+
+                <h3 data-i18n="serverStepFourTitle">4. Run the installer in production mode</h3>
+                <pre class="code-block"><code>php artisan app:install --force --admin-email=admin@example.com --admin-name="System Administrator" --admin-password="use-a-strong-password"</code></pre>
+
+                <h3 data-i18n="serverStepFiveTitle">5. Cache configuration</h3>
+                <pre class="code-block"><code>php artisan optimize:clear
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache</code></pre>
+
+                <h3 data-i18n="serverStepSixTitle">6. Configure background tasks</h3>
+                <p data-i18n="serverStepSixText">The scheduler expires timed quiz attempts and prunes old personal data. Queues are used for mail-related jobs.</p>
+                <pre class="code-block"><code>* * * * * php /path/to/exams/artisan schedule:run >> /dev/null 2>&1
+
+php artisan queue:work --tries=3</code></pre>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="mailTitle">Mail settings</h2>
+                <p data-i18n="mailIntro">Mail is used for feedback, teacher registration notifications, quota requests, and other administrative flows. The application can run without real mail during local testing, but a production installation should use working SMTP settings.</p>
+
+                <h3 data-i18n="mailLocalTitle">Local testing</h3>
+                <p data-i18n="mailLocalText">For a local installation, you can keep emails in the log so you can test flows without sending real messages.</p>
+                <pre class="code-block"><code>MAIL_MAILER=log
+MAIL_FROM_ADDRESS="no-reply@example.test"
+MAIL_FROM_NAME="${APP_NAME}"</code></pre>
+
+                <h3 data-i18n="mailSmtpTitle">SMTP example</h3>
+                <p data-i18n="mailSmtpText">For a real server, use the SMTP values given by your provider or organization. The example environment file includes a baseline suitable for Panhellenic School Network style deployments.</p>
+                <pre class="code-block"><code>MAIL_MAILER=smtp
+MAIL_HOST=websitemail.sch.gr
+MAIL_PORT=25
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS="your-address@sch.gr"
+MAIL_FROM_NAME="${APP_NAME}"</code></pre>
+
+                <h3 data-i18n="mailQueueTitle">Queued mail</h3>
+                <p data-i18n="mailQueueText">If the queue connection is set to database, make sure a queue worker runs on the server. Otherwise, email jobs may stay pending in the jobs table.</p>
+                <pre class="code-block"><code>QUEUE_CONNECTION=database
+
+php artisan queue:work --tries=3</code></pre>
+
+                <div class="callout">
+                    <p data-i18n="mailCheck">After changing mail settings, clear and rebuild the configuration cache on production.</p>
+                </div>
+                <pre class="code-block"><code>php artisan optimize:clear
+php artisan config:cache</code></pre>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="afterTitle">After installation</h2>
+                <ol>
+                    <li data-i18n="afterLogin">Sign in as the administrator and confirm that the dashboard loads.</li>
+                    <li data-i18n="afterMail">Check mail settings if you will use feedback, registration alerts, quota requests, or other email flows.</li>
+                    <li data-i18n="afterStorage">Confirm that uploaded files and generated PDFs can be written under <code>storage/</code>.</li>
+                    <li data-i18n="afterQuiz">Create a small quiz, open a public or PIN-based participation flow, and submit one test attempt.</li>
+                    <li data-i18n="afterSecurity">On production, use HTTPS and keep <code>APP_DEBUG=false</code>.</li>
+                </ol>
+            </article>
+
+            <article class="panel">
+                <h2 data-i18n="qualityTitle">Useful checks</h2>
+                <p data-i18n="qualityIntro">For development or before publishing changes, run the project checks.</p>
+                <pre class="code-block"><code>php artisan test
+php vendor/bin/pint
+npm run build</code></pre>
+            </article>
+        </section>
+
+        <footer data-page-footer></footer>
+    </main>
+
+    <script>
+        window.ExamsPage = {
+            translations: {
+                en: {
+                    pageTitle: "Installation and Setup",
+                    description: "Install LabSchool Exams locally with XAMPP or on a production server.",
+                    eyebrow: "Installation",
+                    title: "Installation and Setup",
+                    lead: "A practical step-by-step guide for installing LabSchool Exams locally with XAMPP and deploying it on a server.",
+                    localButton: "A. Local installation",
+                    serverButton: "B. Server installation",
+                    requirementsTitle: "Before you start",
+                    requirementsIntro: "LabSchool Exams is a Laravel application. You need a Laravel-ready environment and a writable application directory.",
+                    reqPhp: "PHP 8.2 or newer with common Laravel extensions enabled.",
+                    reqComposer: "Composer for PHP dependencies.",
+                    reqNode: "Node.js and npm for frontend assets.",
+                    reqDb: "SQLite for a quick local install, or MySQL/MariaDB for XAMPP and production.",
+                    reqWritable: "Write access to storage/ and bootstrap/cache/.",
+                    installerNote: "The project has one repeatable installer: php artisan app:install. It generates the app key when needed, runs migrations, seeds the core data, creates or updates the first administrator, and creates the public storage link.",
+                    localTitle: "A. Local installation",
+                    localIntro: "This flow is suitable for Windows/XAMPP development, testing, demonstrations, and controlled use in a small educational local network.",
+                    localToolsTitle: "What to install on your computer",
+                    localToolsIntro: "Before you install the application itself, prepare the computer that will host it. In a school lab this can be the teacher computer, the lab server, or another stable computer that stays open during the assessment.",
+                    localToolXampp: "Install XAMPP from apachefriends.org. XAMPP gives you Apache, PHP, MySQL/MariaDB, and phpMyAdmin in one package.",
+                    localToolComposer: "Install Composer from getcomposer.org. Composer downloads and prepares the Laravel/PHP dependencies.",
+                    localToolNode: "Install Node.js LTS from nodejs.org. It includes npm, which builds the frontend files used by the interface.",
+                    localToolGit: "Install Git from git-scm.com if you want to clone the repository instead of extracting a release zip.",
+                    localNetworkNote: "A local installation does not mean that only one person can use it. If the host computer is connected to the same local network, other computers in the lab can open the application from the host computer address. This is useful for a school computer lab, an ICT training room, a language school, or a small internal seminar.",
+                    localStepOneTitle: "1. Place the project in XAMPP",
+                    localStepOneText: "Clone or extract the project under C:\\xampp\\htdocs\\exams, then open PowerShell in that folder.",
+                    localStepTwoTitle: "2. Install dependencies",
+                    localStepThreeTitle: "3. Create the environment file",
+                    localStepThreeText: "Copy the example environment file. For the fastest local setup you may keep SQLite, or switch to MySQL/MariaDB if you want to use the XAMPP database server.",
+                    localSqliteTitle: "Option A: quick local setup with SQLite",
+                    localSqliteText: "Keep DB_CONNECTION=sqlite. If the database file does not exist, create database/database.sqlite.",
+                    localMysqlTitle: "Option B: local setup with XAMPP MySQL",
+                    localMysqlText: "Start Apache and MySQL from the XAMPP Control Panel. Create a database, for example exams, in phpMyAdmin and update these values in .env.",
+                    localInstallTitle: "4. Run the application installer",
+                    localInstallText: "Choose the first administrator account while installing. Add --demo if you want the shared example quiz data.",
+                    localAssetsTitle: "5. Build assets and open the app",
+                    localOpenText: "Open http://127.0.0.1:8000 and sign in with the administrator account you created.",
+                    localNetworkTitle: "Permanent local network address with XAMPP",
+                    localNetworkText: "When the project is inside C:\\xampp\\htdocs\\exams and Apache is running, the host computer can open http://localhost/exams. The rest of the computers in the same local network can open the application from the host computer IP, for example http://192.168.1.20/exams.",
+                    localRewriteBaseText: "Because the application is served from the /exams folder, confirm that public/.htaccess includes RewriteBase /exams immediately after RewriteEngine On. Keep the rest of the Laravel rewrite rules unchanged.",
+                    localNetworkSafety: "For a stable lab address, reserve a fixed local IP for the host computer from the router or set a static IP, and allow Apache through the Windows firewall on the private network.",
+                    localDevServerTitle: "Temporary test address with artisan serve",
+                    localDevServerText: "If you only want a quick test without Apache, you can start Laravel with host binding and give the other computers the address with port 8000.",
+                    localDevServerSafety: "Use this only on a trusted local network. For public access through the internet, use the server installation flow with HTTPS and production settings.",
+                    serverTitle: "B. Server installation",
+                    serverIntro: "Use this flow for a real deployment on shared hosting, a VPS, or a managed server.",
+                    serverStepOneTitle: "1. Upload or pull the release",
+                    serverStepOneText: "Place the application outside the public web root when possible. The web server document root should point to the Laravel public/ directory.",
+                    serverStepTwoTitle: "2. Prepare production environment values",
+                    serverStepTwoText: "Create .env from .env.example and set production values before running the installer.",
+                    serverStepThreeTitle: "3. Install production dependencies and assets",
+                    serverStepThreeText: "If you install from a prepared release package, production dependencies and built assets may already be included. If you install from source, run these commands on the server or in your build pipeline.",
+                    serverStepFourTitle: "4. Run the installer in production mode",
+                    serverStepFiveTitle: "5. Cache configuration",
+                    serverStepSixTitle: "6. Configure background tasks",
+                    serverStepSixText: "The scheduler expires timed quiz attempts and prunes old personal data. Queues are used for mail-related jobs.",
+                    mailTitle: "Mail settings",
+                    mailIntro: "Mail is used for feedback, teacher registration notifications, quota requests, and other administrative flows. The application can run without real mail during local testing, but a production installation should use working SMTP settings.",
+                    mailLocalTitle: "Local testing",
+                    mailLocalText: "For a local installation, you can keep emails in the log so you can test flows without sending real messages.",
+                    mailSmtpTitle: "SMTP example",
+                    mailSmtpText: "For a real server, use the SMTP values given by your provider or organization. The example environment file includes a baseline suitable for Panhellenic School Network style deployments.",
+                    mailQueueTitle: "Queued mail",
+                    mailQueueText: "If the queue connection is set to database, make sure a queue worker runs on the server. Otherwise, email jobs may stay pending in the jobs table.",
+                    mailCheck: "After changing mail settings, clear and rebuild the configuration cache on production.",
+                    afterTitle: "After installation",
+                    afterLogin: "Sign in as the administrator and confirm that the dashboard loads.",
+                    afterMail: "Check mail settings if you will use feedback, registration alerts, quota requests, or other email flows.",
+                    afterStorage: "Confirm that uploaded files and generated PDFs can be written under storage/.",
+                    afterQuiz: "Create a small quiz, open a public or PIN-based participation flow, and submit one test attempt.",
+                    afterSecurity: "On production, use HTTPS and keep APP_DEBUG=false.",
+                    qualityTitle: "Useful checks",
+                    qualityIntro: "For development or before publishing changes, run the project checks."
+                },
+                el: {
+                    pageTitle: "Εγκατάσταση και Ρύθμιση",
+                    description: "Εγκατάσταση του LabSchool Exams τοπικά με XAMPP ή σε server παραγωγής.",
+                    eyebrow: "Εγκατάσταση",
+                    title: "Εγκατάσταση και Ρύθμιση",
+                    lead: "Ένας πρακτικός οδηγός βήμα προς βήμα για εγκατάσταση του LabSchool Exams τοπικά με XAMPP και για εγκατάσταση σε server.",
+                    localButton: "Α. Τοπική εγκατάσταση",
+                    serverButton: "Β. Εγκατάσταση σε server",
+                    requirementsTitle: "Πριν ξεκινήσετε;",
+                    requirementsIntro: "Το LabSchool Exams είναι εφαρμογή Laravel. Χρειάζεται περιβάλλον έτοιμο για Laravel και φάκελος εφαρμογής με δικαιώματα εγγραφής.",
+                    reqPhp: "PHP 8.2 ή νεότερη με ενεργές τις συνηθισμένες Laravel επεκτάσεις.",
+                    reqComposer: "Composer για τις PHP εξαρτήσεις.",
+                    reqNode: "Node.js και npm για τα frontend assets.",
+                    reqDb: "SQLite για γρήγορη τοπική εγκατάσταση ή MySQL/MariaDB για XAMPP και παραγωγή.",
+                    reqWritable: "Δικαίωμα εγγραφής στους φακέλους storage/ και bootstrap/cache/.",
+                    installerNote: "Το έργο έχει μία επαναλήψιμη διαδικασία εγκατάστασης: php artisan app:install. Δημιουργεί app key όταν χρειάζεται, τρέχει migrations, περνά τα βασικά δεδομένα, δημιουργεί ή ενημερώνει τον πρώτο διαχειριστή και φτιάχνει το public storage link.",
+                    localTitle: "Α. Τοπική εγκατάσταση",
+                    localIntro: "Αυτή η ροή είναι κατάλληλη για Windows/XAMPP, δοκιμές, παρουσιάσεις και ελεγχόμενη χρήση σε μικρό εκπαιδευτικό τοπικό δίκτυο.",
+                    localToolsTitle: "Τι πρέπει να εγκαταστήσετε στον υπολογιστή;",
+                    localToolsIntro: "Πριν εγκαταστήσετε την ίδια την εφαρμογή, ετοιμάστε τον υπολογιστή που θα τη φιλοξενεί. Σε ένα σχολικό εργαστήριο μπορεί να είναι ο υπολογιστής του εκπαιδευτικού, ο server του εργαστηρίου ή ένας σταθερός υπολογιστής που θα παραμένει ανοιχτός κατά τη διάρκεια της δοκιμασίας.",
+                    localToolXampp: "Εγκαταστήστε το XAMPP από το apachefriends.org. Το XAMPP δίνει Apache, PHP, MySQL/MariaDB και phpMyAdmin σε ένα πακέτο.",
+                    localToolComposer: "Εγκαταστήστε το Composer από το getcomposer.org. Το Composer κατεβάζει και προετοιμάζει τις Laravel/PHP εξαρτήσεις.",
+                    localToolNode: "Εγκαταστήστε το Node.js LTS από το nodejs.org. Περιλαμβάνει το npm, που χτίζει τα frontend αρχεία της διεπαφής.",
+                    localToolGit: "Εγκαταστήστε το Git από το git-scm.com αν θέλετε να κάνετε clone το repository αντί να αποσυμπιέσετε ένα release zip.",
+                    localNetworkNote: "Τοπική εγκατάσταση δεν σημαίνει ότι τη χρησιμοποιεί μόνο ένα άτομο. Αν ο υπολογιστής που φιλοξενεί την εφαρμογή είναι στο ίδιο τοπικό δίκτυο, οι υπόλοιποι υπολογιστές του εργαστηρίου μπορούν να ανοίξουν την εφαρμογή από τη διεύθυνσή του. Αυτό είναι χρήσιμο σε σχολικό εργαστήριο, αίθουσα πληροφορικής, φροντιστήριο ξένων γλωσσών ή μικρό εσωτερικό σεμινάριο.",
+                    localStepOneTitle: "1. Τοποθετήστε το project στο XAMPP",
+                    localStepOneText: "Κάντε clone ή αποσυμπίεση του project στον φάκελο C:\\xampp\\htdocs\\exams και ανοίξτε PowerShell εκεί.",
+                    localStepTwoTitle: "2. Εγκαταστήστε τις εξαρτήσεις",
+                    localStepThreeTitle: "3. Δημιουργήστε το αρχείο περιβάλλοντος",
+                    localStepThreeText: "Αντιγράψτε το αρχείο παραδείγματος. Για την πιο γρήγορη τοπική εγκατάσταση μπορείτε να κρατήσετε SQLite ή να περάσετε σε MySQL/MariaDB αν θέλετε να χρησιμοποιήσετε τον XAMPP database server.",
+                    localSqliteTitle: "Επιλογή A: γρήγορη τοπική εγκατάσταση με SQLite",
+                    localSqliteText: "Κρατήστε DB_CONNECTION=sqlite. Αν δεν υπάρχει το αρχείο βάσης, δημιουργήστε το database/database.sqlite.",
+                    localMysqlTitle: "Επιλογή B: τοπική εγκατάσταση με XAMPP MySQL",
+                    localMysqlText: "Ξεκινήστε Apache και MySQL από το XAMPP Control Panel. Δημιουργήστε βάση, για παράδειγμα exams, στο phpMyAdmin και ενημερώστε αυτές τις τιμές στο .env.",
+                    localInstallTitle: "4. Τρέξτε τον installer της εφαρμογής",
+                    localInstallText: "Ορίστε τον πρώτο λογαριασμό διαχειριστή κατά την εγκατάσταση. Προσθέστε --demo αν θέλετε και τα κοινόχρηστα ενδεικτικά δεδομένα.",
+                    localAssetsTitle: "5. Κάντε build και ανοίξτε την εφαρμογή",
+                    localOpenText: "Ανοίξτε http://127.0.0.1:8000 και συνδεθείτε με τον λογαριασμό διαχειριστή που δημιουργήσατε.",
+                    localNetworkTitle: "Μόνιμη τοπική διεύθυνση με XAMPP",
+                    localNetworkText: "Όταν το έργο βρίσκεται στο C:\\xampp\\htdocs\\exams και τρέχει ο Apache, ο υπολογιστής που φιλοξενεί την εφαρμογή ανοίγει τη διεύθυνση http://localhost/exams. Οι υπόλοιποι υπολογιστές του ίδιου τοπικού δικτύου ανοίγουν την εφαρμογή από την IP του υπολογιστή αυτού, για παράδειγμα http://192.168.1.20/exams.",
+                    localRewriteBaseText: "Επειδή η εφαρμογή προβάλλεται μέσα από τον φάκελο /exams, ελέγξτε ότι το public/.htaccess περιέχει τη γραμμή RewriteBase /exams αμέσως μετά το RewriteEngine On. Οι υπόλοιποι κανόνες του Laravel μένουν όπως είναι.",
+                    localNetworkSafety: "Για να μένει σταθερή η διεύθυνση στο εργαστήριο, κρατήστε μόνιμη τοπική IP για τον υπολογιστή από το router ή ορίστε static IP, και επιτρέψτε τον Apache στο Windows firewall για το ιδιωτικό δίκτυο.",
+                    localDevServerTitle: "Προσωρινή δοκιμή με artisan serve",
+                    localDevServerText: "Αν θέλετε μόνο μια γρήγορη δοκιμή χωρίς Apache, μπορείτε να ξεκινήσετε το Laravel με host binding και να δώσετε στους άλλους υπολογιστές τη διεύθυνση με την πόρτα 8000.",
+                    localDevServerSafety: "Χρησιμοποιήστε αυτή τη λύση μόνο σε αξιόπιστο τοπικό δίκτυο. Για δημόσια πρόσβαση από το internet, ακολουθήστε την εγκατάσταση σε server με HTTPS και production ρυθμίσεις.",
+                    serverTitle: "Β. Εγκατάσταση σε server",
+                    serverIntro: "Χρησιμοποιήστε αυτή τη ροή για πραγματική εγκατάσταση σε shared hosting, VPS ή managed server.",
+                    serverStepOneTitle: "1. Ανεβάστε ή κατεβάστε την έκδοση",
+                    serverStepOneText: "Όπου γίνεται, τοποθετήστε την εφαρμογή εκτός public web root. Το document root του web server πρέπει να δείχνει στον φάκελο public/ του Laravel.",
+                    serverStepTwoTitle: "2. Ρυθμίστε τις production τιμές",
+                    serverStepTwoText: "Δημιουργήστε .env από το .env.example και ορίστε τις production τιμές πριν τρέξετε τον installer.",
+                    serverStepThreeTitle: "3. Εγκαταστήστε production εξαρτήσεις και assets",
+                    serverStepThreeText: "Αν εγκαθιστάτε από έτοιμο release package, οι production εξαρτήσεις και τα built assets μπορεί να περιλαμβάνονται ήδη. Αν εγκαθιστάτε από source, τρέξτε αυτές τις εντολές στον server ή στο build pipeline.",
+                    serverStepFourTitle: "4. Τρέξτε τον installer σε production mode",
+                    serverStepFiveTitle: "5. Δημιουργήστε cache ρυθμίσεων",
+                    serverStepSixTitle: "6. Ρυθμίστε background εργασίες",
+                    serverStepSixText: "Ο scheduler λήγει χρονομετρημένες προσπάθειες και καθαρίζει παλιά προσωπικά δεδομένα. Τα queues χρησιμοποιούνται για εργασίες email.",
+                    mailTitle: "Ρυθμίσεις mail",
+                    mailIntro: "Το mail χρησιμοποιείται για feedback, ειδοποιήσεις εγγραφής εκπαιδευτικών, αιτήματα quota και άλλες διαχειριστικές ροές. Η εφαρμογή μπορεί να λειτουργήσει τοπικά χωρίς πραγματική αποστολή email, αλλά μια production εγκατάσταση πρέπει να έχει σωστές SMTP ρυθμίσεις.",
+                    mailLocalTitle: "Τοπικές δοκιμές",
+                    mailLocalText: "Σε τοπική εγκατάσταση μπορείτε να κρατήσετε τα emails στο log, ώστε να ελέγχετε τις ροές χωρίς να στέλνονται πραγματικά μηνύματα.",
+                    mailSmtpTitle: "Παράδειγμα SMTP",
+                    mailSmtpText: "Σε πραγματικό server χρησιμοποιήστε τις SMTP τιμές που δίνει ο πάροχος ή ο οργανισμός σας. Το αρχείο παραδείγματος περιλαμβάνει μια βάση κατάλληλη για περιβάλλοντα τύπου Πανελλήνιου Σχολικού Δικτύου.",
+                    mailQueueTitle: "Mail μέσω queue",
+                    mailQueueText: "Αν το queue connection είναι database, βεβαιωθείτε ότι τρέχει queue worker στον server. Διαφορετικά, οι εργασίες email μπορεί να μένουν σε αναμονή στον πίνακα jobs.",
+                    mailCheck: "Μετά από αλλαγές στις ρυθμίσεις mail, καθαρίστε και ξαναχτίστε την configuration cache σε production.",
+                    afterTitle: "Μετά την εγκατάσταση;",
+                    afterLogin: "Συνδεθείτε ως διαχειριστής και επιβεβαιώστε ότι φορτώνει το dashboard.",
+                    afterMail: "Ελέγξτε τις ρυθμίσεις mail αν θα χρησιμοποιήσετε feedback, ειδοποιήσεις εγγραφών, αιτήματα quota ή άλλες email ροές.",
+                    afterStorage: "Επιβεβαιώστε ότι uploads και παραγόμενα PDFs μπορούν να γραφτούν στον φάκελο storage/.",
+                    afterQuiz: "Δημιουργήστε μια μικρή δοκιμασία, ανοίξτε μια public ή PIN-based ροή συμμετοχής και υποβάλετε μία δοκιμαστική προσπάθεια.",
+                    afterSecurity: "Σε παραγωγή, χρησιμοποιήστε HTTPS και κρατήστε APP_DEBUG=false.",
+                    qualityTitle: "Χρήσιμοι έλεγχοι",
+                    qualityIntro: "Για ανάπτυξη ή πριν δημοσιεύσετε αλλαγές, τρέξτε τους ελέγχους του έργου."
+                }
+            }
+        };
+    </script>
+    <script src="assets/pages.js"></script>
+</body>
+</html>

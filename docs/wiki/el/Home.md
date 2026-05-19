@@ -34,6 +34,6 @@
 
 - Laravel 12 εφαρμογή με PHP 8.2+
 - πολλαπλές ροές quiz για αυθεντικοποιημένους και δημόσιους χρήστες
-- template-based παρουσίαση quiz, συμπεριλαμβανομένων event templates όπως το `retroAXD3_img`
+- template-based παρουσίαση quiz με τα βασικά templates της εφαρμογής
 - GitHub Actions για CI και release packaging
 - έλεγχοι ασφάλειας και απορρήτου όπως CSP, throttling και data pruning

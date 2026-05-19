@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LabSchool Exams User Guide</title>
+    <meta name="description" content="User guide for the main functional areas of LabSchool Exams.">
+    <link rel="stylesheet" href="assets/pages.css">
+</head>
+<body>
+    <main class="shell">
+        <header class="topbar" data-page-header></header>
+
+        <section class="hero">
+            <span class="eyebrow" data-i18n="eyebrow">Open-source application</span>
+            <h1 class="page-title" data-i18n="heroTitle">LabSchool Exams</h1>
+            <p class="lead" data-i18n="heroLead">
+                Exams is a Laravel-based knowledge assessment application designed for schools, training providers, and public or private educational programs.
+            </p>
+
+            <div class="actions">
+                <a class="button button-guide" href="index.html" data-doc-link="home" data-i18n="homeLink">Home Page</a>
+                <a class="button button-demo" href="https://labschool.gr/exams/dashboard" target="_blank" rel="noopener noreferrer" data-i18n="tryAppLink">Try the application</a>
+                <a class="button button-sample" href="https://labschool.gr/exams/public/1?expires=1778429301&amp;key=f6e57d42bd83eefba3c3266503949335&amp;signature=ab9fb317b40bb4b663fcdff6da4295eb5a33a36fab5ab6ea6c89acedbcf4f710" target="_blank" rel="noopener noreferrer" data-i18n="tryQuizLink">Sample Quiz</a>
+                <a class="button button-support" href="sponsor.html" data-doc-link="sponsor" data-i18n="sponsorLink">Support Project</a>
+            </div>
+        </section>
+
+        <section class="grid" aria-label="Learning sections" data-i18n-aria="topicsLabel">
+            <a class="tile" href="register-login.html" data-doc-link="registerLogin">
+                <h2 data-i18n="authTitle">01. Teacher Registration</h2>
+                <p data-i18n="authText">Create a teacher account, sign in securely, verify access, recover passwords, and enter the application workspace.</p>
+            </a>
+
+            <a class="tile" href="quiz-create-edit.html" data-doc-link="quizCreateEdit">
+                <h2 data-i18n="quizEditorTitle">02. Quiz Creation</h2>
+                <p data-i18n="quizEditorText">Build quizzes, set language, category, timing, scoring, access rules, visibility, images, and publication options.</p>
+            </a>
+
+            <a class="tile" href="quiz-questions-answers.html" data-doc-link="quizQuestionsAnswers">
+                <h2 data-i18n="questionsTitle">03. Quiz Questions</h2>
+                <p data-i18n="questionsText">Create questions, define possible answers, choose correct answers, import content, and organize the quiz question bank.</p>
+            </a>
+
+            <a class="tile" href="register-students.html" data-doc-link="registerStudents">
+                <h2 data-i18n="studentsTitle">04. Examinee Management</h2>
+                <p data-i18n="studentsText">Manage participants, student lists, personalized links, PIN access, guest participation, and anonymous access modes.</p>
+            </a>
+
+            <a class="tile" href="quiz-templates.html" data-doc-link="quizTemplates">
+                <h2 data-i18n="templatesTitle">05. Quiz Display Templates</h2>
+                <p data-i18n="templatesText">Select visual templates for the participant experience, including classic, image-based, and event-style quiz layouts.</p>
+            </a>
+
+            <a class="tile" href="quiz-flow.html" data-doc-link="quizFlow">
+                <h2 data-i18n="flowTitle">06. Quiz Execution and Flow</h2>
+                <p data-i18n="flowText">Understand how participants start, answer, navigate, submit, resume, and complete a quiz under the configured rules.</p>
+            </a>
+
+            <a class="tile" href="quiz-results.html" data-doc-link="quizResults">
+                <h2 data-i18n="resultsTitle">07. Quiz Results</h2>
+                <p data-i18n="resultsText">Review attempts, scores, pass status, question statistics, exports, reports, PDFs, certificates, and verification links.</p>
+            </a>
+
+            <a class="tile" href="admin-options.html" data-doc-link="adminOptions">
+                <h2 data-i18n="adminTitle">08. Administrator Options</h2>
+                <p data-i18n="adminText">Control users, quotas, updates, system settings, operational checks, and administrative access across the installation.</p>
+            </a>
+
+            <a class="tile" href="teacher-options.html" data-doc-link="teacherOptions">
+                <h2 data-i18n="teacherTitle">09. Teacher Options</h2>
+                <p data-i18n="teacherText">Use the teacher workspace for quizzes, questions, participants, reports, profile settings, feedback, and everyday classroom workflows.</p>
+            </a>
+        </section>
+
+        <footer data-page-footer></footer>
+    </main>
+
+    <script>
+        window.ExamsPage = {
+            translations: {
+                en: {
+                    pageTitle: "LabSchool Exams User Guide",
+                    description: "User guide for the main functional areas of LabSchool Exams.",
+                    topicsLabel: "User guide sections",
+                    eyebrow: "Open-source application",
+                    heroTitle: "LabSchool Exams",
+                    heroLead: "Exams is a Laravel-based knowledge assessment application designed for schools, training providers, and public or private educational programs. It supports quiz creation, student and guest participation flows, reports, exports, certificates, and multiple visual templates. Participants do not need to register or sign in; they join with a temporary PIN or a personalized link, depending on the process configured by the quiz creator.",
+                    homeLink: "Home Page",
+                    tryAppLink: "Try the application",
+                    tryQuizLink: "Sample Quiz",
+                    sponsorLink: "Support Project",
+                    authTitle: "01. Teacher Registration",
+                    authText: "Create a teacher account, sign in securely, verify access, recover passwords, and enter the application workspace.",
+                    quizEditorTitle: "02. Quiz Creation",
+                    quizEditorText: "Build quizzes, set language, category, timing, scoring, access rules, visibility, images, and publication options.",
+                    questionsTitle: "03. Quiz Questions",
+                    questionsText: "Create questions, define possible answers, choose correct answers, import content, and organize the quiz question bank.",
+                    studentsTitle: "04. Examinee Management",
+                    studentsText: "Manage participants, student lists, personalized links, PIN access, guest participation, and anonymous access modes.",
+                    templatesTitle: "05. Quiz Display Templates",
+                    templatesText: "Select visual templates for the participant experience, including classic, image-based, and event-style quiz layouts.",
+                    flowTitle: "06. Quiz Execution and Flow",
+                    flowText: "Understand how participants start, answer, navigate, submit, resume, and complete a quiz under the configured rules.",
+                    resultsTitle: "07. Quiz Results",
+                    resultsText: "Review attempts, scores, pass status, question statistics, exports, reports, PDFs, certificates, and verification links.",
+                    adminTitle: "08. Administrator Options",
+                    adminText: "Control users, quotas, updates, system settings, operational checks, and administrative access across the installation.",
+                    teacherTitle: "09. Teacher Options",
+                    teacherText: "Use the teacher workspace for quizzes, questions, participants, reports, profile settings, feedback, and everyday classroom workflows."
+                },
+                el: {
+                    pageTitle: "Οδηγός Χρήσης LabSchool Exams",
+                    description: "Οδηγός χρήσης για τις βασικές λειτουργίες του LabSchool Exams.",
+                    topicsLabel: "Ενότητες οδηγού χρήσης",
+                    eyebrow: "Εφαρμογή Ανοιχτού Κώδικα",
+                    heroTitle: "LabSchool Exams",
+                    heroLead: "Το Exams είναι μια εφαρμογή αξιολόγησης γνώσεων βασισμένη στο Laravel, σχεδιασμένη για σχολεία, φορείς κατάρτισης και δημόσιες ή ιδιωτικές εκπαιδευτικές δράσεις. Υποστηρίζει δημιουργία δοκιμασιών, ροές συμμετοχής μαθητών και επισκεπτών, αναφορές, εξαγωγές, βεβαιώσεις και πολλαπλά οπτικά πρότυπα. Οι εξεταζόμενοι δεν χρειάζεται να δημιουργήσουν λογαριασμό· συμμετέχουν με προσωρινό PIN ή προσωπικό σύνδεσμο, ανάλογα με τη διαδικασία που έχει ορίσει ο δημιουργός του quiz.",
+                    homeLink: "Αρχική Σελίδα",
+                    tryAppLink: "Δοκιμή Εφαρμογής",
+                    tryQuizLink: "Παράδειγμα Δοκιμασίας",
+                    sponsorLink: "Υποστήριξη Έργου",
+                    authTitle: "01. Εγγραφή Εκπαιδευτικών",
+                    authText: "Δημιουργία λογαριασμού εκπαιδευτικού, ασφαλής σύνδεση, επαλήθευση πρόσβασης, ανάκτηση κωδικού και είσοδος στον χώρο εργασίας.",
+                    quizEditorTitle: "02. Δημιουργία Quiz",
+                    quizEditorText: "Δημιουργία quiz με γλώσσα, κατηγορία, χρόνο, βαθμολογία, κανόνες πρόσβασης, ορατότητα, εικόνες και επιλογές δημοσίευσης.",
+                    questionsTitle: "03. Ερωτήσεις Quiz",
+                    questionsText: "Δημιουργία ερωτήσεων, ορισμός απαντήσεων, επιλογή σωστών απαντήσεων, εισαγωγή περιεχομένου και οργάνωση της τράπεζας ερωτήσεων.",
+                    studentsTitle: "04. Διαχείριση Εξεταζόμενων",
+                    studentsText: "Διαχείριση συμμετεχόντων, λιστών μαθητών, προσωπικών συνδέσμων, πρόσβασης με PIN, συμμετοχής επισκέπτη και ανώνυμων ροών.",
+                    templatesTitle: "05. Πρότυπα Εμφάνισης Quiz",
+                    templatesText: "Επιλογή οπτικών προτύπων για την εμπειρία συμμετοχής, με κλασικές, image-based και event-style εμφανίσεις quiz.",
+                    flowTitle: "06. Εκτέλεση και Ροή Quiz",
+                    flowText: "Πώς ξεκινά, απαντά, πλοηγείται, υποβάλλει, συνεχίζει και ολοκληρώνει ο συμμετέχων το quiz με βάση τις ρυθμίσεις.",
+                    resultsTitle: "07. Αποτελέσματα Quiz",
+                    resultsText: "Έλεγχος προσπαθειών, βαθμολογιών, επιτυχίας, στατιστικών ερωτήσεων, εξαγωγών, αναφορών, PDFs, πιστοποιητικών και συνδέσμων επαλήθευσης.",
+                    adminTitle: "08. Επιλογές Διαχειριστών",
+                    adminText: "Διαχείριση χρηστών, ορίων χρήσης, ενημερώσεων, ρυθμίσεων συστήματος, λειτουργικών ελέγχων και διαχειριστικής πρόσβασης.",
+                    teacherTitle: "09. Επιλογές Εκπαιδευτικών",
+                    teacherText: "Χρήση του χώρου εκπαιδευτικού για quiz, ερωτήσεις, συμμετέχοντες, αναφορές, προφίλ, feedback και καθημερινές ροές τάξης."
+                }
+            },
+            links: {
+                en: {
+                    home: "index.html",
+                    sponsor: "sponsor.html",
+                    registerLogin: "register-login.html",
+                    quizCreateEdit: "quiz-create-edit.html",
+                    quizQuestionsAnswers: "quiz-questions-answers.html",
+                    registerStudents: "register-students.html",
+                    quizTemplates: "quiz-templates.html",
+                    quizFlow: "quiz-flow.html",
+                    quizResults: "quiz-results.html",
+                    adminOptions: "admin-options.html",
+                    teacherOptions: "teacher-options.html"
+                },
+                el: {
+                    home: "index.html",
+                    sponsor: "sponsor.html",
+                    registerLogin: "register-login.html",
+                    quizCreateEdit: "quiz-create-edit.html",
+                    quizQuestionsAnswers: "quiz-questions-answers.html",
+                    registerStudents: "register-students.html",
+                    quizTemplates: "quiz-templates.html",
+                    quizFlow: "quiz-flow.html",
+                    quizResults: "quiz-results.html",
+                    adminOptions: "admin-options.html",
+                    teacherOptions: "teacher-options.html"
+                }
+            }
+        };
+    </script>
+    <script src="assets/pages.js"></script>
+</body>
+</html>
