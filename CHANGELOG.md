@@ -26,6 +26,26 @@ The format is intentionally lightweight and release-friendly so entries can be r
 
 ## Unreleased
 
+## [v2.1.2] - 2026-05-20
+
+### Added
+
+- GitHub Pages documentation pages now include canonical URLs, Open Graph metadata, Twitter card metadata, and a shared social preview image.
+- Application layouts now share a reusable SEO metadata partial for consistent title, description, canonical, Open Graph, and Twitter card output.
+
+### Changed
+
+- Public quiz and participant-facing pages now emit fuller social preview metadata while preserving quiz-specific titles, descriptions, and images.
+- The release workflow now builds the incremental upgrade package from `v2.1.1` to `v2.1.2`.
+
+### Fixed
+
+- Greek fallback text for public quiz social previews now renders correctly when a quiz has no custom description.
+
+### Upgrade Notes
+
+- No database migrations are required for this release.
+
 ## [v2.1.1] - 2026-05-19
 
 ### Added

@@ -1,6 +1,10 @@
 @extends('layouts.guest')
 
 @section('hide_guest_footer', '1')
+@section('title', __('join.app_title') . ' | ' . config('app.name', __('navigation.app_name')))
+@section('description', __('join.description'))
+@section('meta_image', asset('images/og-exams.png'))
+@section('meta_image_alt', config('app.name', __('navigation.app_name')))
 
 @section('content')
 <style>

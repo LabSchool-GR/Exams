@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel Quiz') }}</title>
+    @include('layouts.partials.meta_tags')
+    @yield('meta')
 
     {{-- Shared icon font assets --}}
     <link href="{{ asset('vendor/fontawesome/css/all.min.css') }}" rel="stylesheet">

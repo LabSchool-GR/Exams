@@ -108,13 +108,14 @@
 
         if (dictionary.pageTitle) {
             document.title = dictionary.pageTitle;
+            setMetaContent('meta[property="og:title"]', dictionary.pageTitle);
+            setMetaContent('meta[name="twitter:title"]', dictionary.pageTitle);
         }
 
         if (dictionary.description) {
-            const description = document.querySelector('meta[name="description"]');
-            if (description) {
-                description.setAttribute("content", dictionary.description);
-            }
+            setMetaContent('meta[name="description"]', dictionary.description);
+            setMetaContent('meta[property="og:description"]', dictionary.description);
+            setMetaContent('meta[name="twitter:description"]', dictionary.description);
         }
 
         document.querySelectorAll("[data-common-i18n]").forEach((element) => {
@@ -146,6 +147,14 @@
         document.querySelectorAll("[data-language-option]").forEach((button) => {
             button.setAttribute("aria-pressed", button.dataset.languageOption === language ? "true" : "false");
         });
+    }
+
+    function setMetaContent(selector, value) {
+        const element = document.querySelector(selector);
+
+        if (element) {
+            element.setAttribute("content", value);
+        }
     }
 
     function setupBackToTop() {

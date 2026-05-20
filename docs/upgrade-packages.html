@@ -5,6 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Upgrade Packages</title>
     <meta name="description" content="Understand and apply LabSchool Exams upgrade packages safely.">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://labschool-gr.github.io/Exams/upgrade-packages.html">
+
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="el_GR">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://labschool-gr.github.io/Exams/upgrade-packages.html">
+    <meta property="og:site_name" content="LabSchool Exams">
+    <meta property="og:title" content="Upgrade Packages">
+    <meta property="og:description" content="Understand and apply LabSchool Exams upgrade packages safely.">
+    <meta property="og:image" content="https://labschool-gr.github.io/Exams/assets/og-exams.png">
+    <meta property="og:image:secure_url" content="https://labschool-gr.github.io/Exams/assets/og-exams.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="LabSchool Exams">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Upgrade Packages">
+    <meta name="twitter:description" content="Understand and apply LabSchool Exams upgrade packages safely.">
+    <meta name="twitter:image" content="https://labschool-gr.github.io/Exams/assets/og-exams.png">
     <link rel="stylesheet" href="assets/pages.css">
 </head>
 <body>
@@ -24,17 +46,17 @@
                 <h2 data-i18n="whatTitle">What the upgrade system provides</h2>
                 <p data-i18n="whatText">LabSchool Exams releases can provide two package types. The full package is used for a fresh installation or full application replacement. The incremental upgrade package is smaller and is used only when the installed version matches the supported starting version.</p>
                 <div class="callout">
-                    <p data-i18n="firstPath">The first supported incremental path is v2.0.0 to v2.1.0.</p>
+                    <p data-i18n="firstPath">The current supported incremental path is v2.1.1 to v2.1.2.</p>
                 </div>
             </article>
 
             <article class="panel">
-                <h2 data-i18n="packagesTitle">Packages in a v2.1.0 release</h2>
-                <p data-i18n="packagesIntro">For v2.1.0, the release workflow publishes these files.</p>
-                <pre class="code-block"><code>labschool-exams-v2.1.0-full.zip
-labschool-exams-v2.1.0-full.zip.sha256
-labschool-exams-v2.0.0-to-v2.1.0-upgrade.zip
-labschool-exams-v2.0.0-to-v2.1.0-upgrade.zip.sha256
+                <h2 data-i18n="packagesTitle">Packages in a v2.1.2 release</h2>
+                <p data-i18n="packagesIntro">For v2.1.2, the release workflow publishes these files.</p>
+                <pre class="code-block"><code>labschool-exams-v2.1.2-full.zip
+labschool-exams-v2.1.2-full.zip.sha256
+labschool-exams-v2.1.1-to-v2.1.2-upgrade.zip
+labschool-exams-v2.1.1-to-v2.1.2-upgrade.zip.sha256
 update.json</code></pre>
                 <ul>
                     <li data-i18n="packageFull">Use the full package when you install from scratch or when no matching incremental package exists.</li>
@@ -63,7 +85,7 @@ update.json</code></pre>
                 <p data-i18n="beforeIntro">Treat every upgrade like a short maintenance procedure. Do not start by copying files. First confirm the version, take backups, and make sure you can return to the previous state if something unexpected happens.</p>
                 <ol>
                     <li data-i18n="beforeVersion">Check the installed application version from the footer, the Update Center, <code>APP_VERSION</code>, or the packaged <code>VERSION</code> file.</li>
-                    <li data-i18n="beforeMatch">Confirm that the upgrade package starts from that exact version. For example, use <code>v2.0.0-to-v2.1.0</code> only on an installed <code>v2.0.0</code> instance.</li>
+                    <li data-i18n="beforeMatch">Confirm that the upgrade package starts from that exact version. For example, use <code>v2.1.1-to-v2.1.2</code> only on an installed <code>v2.1.1</code> instance.</li>
                     <li data-i18n="beforeBackupDb">Back up the database before changing files or running migrations.</li>
                     <li data-i18n="beforeBackupFiles">Back up the application files, especially <code>.env</code>, <code>storage/</code>, and <code>public/storage</code>.</li>
                     <li data-i18n="beforeWindow">Choose a quiet time window, because users should not be taking quizzes while the update is being applied.</li>
@@ -142,9 +164,9 @@ php artisan view:cache</code></pre>
                     verifyButton: "Verification",
                     whatTitle: "What the upgrade system provides",
                     whatText: "LabSchool Exams releases can provide two package types. The full package is used for a fresh installation or full application replacement. The incremental upgrade package is smaller and is used only when the installed version matches the supported starting version.",
-                    firstPath: "The first supported incremental path is v2.0.0 to v2.1.0.",
-                    packagesTitle: "Packages in a v2.1.0 release",
-                    packagesIntro: "For v2.1.0, the release workflow publishes these files.",
+                    firstPath: "The current supported incremental path is v2.1.1 to v2.1.2.",
+                    packagesTitle: "Packages in a v2.1.2 release",
+                    packagesIntro: "For v2.1.2, the release workflow publishes these files.",
                     packageFull: "Use the full package when you install from scratch or when no matching incremental package exists.",
                     packageUpgrade: "Use the upgrade package only when the currently installed version is exactly the package from_version.",
                     packageHash: "Use the SHA-256 checksum file to confirm that the downloaded package was not corrupted.",
@@ -159,7 +181,7 @@ php artisan view:cache</code></pre>
                     beforeTitle: "A. Before upgrading",
                     beforeIntro: "Treat every upgrade like a short maintenance procedure. Do not start by copying files. First confirm the version, take backups, and make sure you can return to the previous state if something unexpected happens.",
                     beforeVersion: "Check the installed application version from the footer, the Update Center, APP_VERSION, or the packaged VERSION file.",
-                    beforeMatch: "Confirm that the upgrade package starts from that exact version. For example, use v2.0.0-to-v2.1.0 only on an installed v2.0.0 instance.",
+                    beforeMatch: "Confirm that the upgrade package starts from that exact version. For example, use v2.1.1-to-v2.1.2 only on an installed v2.1.1 instance.",
                     beforeBackupDb: "Back up the database before changing files or running migrations.",
                     beforeBackupFiles: "Back up the application files, especially .env, storage/, and public/storage.",
                     beforeWindow: "Choose a quiet time window, because users should not be taking quizzes while the update is being applied.",
@@ -200,9 +222,9 @@ php artisan view:cache</code></pre>
                     verifyButton: "Έλεγχος",
                     whatTitle: "Τι προσφέρει το σύστημα αναβάθμισης;",
                     whatText: "Οι εκδόσεις του LabSchool Exams μπορούν να παρέχουν δύο τύπους πακέτων. Το πλήρες πακέτο χρησιμοποιείται για νέα εγκατάσταση ή πλήρη αντικατάσταση της εφαρμογής. Το incremental πακέτο είναι μικρότερο και χρησιμοποιείται μόνο όταν η εγκατεστημένη έκδοση ταιριάζει με την υποστηριζόμενη αρχική έκδοση.",
-                    firstPath: "Η πρώτη υποστηριζόμενη incremental διαδρομή είναι από v2.0.0 σε v2.1.0.",
-                    packagesTitle: "Πακέτα σε έκδοση v2.1.0",
-                    packagesIntro: "Για την v2.1.0, το release workflow δημοσιεύει τα παρακάτω αρχεία.",
+                    firstPath: "Η τρέχουσα υποστηριζόμενη incremental διαδρομή είναι από v2.1.1 σε v2.1.2.",
+                    packagesTitle: "Πακέτα σε έκδοση v2.1.2",
+                    packagesIntro: "Για την v2.1.2, το release workflow δημοσιεύει τα παρακάτω αρχεία.",
                     packageFull: "Χρησιμοποιήστε το πλήρες πακέτο όταν εγκαθιστάτε από την αρχή ή όταν δεν υπάρχει incremental πακέτο που να ταιριάζει.",
                     packageUpgrade: "Χρησιμοποιήστε το πακέτο αναβάθμισης μόνο όταν η τρέχουσα εγκατεστημένη έκδοση είναι ακριβώς το from_version του πακέτου.",
                     packageHash: "Χρησιμοποιήστε το SHA-256 checksum για να επιβεβαιώσετε ότι το αρχείο που κατεβάσατε δεν αλλοιώθηκε.",
@@ -217,7 +239,7 @@ php artisan view:cache</code></pre>
                     beforeTitle: "Α. Πριν την αναβάθμιση",
                     beforeIntro: "Αντιμετωπίστε κάθε αναβάθμιση σαν σύντομη διαδικασία συντήρησης. Μην ξεκινάτε αντιγράφοντας αρχεία. Πρώτα επιβεβαιώστε την έκδοση, πάρτε αντίγραφα ασφαλείας και βεβαιωθείτε ότι μπορείτε να επιστρέψετε στην προηγούμενη κατάσταση αν συμβεί κάτι απρόβλεπτο.",
                     beforeVersion: "Ελέγξτε την εγκατεστημένη έκδοση από το footer, το Update Center, το APP_VERSION ή το αρχείο VERSION του πακέτου.",
-                    beforeMatch: "Επιβεβαιώστε ότι το πακέτο αναβάθμισης ξεκινά από αυτή ακριβώς την έκδοση. Για παράδειγμα, χρησιμοποιήστε v2.0.0-to-v2.1.0 μόνο σε εγκατάσταση v2.0.0.",
+                    beforeMatch: "Επιβεβαιώστε ότι το πακέτο αναβάθμισης ξεκινά από αυτή ακριβώς την έκδοση. Για παράδειγμα, χρησιμοποιήστε v2.1.1-to-v2.1.2 μόνο σε εγκατάσταση v2.1.1.",
                     beforeBackupDb: "Πάρτε αντίγραφο ασφαλείας της βάσης πριν αλλάξετε αρχεία ή τρέξετε migrations.",
                     beforeBackupFiles: "Πάρτε αντίγραφο ασφαλείας των αρχείων της εφαρμογής, ειδικά των .env, storage/ και public/storage.",
                     beforeWindow: "Επιλέξτε ήσυχο χρονικό παράθυρο, γιατί οι χρήστες δεν πρέπει να κάνουν δοκιμασίες ενώ εφαρμόζεται η ενημέρωση.",

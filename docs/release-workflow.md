@@ -56,16 +56,16 @@ It excludes:
 
 Starting with `v2.1.0`, the workflow also publishes an incremental package for the configured upgrade base tag.
 
-For the first 2.1 release, that path is:
+For the current `v2.1.2` release, that path is:
 
 ```text
-v2.0.0 -> v2.1.0
+v2.1.1 -> v2.1.2
 ```
 
 The package is named:
 
 ```text
-labschool-exams-v2.0.0-to-v2.1.0-upgrade.zip
+labschool-exams-v2.1.1-to-v2.1.2-upgrade.zip
 ```
 
 See [upgrade-packages.md](upgrade-packages.md) for the package contents and operator steps.

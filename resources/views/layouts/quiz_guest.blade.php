@@ -45,20 +45,13 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 
-    <title>{{ $pageTitle }}</title>
-    <meta name="description" content="{{ $pageDescription }}">
-    <link rel="canonical" href="{{ $pageUrl }}">
-
-    <meta property="og:title" content="{{ $pageTitle }}">
-    <meta property="og:description" content="{{ $pageDescription }}">
-    <meta property="og:url" content="{{ $pageUrl }}">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="{{ $pageImage }}">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $pageTitle }}">
-    <meta name="twitter:description" content="{{ $pageDescription }}">
-    <meta name="twitter:image" content="{{ $pageImage }}">
+    @include('layouts.partials.meta_tags', [
+        'seoTitle' => $pageTitle,
+        'seoDescription' => $pageDescription,
+        'seoUrl' => $pageUrl,
+        'seoImage' => $pageImage,
+        'seoImageAlt' => $pageTitle,
+    ])
 
     @yield('meta')
 
