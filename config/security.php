@@ -16,10 +16,12 @@ return [
             static fn (string $domain): string => '@'.$domain,
             $registrationDomains
         )),
+        'pending_expiration_hours' => (int) env('SECURITY_REGISTRATION_PENDING_EXPIRATION_HOURS', 24),
     ],
 
     'throttle' => [
         'registration_attempts' => env('SECURITY_REGISTRATION_THROTTLE', '5,1'),
+        'registration_email_attempts' => env('SECURITY_REGISTRATION_EMAIL_THROTTLE', '3,60'),
         'feedback_attempts' => env('SECURITY_FEEDBACK_THROTTLE', '3,10'),
         'quiz_code_attempts' => env('SECURITY_QUIZ_CODE_THROTTLE', '10,1'),
         'student_code_attempts' => env('SECURITY_STUDENT_CODE_THROTTLE', '5,1'),

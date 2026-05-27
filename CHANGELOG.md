@@ -26,6 +26,25 @@ The format is intentionally lightweight and release-friendly so entries can be r
 
 ## Unreleased
 
+## [v2.1.3] - 2026-05-27
+
+### Changed
+
+- Teacher self-registration now creates a pending registration first and creates the account only after the email confirmation link is opened.
+- Administrator-created accounts still create users immediately and clean up any stale pending registration for the same email address.
+- The release workflow now builds the incremental upgrade package from `v2.1.2` to `v2.1.3`.
+
+### Security
+
+- Pending registration tokens are stored only as hashes and expire after 24 hours by default.
+- Registration confirmation email delivery is rate limited per recipient email address.
+- Failed registration confirmation email delivery deletes the pending registration instead of leaving unused data behind.
+
+### Upgrade Notes
+
+- Run `php artisan migrate` to create the `pending_registrations` table.
+- Run `php artisan optimize:clear` after deploying the new release files.
+
 ## [v2.1.2] - 2026-05-20
 
 ### Added

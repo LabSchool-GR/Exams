@@ -32,6 +32,16 @@ return [
         'notice' => 'If you did not create an account, no further action is required.',
     ],
 
+    'pending_registration' => [
+        'subject' => 'Confirm your LabSchool Exams registration',
+        'title' => 'Confirm your registration',
+        'intro' => 'Hello :name,',
+        'instructions' => 'Please confirm your email address to create your LabSchool Exams account.',
+        'action' => 'Confirm registration',
+        'expires' => 'This registration link expires at :expires_at.',
+        'notice' => 'If you did not request this registration, you can safely ignore this message.',
+    ],
+
     'quiz_success' => [
         'subject' => '[Knowledge Evaluation App] A participant completed the quiz ":title"',
         'title' => 'Quiz completed successfully',

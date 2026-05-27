@@ -9,11 +9,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PendingRegistration;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -112,9 +114,11 @@ class UserController extends Controller
             'max_students_per_quiz' => 'required|integer|min:1|max:5000',
         ]);
 
+        $email = strtolower((string) $request->email);
+
         $user = User::create([
             'name' => $request->name,
-            'email' => $request->email,
+            'email' => $email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
             'max_quizzes' => (int) $request->max_quizzes,
@@ -123,7 +127,18 @@ class UserController extends Controller
             'max_students_per_quiz' => (int) $request->max_students_per_quiz,
         ]);
 
-        event(new Registered($user)); // Trigger email verification
+        PendingRegistration::query()
+            ->where('email', $email)
+            ->delete();
+
+        try {
+            event(new Registered($user)); // Trigger email verification
+        } catch (\Throwable $e) {
+            Log::error('Admin-created user verification notification failed.', [
+                'message' => $e->getMessage(),
+                'user_id' => $user->id,
+            ]);
+        }
 
         return redirect()->route('users.index')->with('success', __('controllers.user_created_successfully'));
     }

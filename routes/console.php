@@ -227,6 +227,10 @@ Schedule::command('runtime:prune-temporary-state')
     ->hourly()
     ->withoutOverlapping();
 
+Schedule::command('registrations:prune-pending')
+    ->hourly()
+    ->withoutOverlapping();
+
 Schedule::command('auth:clear-resets')
     ->daily()
     ->withoutOverlapping();

@@ -8,9 +8,14 @@
  */
 
 use App\Models\Category;
+use App\Models\PendingRegistration;
 use App\Models\QuizTemplate;
 use App\Models\Update;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 it('allows admin access to users management and blocks teachers', function () {
     $admin = User::factory()->create([
@@ -40,6 +45,76 @@ it('allows admin access to users management and blocks teachers', function () {
     $this->actingAs($teacher)
         ->get(route('users.edit', $managedUser))
         ->assertForbidden();
+});
+
+it('allows admins to create users immediately without using pending registration', function () {
+    Mail::fake();
+
+    $admin = User::factory()->create([
+        'role' => 'admin',
+    ]);
+
+    $this->actingAs($admin)
+        ->post(route('users.store'), [
+            'name' => 'Managed Teacher',
+            'email' => 'managed@sch.gr',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'role' => 'teacher',
+            'max_quizzes' => 2,
+            'max_questions_per_quiz' => 30,
+            'max_answers_per_question' => 4,
+            'max_students_per_quiz' => 30,
+        ])
+        ->assertRedirect(route('users.index', absolute: false));
+
+    $this->assertDatabaseHas('users', [
+        'email' => 'managed@sch.gr',
+        'role' => 'teacher',
+    ]);
+    $this->assertDatabaseMissing('pending_registrations', [
+        'email' => 'managed@sch.gr',
+    ]);
+});
+
+it('removes stale pending registration when an admin creates the same user', function () {
+    Event::listen(Registered::class, function (): void {
+        throw new RuntimeException('SMTP unavailable');
+    });
+
+    $admin = User::factory()->create([
+        'role' => 'admin',
+    ]);
+
+    PendingRegistration::create([
+        'name' => 'Pending Teacher',
+        'email' => 'pending-teacher@sch.gr',
+        'password' => Hash::make('password'),
+        'token_hash' => hash('sha256', 'pending-token'),
+        'expires_at' => now()->addDay(),
+    ]);
+
+    $this->actingAs($admin)
+        ->post(route('users.store'), [
+            'name' => 'Pending Teacher',
+            'email' => 'pending-teacher@sch.gr',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'role' => 'teacher',
+            'max_quizzes' => 2,
+            'max_questions_per_quiz' => 30,
+            'max_answers_per_question' => 4,
+            'max_students_per_quiz' => 30,
+        ])
+        ->assertRedirect(route('users.index', absolute: false));
+
+    $this->assertDatabaseHas('users', [
+        'email' => 'pending-teacher@sch.gr',
+        'role' => 'teacher',
+    ]);
+    $this->assertDatabaseMissing('pending_registrations', [
+        'email' => 'pending-teacher@sch.gr',
+    ]);
 });
 
 it('allows admin access to categories management and blocks teachers', function () {

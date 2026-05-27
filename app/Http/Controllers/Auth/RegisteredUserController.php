@@ -11,17 +11,24 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Mail\AdminTeacherRegistrationAlert;
+use App\Mail\PendingRegistrationVerification;
+use App\Models\PendingRegistration;
 use App\Models\User;
 use Closure;
-use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 /**
@@ -38,7 +45,7 @@ class RegisteredUserController extends Controller
     }
 
     /**
-     * Create a new teacher account restricted to configured institutional email domains.
+     * Start a teacher registration after validating the institutional email domain.
      */
     public function store(Request $request): RedirectResponse
     {
@@ -78,13 +85,167 @@ class RegisteredUserController extends Controller
             'cf-turnstile-response.required' => __('auth.turnstile_required'),
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'teacher',
-        ]);
+        $email = strtolower((string) $request->email);
+        $this->ensureRegistrationEmailRateLimitAvailable($email);
 
+        RateLimiter::hit(
+            $this->registrationEmailRateLimitKey($email),
+            $this->registrationEmailRateLimitDecaySeconds()
+        );
+
+        $token = Str::random(64);
+        $expiresAt = $this->pendingRegistrationExpiresAt();
+
+        $pendingRegistration = PendingRegistration::query()->updateOrCreate(
+            ['email' => $email],
+            [
+                'name' => (string) $request->name,
+                'password' => Hash::make((string) $request->password),
+                'token_hash' => hash('sha256', $token),
+                'expires_at' => $expiresAt,
+            ]
+        );
+
+        try {
+            Mail::to($pendingRegistration->email)->send(new PendingRegistrationVerification(
+                $pendingRegistration->name,
+                route('register.verify', ['token' => $token]),
+                $expiresAt->toDateTimeString()
+            ));
+        } catch (\Throwable $e) {
+            $pendingRegistration->delete();
+
+            Log::error('Pending registration verification email failed.', [
+                'message' => $e->getMessage(),
+                'email_hash' => sha1($email),
+            ]);
+
+            return back()
+                ->withInput($request->except(['password', 'password_confirmation']))
+                ->with('error', __('auth.pending_registration_send_failed'));
+        }
+
+        return back()->with('status', __('auth.pending_registration_check_inbox'));
+    }
+
+    /**
+     * Create the teacher account only after the email-owned registration token is confirmed.
+     */
+    public function verify(Request $request, string $token): RedirectResponse
+    {
+        $pendingRegistration = PendingRegistration::query()
+            ->where('token_hash', hash('sha256', $token))
+            ->first();
+
+        if (! $pendingRegistration) {
+            return redirect()->route('register')
+                ->with('error', __('auth.pending_registration_invalid'));
+        }
+
+        if ($pendingRegistration->isExpired()) {
+            $pendingRegistration->delete();
+
+            return redirect()->route('register')
+                ->with('error', __('auth.pending_registration_expired'));
+        }
+
+        if (User::query()->where('email', $pendingRegistration->email)->exists()) {
+            $pendingRegistration->delete();
+
+            return redirect()->route('login')
+                ->with('error', __('auth.pending_registration_already_registered'));
+        }
+
+        $user = DB::transaction(function () use ($pendingRegistration): User {
+            $user = User::create([
+                'name' => $pendingRegistration->name,
+                'email' => $pendingRegistration->email,
+                'password' => $pendingRegistration->password,
+                'role' => 'teacher',
+            ]);
+
+            $user->markEmailAsVerified();
+
+            $pendingRegistration->delete();
+
+            return $user;
+        });
+
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        event(new Verified($user));
+
+        $this->notifyAdminsOfTeacherRegistration();
+
+        return redirect()->route('dashboard')
+            ->with('success', __('auth.pending_registration_confirmed'));
+    }
+
+    /**
+     * Prevent repeated email delivery attempts against the same recipient address.
+     */
+    private function ensureRegistrationEmailRateLimitAvailable(string $email): void
+    {
+        if (! RateLimiter::tooManyAttempts(
+            $this->registrationEmailRateLimitKey($email),
+            $this->registrationEmailRateLimitMaxAttempts()
+        )) {
+            return;
+        }
+
+        throw ValidationException::withMessages([
+            'email' => __('auth.registration_email_rate_limited'),
+        ]);
+    }
+
+    private function registrationEmailRateLimitKey(string $email): string
+    {
+        return 'registration-email:'.sha1($email);
+    }
+
+    private function registrationEmailRateLimitMaxAttempts(): int
+    {
+        [$maxAttempts] = $this->registrationEmailThrottleParts();
+
+        return $maxAttempts;
+    }
+
+    private function registrationEmailRateLimitDecaySeconds(): int
+    {
+        [, $decayMinutes] = $this->registrationEmailThrottleParts();
+
+        return $decayMinutes * 60;
+    }
+
+    /**
+     * Parse the same "max,minutes" format used by Laravel's throttle middleware.
+     *
+     * @return array{0: int, 1: int}
+     */
+    private function registrationEmailThrottleParts(): array
+    {
+        $rawThrottle = (string) config('security.throttle.registration_email_attempts', '3,60');
+        $parts = array_map('trim', explode(',', $rawThrottle, 2));
+
+        return [
+            max(1, (int) ($parts[0] ?? 3)),
+            max(1, (int) ($parts[1] ?? 60)),
+        ];
+    }
+
+    private function pendingRegistrationExpiresAt(): Carbon
+    {
+        $hours = max(1, (int) config('security.registration.pending_expiration_hours', 24));
+
+        return now()->addHours($hours);
+    }
+
+    /**
+     * Notify administrators after a verified teacher account exists.
+     */
+    private function notifyAdminsOfTeacherRegistration(): void
+    {
         $adminEmails = User::query()
             ->where('role', 'admin')
             ->whereNotNull('email')
@@ -94,23 +255,18 @@ class RegisteredUserController extends Controller
             ->values()
             ->all();
 
-        if (! empty($adminEmails)) {
-            try {
-                Mail::to($adminEmails)->queue(new AdminTeacherRegistrationAlert(
-                    route('users.index'),
-                    now()->toDateTimeString()
-                ));
-            } catch (\Throwable $e) {
-                Log::error('Admin registration notification failed: '.$e->getMessage());
-            }
+        if (empty($adminEmails)) {
+            return;
         }
 
-        event(new Registered($user));
-        Auth::login($user);
-        $request->session()->regenerate();
-
-        return redirect()->route('verification.notice')
-            ->with('success', __('auth.verify_email_check_inbox'));
+        try {
+            Mail::to($adminEmails)->queue(new AdminTeacherRegistrationAlert(
+                route('users.index'),
+                now()->toDateTimeString()
+            ));
+        } catch (\Throwable $e) {
+            Log::error('Admin registration notification failed: '.$e->getMessage());
+        }
     }
 
     /**
