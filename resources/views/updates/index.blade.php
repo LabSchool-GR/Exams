@@ -44,6 +44,7 @@
             @else
                 <div class="dashboard-updates-list">
                     @foreach ($updates as $index => $update)
+                        @php($safeUpdateLink = $update->safeExternalLink())
                         <article class="dashboard-update-item">
                             <div class="dashboard-update-item__content">
                                 <div class="dashboard-update-item__main">
@@ -54,8 +55,8 @@
                                 </div>
 
                                 <div class="dashboard-form-actions dashboard-form-actions--end">
-                                    @if ($update->link)
-                                        <a href="{{ $update->link }}" target="_blank" rel="noopener" class="btn dashboard-btn dashboard-btn--ghost">
+                                    @if ($safeUpdateLink)
+                                        <a href="{{ $safeUpdateLink }}" target="_blank" rel="noopener noreferrer" class="btn dashboard-btn dashboard-btn--ghost">
                                             <i class="fas fa-up-right-from-square me-2"></i>{{ __('dashboard.updates_open_link') }}
                                         </a>
                                     @endif

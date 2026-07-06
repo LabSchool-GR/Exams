@@ -182,6 +182,56 @@ it('allows every authenticated user to view updates index but restricts create/s
         ->assertForbidden();
 });
 
+it('accepts only http and https links for updates', function () {
+    $admin = User::factory()->create([
+        'role' => 'admin',
+    ]);
+
+    $this->actingAs($admin)
+        ->post(route('updates.store'), [
+            'description' => 'Unsafe external link',
+            'link' => 'file://example.com/release-notes',
+        ])
+        ->assertSessionHasErrors('link');
+
+    $this->assertDatabaseMissing('updates', [
+        'description' => 'Unsafe external link',
+    ]);
+
+    $this->actingAs($admin)
+        ->post(route('updates.store'), [
+            'description' => 'Safe external link',
+            'link' => 'https://example.com/release-notes',
+        ])
+        ->assertRedirect(route('updates.index', absolute: false));
+
+    $this->assertDatabaseHas('updates', [
+        'description' => 'Safe external link',
+        'link' => 'https://example.com/release-notes',
+    ]);
+});
+
+it('does not render legacy update links with unsafe protocols', function () {
+    $teacher = User::factory()->create([
+        'role' => 'teacher',
+    ]);
+
+    Update::create([
+        'description' => 'Legacy unsafe link',
+        'link' => 'file://example.com/release-notes',
+    ]);
+
+    $this->actingAs($teacher)
+        ->get(route('dashboard'))
+        ->assertOk()
+        ->assertDontSee('href="file://example.com/release-notes"', false);
+
+    $this->actingAs($teacher)
+        ->get(route('updates.index'))
+        ->assertOk()
+        ->assertDontSee('href="file://example.com/release-notes"', false);
+});
+
 it('allows admin access to quiz templates management and blocks teachers', function () {
     $admin = User::factory()->create([
         'role' => 'admin',

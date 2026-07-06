@@ -182,6 +182,7 @@
             @if ($updates->isNotEmpty())
                 <div class="dashboard-updates-list">
                     @foreach ($updates as $update)
+                        @php($safeUpdateLink = $update->safeExternalLink())
                         <article class="dashboard-update-item">
                             <div class="dashboard-update-item__content">
                                 <div class="dashboard-update-item__main">
@@ -191,8 +192,8 @@
                                     <p class="dashboard-update-item__text mb-0">{{ $update->description }}</p>
                                 </div>
 
-                                @if ($update->link)
-                                    <a href="{{ $update->link }}" target="_blank" rel="noopener" class="dashboard-inline-link dashboard-update-item__link">
+                                @if ($safeUpdateLink)
+                                    <a href="{{ $safeUpdateLink }}" target="_blank" rel="noopener noreferrer" class="dashboard-inline-link dashboard-update-item__link">
                                         {{ __('dashboard.updates_open_link') }}
                                         <i class="fas fa-up-right-from-square ms-1"></i>
                                     </a>
@@ -226,7 +227,7 @@
             </div>
 
             <div class="dashboard-resource-grid">
-                <a href="https://labschool-gr.github.io/Exams/learn.html" class="dashboard-resource-link" target="_blank" rel="noopener">
+                <a href="https://labschool-gr.github.io/Exams/learn.html" class="dashboard-resource-link" target="_blank" rel="noopener noreferrer">
                     <span class="dashboard-resource-link__icon">
                         <i class="fas fa-book-open"></i>
                     </span>
