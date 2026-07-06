@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 env:
-  UPGRADE_BASE_TAG: v2.1.2
+  UPGRADE_BASE_TAG: v2.1.3
 
 jobs:
   verify-release:
@@ -185,7 +185,7 @@ jobs:
             "from_version": "${UPGRADE_BASE_TAG}",
             "to_version": "${RELEASE_TAG}",
             "requires_backup": true,
-            "requires_migrations": true,
+            "requires_migrations": $(git diff --quiet "${UPGRADE_BASE_TAG}" "${RELEASE_TAG}" -- database/migrations && echo false || echo true),
             "composer_install_required": $(git diff --quiet "${UPGRADE_BASE_TAG}" "${RELEASE_TAG}" -- composer.json composer.lock && echo false || echo true),
             "frontend_assets_included": true,
             "deleted_files_manifest": "deleted-files.txt"
