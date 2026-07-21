@@ -44,8 +44,8 @@ class UpdateController extends Controller
         $this->authorize('manage-updates');
 
         $request->validate([
-            'description' => 'required|string',
-            'link' => 'nullable|url',
+            'description' => ['required', 'string', 'max:5000'],
+            'link' => ['nullable', 'url:http,https', 'max:255'],
         ]);
 
         Update::create($request->only('description', 'link'));

@@ -23,4 +23,17 @@ class Update extends Model
         'description',
         'link',
     ];
+
+    /**
+     * Return only browser-safe external links, including for legacy records.
+     */
+    public function safeExternalLink(): ?string
+    {
+        $link = trim((string) $this->link);
+        $scheme = strtolower((string) parse_url($link, PHP_URL_SCHEME));
+
+        return $link !== '' && in_array($scheme, ['http', 'https'], true)
+            ? $link
+            : null;
+    }
 }

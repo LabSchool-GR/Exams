@@ -26,6 +26,23 @@ The format is intentionally lightweight and release-friendly so entries can be r
 
 ## Unreleased
 
+## [v2.1.4] - 2026-07-06
+
+### Changed
+
+- The release workflow now builds the incremental upgrade package from `v2.1.3` to `v2.1.4`.
+- Upgrade manifests now derive their migration requirement from the actual release diff.
+
+### Security
+
+- Update announcement links now accept and render only browser-safe HTTP and HTTPS URLs, including for legacy records.
+- Updated Laravel, Guzzle, PhpSpreadsheet, and Symfony dependencies to patched releases with no known Composer security advisories.
+
+### Upgrade Notes
+
+- No database migrations are required for this release.
+- Run `php artisan optimize:clear` after deploying the updated application files.
+
 ## [v2.1.3] - 2026-05-27
 
 ### Changed
