@@ -36,6 +36,7 @@ The format is intentionally lightweight and release-friendly so entries can be r
 ### Security
 
 - Update announcement links now accept and render only browser-safe HTTP and HTTPS URLs, including for legacy records.
+- Updated Laravel, Guzzle, PhpSpreadsheet, and Symfony dependencies to patched releases with no known Composer security advisories.
 
 ### Upgrade Notes
 
