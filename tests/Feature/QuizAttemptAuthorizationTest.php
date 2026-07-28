@@ -332,6 +332,8 @@ it('renders localized invitation details without participant data', function () 
 });
 
 it('generates pre-registered exam slots with unique codes and independent attempt limits', function () {
+    App::setLocale('en');
+
     $owner = User::factory()->create([
         'role' => 'teacher',
         'max_students_per_quiz' => 3,
@@ -398,28 +400,33 @@ it('generates pre-registered exam slots with unique codes and independent attemp
     $legacyStudent->update([
         'student_name' => __('controllers.anonymous_student_name'),
     ]);
-    $examSlotName = QuizStudent::examSlotName($legacyStudent->student_code);
+    $adminExamSlotName = QuizStudent::examSlotName($legacyStudent->student_code);
+    $participantExamSlotName = trans(
+        'controllers.exam_slot_name',
+        ['code' => $legacyStudent->student_code],
+        $quiz->resolvedLocale(config('app.locale'))
+    );
 
     $this->actingAs($owner)
         ->get(route('quiz_attempts.register_students', $quiz))
         ->assertOk()
-        ->assertSee($examSlotName)
+        ->assertSee($adminExamSlotName)
         ->assertDontSee(__('controllers.anonymous_student_name'));
 
     $this->get($legacyStudent->accessLinkUrl(now()->addMinutes(30)))
         ->assertRedirect(route('quiz.start'))
-        ->assertSessionHas('student_name', $examSlotName);
+        ->assertSessionHas('student_name', $participantExamSlotName);
 
     $this->withSession(['quiz_id' => $quiz->id])
         ->post(route('quiz.validate_student'), [
             'student_code' => $legacyStudent->student_code,
         ])
         ->assertRedirect(route('quiz.start'))
-        ->assertSessionHas('student_name', $examSlotName);
+        ->assertSessionHas('student_name', $participantExamSlotName);
 
     expect(
         $quiz->attempts()->latest('id')->value('student_name')
-    )->toBe($examSlotName);
+    )->toBe($participantExamSlotName);
 
     $pdfResponses = [
         $this->actingAs($owner)->get(route('quiz_attempts.student_info_pdf', [
