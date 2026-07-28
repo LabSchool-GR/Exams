@@ -98,15 +98,19 @@ trait HandlesQuizParticipantPublicPool
         $expiresAt = now()->addMinutes($this->publicAnonymousPoolReservationTtlMinutes($quiz));
 
         return DB::transaction(function () use ($quiz, $sessionId, $expiresAt) {
-            Quiz::query()->whereKey($quiz->id)->lockForUpdate()->first();
+            $lockedQuiz = Quiz::query()
+                ->with('creator')
+                ->whereKey($quiz->id)
+                ->lockForUpdate()
+                ->firstOrFail();
 
             QuizAnonymousPoolReservation::query()
-                ->where('quiz_id', $quiz->id)
+                ->where('quiz_id', $lockedQuiz->id)
                 ->where('expires_at', '<=', now())
                 ->delete();
 
             $existing = QuizAnonymousPoolReservation::query()
-                ->where('quiz_id', $quiz->id)
+                ->where('quiz_id', $lockedQuiz->id)
                 ->where('session_id', $sessionId)
                 ->lockForUpdate()
                 ->first();
@@ -119,26 +123,22 @@ trait HandlesQuizParticipantPublicPool
                 return $existing->fresh();
             }
 
-            $capacity = max(1, (int) ($quiz->anonymous_pool_capacity ?? 0));
-            $completedCount = QuizAttempt::query()
-                ->where('quiz_id', $quiz->id)
-                ->whereNotNull('submitted_at')
-                ->whereHas('student', function ($query) {
-                    $query->where('is_anonymous', true);
-                })
+            $capacity = $lockedQuiz->effectiveAnonymousPoolCapacity();
+            $registeredParticipantCount = QuizStudent::query()
+                ->where('quiz_id', $lockedQuiz->id)
                 ->count();
 
             $activeReservations = QuizAnonymousPoolReservation::query()
-                ->where('quiz_id', $quiz->id)
+                ->where('quiz_id', $lockedQuiz->id)
                 ->lockForUpdate()
                 ->get();
 
-            if (($completedCount + $activeReservations->count()) >= $capacity) {
+            if (($registeredParticipantCount + $activeReservations->count()) >= $capacity) {
                 return null;
             }
 
             $slotCode = $this->nextAvailableAnonymousSlotCode(
-                $quiz,
+                $lockedQuiz,
                 $activeReservations->pluck('slot_code')->all()
             );
 
@@ -147,7 +147,7 @@ trait HandlesQuizParticipantPublicPool
             }
 
             return QuizAnonymousPoolReservation::create([
-                'quiz_id' => $quiz->id,
+                'quiz_id' => $lockedQuiz->id,
                 'session_id' => $sessionId,
                 'slot_code' => $slotCode,
                 'expires_at' => $expiresAt,

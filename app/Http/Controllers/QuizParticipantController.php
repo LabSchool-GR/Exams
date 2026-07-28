@@ -187,8 +187,10 @@ class QuizParticipantController extends Controller
                 ->with('error', __('join.student_not_found'));
         }
 
+        $studentDisplayName = $student->displayName($quiz);
+
         if ($quiz->usesLearningMode()) {
-            $this->syncSessionForLearningMode($quiz, $student->student_code, $student->student_name);
+            $this->syncSessionForLearningMode($quiz, $student->student_code, $studentDisplayName);
 
             return redirect()->route('quiz.start')
                 ->with('success', __('join.learning_mode_start'));
@@ -226,7 +228,7 @@ class QuizParticipantController extends Controller
             $this->resetQuizRuntimeState();
             Session::put('attempt_id', $ongoing->id);
             Session::put('student_code', $ongoing->student_code);
-            Session::put('student_name', $ongoing->student_name);
+            Session::put('student_name', $studentDisplayName);
             Session::put('quiz_id', $quiz->id);
             $this->ensureQuizRouteToken($quiz);
             $this->syncSessionFromAttempt($ongoing);
@@ -238,7 +240,7 @@ class QuizParticipantController extends Controller
         $newAttempt = $quiz->attempts()->create([
             'quiz_student_id' => $student->id,
             'student_code' => $request->student_code,
-            'student_name' => $student->student_name,
+            'student_name' => $studentDisplayName,
             'max_attempts' => $maxAllowed,
             'score' => 0,
             'status' => QuizAttempt::STATUS_IN_PROGRESS,
@@ -1003,6 +1005,33 @@ class QuizParticipantController extends Controller
         $questionOrder = Session::get('question_order', []);
         $totalQuestions = count($questionOrder);
 
+        if (
+            $attemptId === 'guest'
+            && $this->sessionUsesPublicAnonymousPool($quiz)
+            && $questionOrder !== []
+            && $this->getExpectedQuestionId($questionOrder) === null
+        ) {
+            $persistedAttempt = $this->persistPublicAnonymousPoolSubmission($quiz);
+
+            if (! $persistedAttempt) {
+                $this->resetQuizRuntimeState();
+
+                return redirect()->route('quiz.join')
+                    ->with('error', __('join.public_pool_slot_expired'));
+            }
+
+            Session::put('attempt_id', $persistedAttempt->id);
+            Session::put('student_code', $persistedAttempt->student_code);
+            Session::put('student_name', $persistedAttempt->student_name);
+            Session::forget([
+                'public_anonymous_pool_reservation_id',
+                'public_anonymous_pool_slot_code',
+                'public_anonymous_pool_active',
+            ]);
+            $this->syncSessionFromAttempt($persistedAttempt);
+            $attemptId = $persistedAttempt->id;
+        }
+
         $questions = $quiz->questions->keyBy('id');
         $correctCount = 0;
         $scorePercentage = 0;
@@ -1137,6 +1166,7 @@ class QuizParticipantController extends Controller
 
         App::setLocale($quiz->resolvedLocale(config('app.locale')));
         $quizRouteKey = $this->ensureQuizRouteToken($quiz);
+        $studentDisplayName = $student->displayName($quiz);
 
         $isBot = $this->isLinkPreviewBot($request);
 
@@ -1150,13 +1180,13 @@ class QuizParticipantController extends Controller
         }
 
         if ($isBot) {
-            $student_name = $student->student_name;
+            $student_name = $studentDisplayName;
 
             return view('quiz.templates.default.start', compact('quiz', 'student_name', 'quizRouteKey'));
         }
 
         if ($quiz->usesLearningMode()) {
-            $this->syncSessionForLearningMode($quiz, $student->student_code, $student->student_name);
+            $this->syncSessionForLearningMode($quiz, $student->student_code, $studentDisplayName);
 
             return redirect()->route('quiz.start')
                 ->with('success', __('join.learning_mode_start'));
@@ -1196,7 +1226,7 @@ class QuizParticipantController extends Controller
             Session::put('quiz_id', $quiz->id);
             Session::put('attempt_id', $existing->id);
             Session::put('student_code', $student->student_code);
-            Session::put('student_name', $student->student_name);
+            Session::put('student_name', $studentDisplayName);
             $this->ensureQuizRouteToken($quiz);
             $this->syncSessionFromAttempt($existing);
 
@@ -1207,7 +1237,7 @@ class QuizParticipantController extends Controller
         $attempt = $quiz->attempts()->create([
             'quiz_student_id' => $student->id,
             'student_code' => $student->student_code,
-            'student_name' => $student->student_name,
+            'student_name' => $studentDisplayName,
             'max_attempts' => $student->max_attempts,
             'score' => 0,
             'status' => QuizAttempt::STATUS_IN_PROGRESS,
@@ -1217,7 +1247,7 @@ class QuizParticipantController extends Controller
         Session::put('quiz_id', $quiz->id);
         Session::put('attempt_id', $attempt->id);
         Session::put('student_code', $student->student_code);
-        Session::put('student_name', $student->student_name);
+        Session::put('student_name', $studentDisplayName);
         $this->ensureQuizRouteToken($quiz);
 
         return redirect()->route('quiz.start')

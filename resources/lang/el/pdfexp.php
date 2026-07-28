@@ -82,4 +82,5 @@ return [
     'students_list_title' => 'Κατάλογος Εξεταζόμενων',
     'student_list' => 'Πληροφορίες Εξεταζόμενων',
     'issue_date' => 'Ημερομηνία έκδοσης:',
+    'registered_students_count' => 'Σύνολο εξεταζόμενων',
 ];

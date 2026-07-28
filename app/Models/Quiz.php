@@ -282,6 +282,35 @@ class Quiz extends Model
     }
 
     /**
+     * Return the creator's participant quota, or null when the creator is an administrator.
+     */
+    public function participantCapacityLimit(): ?int
+    {
+        $creator = $this->relationLoaded('creator')
+            ? $this->getRelation('creator')
+            : $this->creator()->first();
+
+        if (! $creator || $creator->isAdmin()) {
+            return null;
+        }
+
+        return max(1, (int) $creator->max_students_per_quiz);
+    }
+
+    /**
+     * Apply the creator quota to the configured public anonymous pool capacity.
+     */
+    public function effectiveAnonymousPoolCapacity(): int
+    {
+        $configuredCapacity = max(1, (int) ($this->anonymous_pool_capacity ?? 1));
+        $participantLimit = $this->participantCapacityLimit();
+
+        return $participantLimit === null
+            ? $configuredCapacity
+            : min($configuredCapacity, $participantLimit);
+    }
+
+    /**
      * Get the category associated with the quiz.
      */
     public function category(): BelongsTo

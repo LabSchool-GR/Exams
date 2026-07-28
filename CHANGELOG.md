@@ -26,6 +26,53 @@ The format is intentionally lightweight and release-friendly so entries can be r
 
 ## Unreleased
 
+## [v2.2.0] - 2026-07-28
+
+### Added
+
+- Added the `modern_img` participant template with calm image-first styling and adaptive one- or two-column answer cards based on answer length and screen size.
+- Teachers can now use pre-registered bulk exam slots and the Public Anonymous Pool, subject to their configured participant limit per quiz.
+- Public Anonymous Pool quizzes can now export a printable invitation PDF with quiz details, the shared signed link, and its QR Code.
+
+### Changed
+
+- Template visibility and user assignments are now enforced from the database, including for templates with built-in view files.
+- Re-running the core template seeder no longer overwrites administrator-managed visibility settings.
+- Image-capable templates now use a neutral shared view layer, removing the direct coupling between `default_img` and `modern_img`.
+- Administrators can now identify each quiz creator directly in the shared quiz collection, while teachers continue to see only their own quizzes.
+- Guest-access links now present the read-only URL and copy action as one responsive, accessible control.
+- Pre-registered exam-slot PDFs now provide handwritten name lines, and the consolidated student register uses the modern printable layout.
+- Pre-registered bulk-exam participants are now presented as numbered exam slots (for example, `Exam Slot 0001`), keeping name-to-slot matching outside the application and distinct from the public anonymous pool.
+- Participant limits now apply consistently to named participants, pre-registered exam slots, and completed or active Public Anonymous Pool positions.
+- The Public Anonymous Pool link, copy action, and invitation download now share one compact responsive row.
+- The release workflow now builds the incremental upgrade package from `v2.1.4` to `v2.2.0`.
+
+### Fixed
+
+- Completed Public Anonymous Pool submissions are now persisted reliably even when a browser does not preserve the final-submit button action; genuinely abandoned sessions remain temporary.
+- Certificates for anonymous participants now provide a blank handwritten name line while named-participant certificates remain unchanged.
+- Result PDFs for anonymous participants now leave the participant-name field blank for handwritten completion.
+- Participant access PDFs now show the QR access caption only beneath the QR Code, removing the duplicate heading text.
+- Anonymous exam cards, participant registers, certificates, and result PDFs now use consistent printable layouts and blank handwritten name fields where appropriate.
+- Public Anonymous Pool quota checks now reserve positions transactionally and prevent concurrent requests from exceeding the owner’s configured limit.
+
+### Security
+
+- Template visibility and assignment are enforced server-side, preventing unassigned teachers from viewing or saving restricted templates.
+- Bulk-exam and Public Anonymous Pool actions enforce quiz ownership, administrator privileges where required, signed-link validation, and participant quotas on the server.
+- The Public Anonymous Pool invitation PDF is available only to the quiz owner or an administrator and reuses the exact signed public URL shown in the interface.
+- Updated Dompdf to `v3.1.6`, resolving the known SVG, bitmap resource-exhaustion, local-file disclosure, and chroot-bypass advisories affecting earlier releases.
+
+### Removed
+
+- Removed the retired `retroAXD3_img` template. Existing quizzes using it are migrated to `default_img`.
+- Removed the PayPal sponsorship page and its navigation links from the public documentation.
+
+### Upgrade Notes
+
+- Run `php artisan migrate` so quizzes that still reference `retroAXD3_img` are moved safely to `default_img`.
+- Run `php artisan optimize:clear` after deploying the updated application files.
+
 ## [v2.1.4] - 2026-07-06
 
 ### Changed

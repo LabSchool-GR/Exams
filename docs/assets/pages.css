@@ -8,9 +8,6 @@
     --accent-dark: #0b4d69;
     --accent-soft: rgba(15, 95, 128, 0.1);
     --green: #1f8f69;
-    --paypal-blue: #003087;
-    --paypal-light: #009cde;
-    --paypal-gold: #ffc439;
     --shadow: 0 18px 42px rgba(14, 41, 68, 0.1);
 }
 
@@ -194,8 +191,7 @@ h1 {
 
 .button-guide,
 .button-demo,
-.button-sample,
-.button-support {
+.button-sample {
     border-color: transparent;
     color: #fff;
 }
@@ -210,10 +206,6 @@ h1 {
 
 .button-sample {
     background: #b56a18;
-}
-
-.button-support {
-    background: #5f4bb6;
 }
 
 .button:hover,
@@ -389,52 +381,6 @@ h1 {
     display: block;
     margin-bottom: 6px;
     color: var(--ink);
-}
-
-.paypal-card {
-    position: relative;
-    overflow: hidden;
-    padding: 24px;
-}
-
-.paypal-card::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto;
-    height: 8px;
-    background: linear-gradient(90deg, var(--paypal-blue), var(--paypal-light), var(--paypal-gold));
-}
-
-.paypal-logo {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 0;
-    margin-bottom: 16px;
-    color: var(--paypal-blue);
-    font-size: 30px;
-    font-weight: 900;
-    letter-spacing: 0;
-}
-
-.paypal-logo span {
-    color: var(--paypal-light);
-}
-
-.amount {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-    margin: 14px 0 8px;
-    color: var(--ink);
-    font-size: 52px;
-    font-weight: 900;
-    line-height: 1;
-}
-
-.amount small {
-    color: var(--muted);
-    font-size: 18px;
-    font-weight: 800;
 }
 
 .note {

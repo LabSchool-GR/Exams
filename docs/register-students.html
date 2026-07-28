@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Examinee Management</title>
     <meta name="description" content="How educators manage examinees, personal links, PIN access, guest access, CSV import, and anonymous participation modes in LabSchool Exams.">
-    <meta name="theme-color" content="#2563eb">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://labschool-gr.github.io/Exams/register-students.html">
 
@@ -148,27 +147,27 @@
             </article>
 
             <article class="panel">
-                <h2 data-i18n="anonymousTitle">Anonymous bulk mode</h2>
+                <h2 data-i18n="anonymousTitle">Bulk exam with pre-registered slots</h2>
                 <p data-i18n="anonymousTextOne">
-                    In anonymous bulk mode, the teacher does not register named students. Instead, the application creates anonymous positions with automatically assigned codes. This is useful when we want participation without names, but still need controlled access.
+                    The application creates pre-registered exam slots with a unique PIN and QR Code for participants whose details are not known in advance.
                 </p>
                 <p data-i18n="anonymousTextTwo">
-                    The teacher chooses how many anonymous positions to create and how many attempts each position allows. The application can then produce cards or links that are given to participants.
+                    When each card is distributed, the participant writes their full name on it. The teacher keeps the mapping between the printed card and Exam Slot 0001 outside the application.
                 </p>
                 <figure class="guide-figure">
-                    <img src="screenshots/register-students/18 register-students-anonymous.jpg" alt="Anonymous bulk creation">
-                    <figcaption data-i18n="anonymousCaptionOne">Anonymous bulk mode creates anonymous slots instead of named students.</figcaption>
+                    <img src="screenshots/register-students/18 register-students-anonymous.jpg" alt="Creating pre-registered exam slots">
+                    <figcaption data-i18n="anonymousCaptionOne">Each pre-registered exam slot has its own PIN, QR Code, and printable name line.</figcaption>
                 </figure>
             </article>
 
             <article class="panel">
                 <h2 data-i18n="publicPoolTitle">Public anonymous pool and second screen</h2>
                 <p data-i18n="publicPoolTextOne">
-                    A public anonymous pool works differently: the teacher shares one public QR or link, and the system gives anonymous positions to participants until the configured capacity is reached. This is useful for open events where we want anonymous submissions without preparing cards for each person.
+                    A public anonymous pool works differently: the teacher shares one public QR or link, and the system gives anonymous positions to participants until the configured capacity is reached. A printable invitation PDF includes the same QR/link, quiz details, and the link expiration time.
                 </p>
                  <figure class="guide-figure">
-                    <img src="screenshots/register-students/19 register-students-anonymous-link.jpg" alt="Anonymous personal link cards">
-                    <figcaption data-i18n="anonymousCaptionTwo">The generated anonymous access information can be distributed as cards or links.</figcaption>
+                    <img src="screenshots/register-students/19 register-students-anonymous-link.jpg" alt="Exam slot cards and personal links">
+                    <figcaption data-i18n="anonymousCaptionTwo">Exam-slot access information can be distributed as printed cards, QR Codes, or personal links.</figcaption>
                 </figure>
                 <p data-i18n="publicPoolTextTwo">
                     Some quizzes may also use a second-screen or television-style flow. In that case, the teacher controls a shared display while participants answer from their own devices. These options are advanced and usually appear only when the quiz settings and user permissions allow them.
@@ -236,13 +235,13 @@
                     csvTextTwo: "The import accepts up to 30 rows at a time, with UTF-8 text, four-digit codes, and max attempts from 1 to 5. The reserved guest code 0000 is not accepted, and duplicate codes are rejected.",
                     csvNote: "CSV import is available when the quiz supports continuation of incomplete attempts and is not using an anonymous mode.",
                     csvCaption: "The CSV area includes the expected format and a template file so the list can be prepared correctly.",
-                    anonymousTitle: "Anonymous bulk mode",
-                    anonymousTextOne: "In anonymous bulk mode, the teacher does not register named students. Instead, the application creates anonymous positions with automatically assigned codes. This is useful when we want participation without names, but still need controlled access.",
-                    anonymousTextTwo: "The teacher chooses how many anonymous positions to create and how many attempts each position allows. The application can then produce cards or links that are given to participants.",
-                    anonymousCaptionOne: "Anonymous bulk mode creates anonymous slots instead of named students.",
-                    anonymousCaptionTwo: "The generated anonymous access information can be distributed as cards or links.",
+                    anonymousTitle: "Bulk exam with pre-registered slots",
+                    anonymousTextOne: "The application creates pre-registered exam slots with a unique PIN and QR Code for participants whose details are not known in advance.",
+                    anonymousTextTwo: "When each card is distributed, the participant writes their full name on it. The teacher keeps the mapping between the printed card and Exam Slot 0001 outside the application.",
+                    anonymousCaptionOne: "Each pre-registered exam slot has its own PIN, QR Code, and printable name line.",
+                    anonymousCaptionTwo: "Exam-slot access information can be distributed as printed cards, QR Codes, or personal links.",
                     publicPoolTitle: "Public anonymous pool and second screen",
-                    publicPoolTextOne: "A public anonymous pool works differently: the teacher shares one public QR or link, and the system gives anonymous positions to participants until the configured capacity is reached. This is useful for open events where we want anonymous submissions without preparing cards for each person.",
+                    publicPoolTextOne: "A public anonymous pool works differently: the teacher shares one public QR or link, and the system gives anonymous positions to participants until the configured capacity is reached. A printable invitation PDF includes the same QR/link, quiz details, and the link expiration time.",
                     publicPoolTextTwo: "Some quizzes may also use a second-screen or television-style flow. In that case, the teacher controls a shared display while participants answer from their own devices. These options are advanced and usually appear only when the quiz settings and user permissions allow them.",
                     publicPoolCaption: "Public anonymous and display-mode options are useful for events, shared screens, and fast group activities.",
                     privacyTitle: "Deleting and protecting data",
@@ -289,13 +288,13 @@
                     csvTextTwo: "Η εισαγωγή δέχεται έως 30 γραμμές κάθε φορά, με κείμενο UTF-8, τετραψήφιους κωδικούς και προσπάθειες από 1 έως 5. Ο δεσμευμένος κωδικός επισκέπτη 0000 δεν γίνεται δεκτός και οι διπλοί κωδικοί απορρίπτονται.",
                     csvNote: "Η εισαγωγή CSV είναι διαθέσιμη όταν το quiz υποστηρίζει συνέχιση ημιτελούς προσπάθειας και δεν χρησιμοποιεί ανώνυμη ροή.",
                     csvCaption: "Η περιοχή CSV δείχνει την αναμενόμενη μορφή και δίνει αρχείο προτύπου ώστε η λίστα να ετοιμαστεί σωστά.",
-                    anonymousTitle: "Ανώνυμη μαζική εξέταση",
-                    anonymousTextOne: "Στην ανώνυμη μαζική εξέταση, ο εκπαιδευτικός δεν καταχωρίζει ονομαστικούς μαθητές. Αντί για αυτό, η εφαρμογή δημιουργεί ανώνυμες θέσεις με αυτόματους κωδικούς. Είναι χρήσιμο όταν θέλουμε συμμετοχή χωρίς ονόματα, αλλά εξακολουθούμε να χρειαζόμαστε ελεγχόμενη πρόσβαση.",
-                    anonymousTextTwo: "Ο εκπαιδευτικός επιλέγει πόσες ανώνυμες θέσεις θα δημιουργηθούν και πόσες προσπάθειες θα επιτρέπονται σε κάθε θέση. Στη συνέχεια η εφαρμογή μπορεί να παράγει κάρτες ή συνδέσμους που δίνονται στους συμμετέχοντες.",
-                    anonymousCaptionOne: "Η ανώνυμη μαζική εξέταση δημιουργεί ανώνυμες θέσεις αντί για ονομαστικούς μαθητές.",
-                    anonymousCaptionTwo: "Τα ανώνυμα στοιχεία πρόσβασης μπορούν να διανεμηθούν ως κάρτες ή σύνδεσμοι.",
+                    anonymousTitle: "Μαζική εξέταση με προκαταχωρισμένες θέσεις",
+                    anonymousTextOne: "Η εφαρμογή δημιουργεί προκαταχωρισμένες θέσεις εξέτασης με μοναδικό PIN και QR Code για συμμετέχοντες των οποίων τα στοιχεία δεν είναι γνωστά εκ των προτέρων.",
+                    anonymousTextTwo: "Κατά τη διανομή της κάρτας, κάθε εξεταζόμενος συμπληρώνει το ονοματεπώνυμό του. Ο εκπαιδευτικός διατηρεί εκτός εφαρμογής την αντιστοίχιση της έντυπης κάρτας με τη Θέση Εξέτασης 0001.",
+                    anonymousCaptionOne: "Κάθε προκαταχωρισμένη θέση εξέτασης έχει δικό της PIN, QR Code και κενή γραμμή ονοματεπωνύμου.",
+                    anonymousCaptionTwo: "Τα στοιχεία πρόσβασης της θέσης μπορούν να διανεμηθούν ως έντυπες κάρτες, QR Codes ή προσωπικοί σύνδεσμοι.",
                     publicPoolTitle: "Δημόσιο ανώνυμο σύνολο και δεύτερη οθόνη",
-                    publicPoolTextOne: "Το δημόσιο ανώνυμο σύνολο λειτουργεί διαφορετικά: ο εκπαιδευτικός μοιράζεται ένα δημόσιο QR ή σύνδεσμο και το σύστημα δίνει ανώνυμες θέσεις στους συμμετέχοντες μέχρι να συμπληρωθεί η χωρητικότητα. Είναι χρήσιμο για ανοιχτές εκδηλώσεις όπου θέλουμε ανώνυμες υποβολές χωρίς να ετοιμάσουμε κάρτες για κάθε άτομο.",
+                    publicPoolTextOne: "Το δημόσιο ανώνυμο σύνολο λειτουργεί διαφορετικά: ο εκπαιδευτικός μοιράζεται ένα δημόσιο QR ή σύνδεσμο και το σύστημα δίνει ανώνυμες θέσεις στους συμμετέχοντες μέχρι να συμπληρωθεί η χωρητικότητα. Ένα εκτυπώσιμο PDF πρόσκλησης περιλαμβάνει το ίδιο QR/link, τα στοιχεία του quiz και τον χρόνο λήξης του συνδέσμου.",
                     publicPoolTextTwo: "Ορισμένα quiz μπορούν επίσης να χρησιμοποιήσουν ροή δεύτερης οθόνης ή τηλεόρασης. Σε αυτή την περίπτωση, ο εκπαιδευτικός ελέγχει μια κοινή οθόνη ενώ οι συμμετέχοντες απαντούν από τις δικές τους συσκευές. Αυτές οι επιλογές είναι προχωρημένες και συνήθως εμφανίζονται μόνο όταν το επιτρέπουν οι ρυθμίσεις του quiz και τα δικαιώματα χρήστη.",
                     publicPoolCaption: "Οι επιλογές δημόσιας ανώνυμης συμμετοχής και προβολής είναι χρήσιμες για εκδηλώσεις, κοινές οθόνες και γρήγορες ομαδικές δραστηριότητες.",
                     privacyTitle: "Διαγραφή και προστασία δεδομένων",

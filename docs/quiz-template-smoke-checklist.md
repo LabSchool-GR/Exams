@@ -6,11 +6,7 @@ Use this checklist after template, CSP, or runtime-JS changes.
 
 - `default`
 - `default_img`
-- `newdefault`
-- `alexpolis_img`
-- `exakoustou_img`
-- `retropc_img`
-- `uni_img`
+- `modern_img`
 
 ## Entry Flow Per Template
 
@@ -53,4 +49,4 @@ For each template family:
 - Confirm no page uses inline `<script>` tags or inline event attributes.
 - Confirm the response header is `Content-Security-Policy`, not report-only.
 - Confirm the built asset bundle loads on authenticated pages and public quiz pages.
-- Confirm Greek copy renders correctly, especially in `uni_img` headers.
+- Confirm Greek and English copy renders correctly on every participant screen.

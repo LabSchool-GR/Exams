@@ -42,7 +42,6 @@
 | Εγκατάσταση | [Άνοιγμα](https://labschool-gr.github.io/Exams/Installation-and-Setup.html) |
 | Αναβάθμιση | [Άνοιγμα](https://labschool-gr.github.io/Exams/upgrade-packages.html) |
 | Ασφάλεια και απόρρητο | [Άνοιγμα](https://labschool-gr.github.io/Exams/Security-Privacy-and-Compliance.html) |
-| Υποστήριξη έργου | [Άνοιγμα](https://labschool-gr.github.io/Exams/sponsor.html) |
 
 ---
 
@@ -71,7 +70,6 @@ Participants do not need an account. They can join with a temporary PIN, a perso
 | Installation | [Open](https://labschool-gr.github.io/Exams/Installation-and-Setup.html) |
 | Upgrade packages | [Open](https://labschool-gr.github.io/Exams/upgrade-packages.html) |
 | Security and privacy | [Open](https://labschool-gr.github.io/Exams/Security-Privacy-and-Compliance.html) |
-| Support the project | [Open](https://labschool-gr.github.io/Exams/sponsor.html) |
 
 ---
 

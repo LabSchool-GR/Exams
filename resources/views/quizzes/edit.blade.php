@@ -216,6 +216,43 @@
                         </div>
                     </div>
 
+                    <div class="dashboard-form-panel">
+                        <h2 class="dashboard-form-panel__title">{{ __('quizzes_cards.participation_modes_section') }}</h2>
+                        <p class="dashboard-form-help">{{ __('quizzes_cards.participation_modes_notice') }}</p>
+
+                        <div class="dashboard-switch-grid">
+                            <div class="form-check form-switch dashboard-switch-card">
+                                <input type="hidden" name="is_anonymous_bulk_mode" value="0">
+                                <input class="form-check-input" type="checkbox" name="is_anonymous_bulk_mode" id="isAnonymousBulkMode" value="1" {{ old('is_anonymous_bulk_mode', $quiz->is_anonymous_bulk_mode) ? 'checked' : '' }} @if($isContentLocked) disabled @endif>
+                                <label class="form-check-label" for="isAnonymousBulkMode">{{ __('quizzes_cards.anonymous_bulk_mode') }}</label>
+                                <div class="form-text">{{ __('quizzes_cards.anonymous_bulk_mode_notice') }}</div>
+                            </div>
+
+                            <div class="form-check form-switch dashboard-switch-card">
+                                <input type="hidden" name="is_public_anonymous_pool_mode" value="0">
+                                <input class="form-check-input" type="checkbox" name="is_public_anonymous_pool_mode" id="isPublicAnonymousPoolMode" value="1" {{ old('is_public_anonymous_pool_mode', $quiz->is_public_anonymous_pool_mode) ? 'checked' : '' }} @if($isContentLocked) disabled @endif>
+                                <label class="form-check-label" for="isPublicAnonymousPoolMode">{{ __('quizzes_cards.public_anonymous_pool_mode') }}</label>
+                                <div class="form-text">{{ __('quizzes_cards.public_anonymous_pool_mode_notice') }}</div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-form-group mt-3">
+                            <label for="anonymous_pool_capacity" class="dashboard-form-label">
+                                <i class="fas fa-users text-muted"></i>{{ __('quizzes.anonymous_pool_capacity') }}
+                            </label>
+                            <input type="number" name="anonymous_pool_capacity" id="anonymous_pool_capacity" min="1" max="{{ $participantLimit ?? 9999 }}" value="{{ old('anonymous_pool_capacity', $quiz->anonymous_pool_capacity ?? min(100, $participantLimit ?? 100)) }}" class="form-control dashboard-form-control @error('anonymous_pool_capacity') is-invalid @enderror" @if($isContentLocked) disabled @endif>
+                            <div class="dashboard-form-help">
+                                {{ __('quizzes.anonymous_pool_capacity_hint') }}
+                                @if ($participantLimit !== null)
+                                    {{ __('quizzes.anonymous_pool_account_limit', ['limit' => $participantLimit]) }}
+                                @endif
+                            </div>
+                            @error('anonymous_pool_capacity')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+
                     @if (Auth::user()->isAdmin())
                         <div class="dashboard-form-panel">
                             <h2 class="dashboard-form-panel__title">{{ __('quizzes_cards.create_section_d') }}</h2>
@@ -234,28 +271,6 @@
                                     <label class="form-check-label" for="isSecondScreenEnabled">{{ __('display.mode_label') }}</label>
                                     <div class="form-text">{{ __('display.mode_notice') }}</div>
                                 </div>
-
-                                <div class="form-check form-switch dashboard-switch-card">
-                                    <input type="hidden" name="is_anonymous_bulk_mode" value="0">
-                                    <input class="form-check-input" type="checkbox" name="is_anonymous_bulk_mode" id="isAnonymousBulkMode" value="1" {{ old('is_anonymous_bulk_mode', $quiz->is_anonymous_bulk_mode) ? 'checked' : '' }} @if($isContentLocked) disabled @endif>
-                                    <label class="form-check-label" for="isAnonymousBulkMode">{{ __('quizzes_cards.anonymous_bulk_mode') }}</label>
-                                    <div class="form-text">{{ __('quizzes_cards.anonymous_bulk_mode_notice') }}</div>
-                                </div>
-
-                                <div class="form-check form-switch dashboard-switch-card">
-                                    <input type="hidden" name="is_public_anonymous_pool_mode" value="0">
-                                    <input class="form-check-input" type="checkbox" name="is_public_anonymous_pool_mode" id="isPublicAnonymousPoolMode" value="1" {{ old('is_public_anonymous_pool_mode', $quiz->is_public_anonymous_pool_mode) ? 'checked' : '' }} @if($isContentLocked) disabled @endif>
-                                    <label class="form-check-label" for="isPublicAnonymousPoolMode">{{ __('quizzes_cards.public_anonymous_pool_mode') }}</label>
-                                    <div class="form-text">{{ __('quizzes_cards.public_anonymous_pool_mode_notice') }}</div>
-                                </div>
-                            </div>
-
-                            <div class="dashboard-form-group mt-3">
-                                <label for="anonymous_pool_capacity" class="dashboard-form-label">
-                                    <i class="fas fa-users text-muted"></i>{{ __('quizzes.anonymous_pool_capacity') }}
-                                </label>
-                                <input type="number" name="anonymous_pool_capacity" id="anonymous_pool_capacity" min="1" max="9999" value="{{ old('anonymous_pool_capacity', $quiz->anonymous_pool_capacity ?? 100) }}" class="form-control dashboard-form-control" @if($isContentLocked) disabled @endif>
-                                <div class="dashboard-form-help">{{ __('quizzes.anonymous_pool_capacity_hint') }}</div>
                             </div>
                         </div>
                     @endif

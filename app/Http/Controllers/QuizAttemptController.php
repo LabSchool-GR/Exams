@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -101,19 +102,13 @@ class QuizAttemptController extends Controller
 
     private function remainingStudentCapacity(Quiz $quiz): ?int
     {
-        /** @var User|null $user */
-        $user = Auth::user();
+        $participantLimit = $quiz->participantCapacityLimit();
 
-        if (! $user || $user->isAdmin()) {
+        if ($participantLimit === null) {
             return null;
         }
 
-        return max(0, (int) $user->max_students_per_quiz - QuizStudent::where('quiz_id', $quiz->id)->count());
-    }
-
-    private function anonymousStudentDisplayName(): string
-    {
-        return __('controllers.anonymous_student_name');
+        return max(0, $participantLimit - QuizStudent::where('quiz_id', $quiz->id)->count());
     }
 
     private function nextAvailableStudentCodes(Quiz $quiz, int $count): array
@@ -224,9 +219,9 @@ class QuizAttemptController extends Controller
             });
 
         $canRegisterStudents = $this->canRegisterMoreStudents($quiz);
-        /** @var User|null $user */
-        $user = Auth::user();
-        $studentLimit = $user?->max_students_per_quiz;
+        $remainingStudentCapacity = $this->remainingStudentCapacity($quiz);
+        $studentLimit = $quiz->participantCapacityLimit();
+        $effectiveAnonymousPoolCapacity = $quiz->effectiveAnonymousPoolCapacity();
         $publicAnonymousPoolCompletedCount = QuizAttempt::query()
             ->where('quiz_id', $quiz->id)
             ->whereNotNull('submitted_at')
@@ -234,6 +229,17 @@ class QuizAttemptController extends Controller
                 $query->where('is_anonymous', true);
             })
             ->count();
+        $publicLinkTtlMinutes = (int) config('security.signed_urls.public_link_ttl_minutes', 10080);
+        $publicLinkExpiresAt = $publicLinkTtlMinutes > 0
+            ? now()->addMinutes($publicLinkTtlMinutes)
+            : null;
+        $guestUrl = $quiz->publicAccessUrl($publicLinkExpiresAt);
+        $publicPoolInvitationPdfUrl = $quiz->is_public_anonymous_pool_mode && $guestUrl
+            ? URL::signedRoute('quiz_attempts.public_pool_invitation_pdf', [
+                'quiz' => $quiz,
+                'link_expires' => $publicLinkExpiresAt?->getTimestamp() ?? 0,
+            ])
+            : null;
 
         $displaySessionsByStudentId = QuizDisplaySession::query()
             ->where('quiz_id', $quiz->id)
@@ -248,7 +254,7 @@ class QuizAttemptController extends Controller
             ->unique('quiz_student_id')
             ->keyBy('quiz_student_id');
 
-        return view('quiz_attempts.register_students', compact('quiz', 'students', 'attemptsGrouped', 'canRegisterStudents', 'studentLimit', 'publicAnonymousPoolCompletedCount', 'displaySessionsByStudentId'));
+        return view('quiz_attempts.register_students', compact('quiz', 'students', 'attemptsGrouped', 'canRegisterStudents', 'remainingStudentCapacity', 'studentLimit', 'publicAnonymousPoolCompletedCount', 'effectiveAnonymousPoolCapacity', 'guestUrl', 'publicPoolInvitationPdfUrl', 'displaySessionsByStudentId'));
     }
 
     /**
@@ -318,11 +324,6 @@ class QuizAttemptController extends Controller
                 ->with('error', __('controllers.anonymous_bulk_mode_disabled'));
         }
 
-        if (! $this->canRegisterMoreStudents($quiz)) {
-            return redirect()->route('quiz_attempts.register_students', $quiz)
-                ->with('error', __('controllers.student_limit_reached'));
-        }
-
         $remainingCapacity = $this->remainingStudentCapacity($quiz);
         $requestedSlotsLimit = $remainingCapacity ?? 9999;
 
@@ -333,26 +334,46 @@ class QuizAttemptController extends Controller
 
         $slotCount = (int) $request->input('anonymous_slots_count');
         $maxAttempts = (int) $request->input('anonymous_max_attempts');
-        $codes = $this->nextAvailableStudentCodes($quiz, $slotCount);
+        $created = DB::transaction(function () use ($quiz, $slotCount, $maxAttempts): bool {
+            $lockedQuiz = Quiz::query()
+                ->with('creator')
+                ->whereKey($quiz->id)
+                ->lockForUpdate()
+                ->firstOrFail();
+            $participantLimit = $lockedQuiz->participantCapacityLimit();
+            $existingCount = QuizStudent::query()
+                ->where('quiz_id', $lockedQuiz->id)
+                ->count();
 
-        if (count($codes) !== $slotCount) {
-            return redirect()->route('quiz_attempts.register_students', $quiz)
-                ->with('error', __('controllers.anonymous_slots_unavailable'));
-        }
+            if ($participantLimit !== null && ($existingCount + $slotCount) > $participantLimit) {
+                return false;
+            }
 
-        DB::transaction(function () use ($quiz, $codes, $maxAttempts): void {
+            $codes = $this->nextAvailableStudentCodes($lockedQuiz, $slotCount);
+
+            if (count($codes) !== $slotCount) {
+                return false;
+            }
+
             foreach ($codes as $code) {
                 QuizStudent::create([
-                    'quiz_id' => $quiz->id,
+                    'quiz_id' => $lockedQuiz->id,
                     'student_code' => $code,
-                    'student_name' => $this->anonymousStudentDisplayName(),
+                    'student_name' => QuizStudent::examSlotName($code),
                     'max_attempts' => $maxAttempts,
                     'is_anonymous' => true,
                     'access_token' => null,
                     'access_token_hash' => QuizStudent::generateLinkTokenHash(),
                 ]);
             }
+
+            return true;
         });
+
+        if (! $created) {
+            return redirect()->route('quiz_attempts.register_students', $quiz)
+                ->with('error', __('controllers.student_limit_reached'));
+        }
 
         return redirect()->route('quiz_attempts.register_students', $quiz)
             ->with('success', __('controllers.anonymous_slots_created', ['count' => $slotCount]));
@@ -574,7 +595,7 @@ class QuizAttemptController extends Controller
         $this->ensureAttemptBelongsToQuiz($quiz, $quizAttempt);
 
         $quiz->load(['creator', 'questions.answers']);
-        $quizAttempt->load(['answers.answer', 'answers.question']);
+        $quizAttempt->load(['answers.answer', 'answers.question', 'student']);
 
         App::setLocale($quiz->resolvedLocale(config('app.locale')));
 
@@ -628,6 +649,7 @@ class QuizAttemptController extends Controller
             'questionResults' => $questionResults,
             'correctAnswersMap' => $correctAnswersMap,
             'scorePercentage' => $scorePercentage,
+            'isAnonymousParticipant' => (bool) $quizAttempt->student?->is_anonymous,
         ];
 
         $pdf = Pdf::loadView('quiz_attempts.result_pdf', $pdfData);
@@ -646,19 +668,21 @@ class QuizAttemptController extends Controller
     {
         $this->authorizeQuizAccess($quiz);
 
-        // Load all registered students
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
+        $quiz->load('creator');
+
         $students = QuizStudent::query()
             ->where('quiz_id', $quiz->id)
             ->orderBy('student_code')
             ->orderBy('id')
-            ->get(['student_name', 'student_code', 'max_attempts']);
+            ->get(['student_name', 'student_code', 'max_attempts', 'is_anonymous']);
 
-        // Prepare data (simplified)
-        $reportData = $students->map(function ($student) {
+        $reportData = $students->map(function (QuizStudent $student): array {
             return [
                 'name' => $student->student_name,
                 'code' => $student->student_code,
                 'max_attempts' => $student->max_attempts,
+                'is_anonymous' => (bool) $student->is_anonymous,
             ];
         });
 
@@ -666,6 +690,8 @@ class QuizAttemptController extends Controller
             'quiz' => $quiz,
             'data' => $reportData,
         ]);
+
+        $this->addCenteredPdfPageFooter($pdf, __('pdfexp.page_footer'));
 
         return $pdf->download('students_report_'.$quiz->id.'.pdf');
     }
@@ -698,7 +724,6 @@ class QuizAttemptController extends Controller
 
             return [
                 'student_code' => $student->student_code,
-                'student_name' => $this->anonymousStudentDisplayName(),
                 'max_attempts' => $student->max_attempts,
                 'student_url' => $url,
                 'qr_svg' => $url
@@ -712,7 +737,66 @@ class QuizAttemptController extends Controller
             'cards' => $cards,
         ]);
 
-        return $pdf->download('anonymous_cards_'.$quiz->id.'.pdf');
+        return $pdf->download('exam_slot_cards_'.$quiz->id.'.pdf');
+    }
+
+    /**
+     * Download a printable invitation using the exact shared public link shown to the teacher.
+     */
+    public function downloadPublicPoolInvitationPdf(Quiz $quiz, Request $request): Response|BinaryFileResponse|RedirectResponse
+    {
+        $this->authorizeQuizAccess($quiz);
+
+        if (! $quiz->is_public_anonymous_pool_mode) {
+            return redirect()->route('quiz_attempts.register_students', $quiz)
+                ->with('error', __('controllers.public_anonymous_pool_mode_disabled'));
+        }
+
+        if ($quiz->status !== 'active') {
+            return redirect()->route('quiz_attempts.register_students', $quiz)
+                ->with('error', __('controllers.public_anonymous_pool_invitation_inactive'));
+        }
+
+        $validated = $request->validate([
+            'link_expires' => ['required', 'integer', 'min:0'],
+        ]);
+        $expirationTimestamp = (int) $validated['link_expires'];
+        $expiresAt = $expirationTimestamp > 0
+            ? Carbon::createFromTimestamp($expirationTimestamp)
+            : null;
+
+        if ($expiresAt?->isPast()) {
+            return redirect()->route('quiz_attempts.register_students', $quiz)
+                ->with('error', __('controllers.public_anonymous_pool_invitation_expired'));
+        }
+
+        $publicUrl = $expiresAt
+            ? $quiz->publicAccessUrl($expiresAt)
+            : URL::signedRoute('quizzes.public.start', [
+                'quiz' => $quiz->id,
+                'key' => $quiz->publicLinkFingerprint(),
+            ]);
+
+        if (! $publicUrl) {
+            return redirect()->route('quiz_attempts.register_students', $quiz)
+                ->with('error', __('controllers.public_anonymous_pool_link_unavailable'));
+        }
+
+        App::setLocale($quiz->resolvedLocale(config('app.locale')));
+        $quiz->load('creator');
+        $qrSvg = base64_encode(
+            QrCode::format('svg')->size(260)->margin(1)->generate($publicUrl)
+        );
+
+        $pdf = Pdf::loadView('quiz_attempts.public_pool_invitation_pdf', [
+            'quiz' => $quiz,
+            'publicUrl' => $publicUrl,
+            'qrSvg' => $qrSvg,
+            'expiresAt' => $expiresAt,
+            'effectiveCapacity' => $quiz->effectiveAnonymousPoolCapacity(),
+        ]);
+
+        return $pdf->download('quiz_invitation_'.$quiz->id.'.pdf');
     }
 
     /**
@@ -804,6 +888,7 @@ class QuizAttemptController extends Controller
         $this->authorizeQuizAccess($quiz);
 
         App::setLocale($quiz->resolvedLocale(config('app.locale')));
+        $attempt->loadMissing('student');
 
         // User is not eligible for certificate
         if ($attempt->score < $quiz->pass_percentage) {
@@ -816,6 +901,7 @@ class QuizAttemptController extends Controller
         $pdf = Pdf::loadView('quiz_attempts.certificate', [
             'attempt' => $attempt,
             'quiz' => $quiz,
+            'isAnonymousParticipant' => (bool) $attempt->student?->is_anonymous,
         ])->setPaper('A4', 'landscape');
 
         return $pdf->download('certificate_'.$attempt->id.'.pdf');

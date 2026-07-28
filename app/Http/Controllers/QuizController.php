@@ -29,6 +29,20 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class QuizController extends Controller
 {
+    /**
+     * Legacy core templates remain usable before the installer seeds their records.
+     *
+     * @var list<string>
+     */
+    private const LEGACY_COMMON_TEMPLATE_CODES = ['default', 'default_img'];
+
+    /**
+     * Internal view layers are implementation details and cannot be selected as templates.
+     *
+     * @var list<string>
+     */
+    private const INTERNAL_TEMPLATE_CODES = ['shared_img'];
+
     use AuthorizesQuizOwnership;
 
     private function currentUser(): ?User
@@ -90,7 +104,7 @@ class QuizController extends Controller
             'notify_creator_on_pass' => $request->boolean('notify_creator_on_pass'),
         ];
 
-        if ($this->currentUserCanManageSpecialModes()) {
+        if ($this->currentUserCanManageAdminModes()) {
             $data['is_certificate_verification_enabled'] = $request->boolean('is_certificate_verification_enabled');
             $data['is_second_screen_enabled'] = $request->boolean('is_second_screen_enabled');
         }
@@ -102,9 +116,35 @@ class QuizController extends Controller
             ->with('success', __('controllers.quiz_updated'));
     }
 
-    private function currentUserCanManageSpecialModes(): bool
+    private function currentUserCanManageAdminModes(): bool
     {
         return $this->currentUser()?->isAdmin() ?? false;
+    }
+
+    private function currentUserParticipantLimit(): ?int
+    {
+        $user = $this->currentUser();
+
+        if (! $user || $user->isAdmin()) {
+            return null;
+        }
+
+        return max(1, (int) $user->max_students_per_quiz);
+    }
+
+    private function anonymousPoolCapacityRule(?Quiz $quiz = null): string
+    {
+        $participantLimit = $quiz?->participantCapacityLimit()
+            ?? $this->currentUserParticipantLimit();
+
+        return 'nullable|integer|min:1|max:'.($participantLimit ?? 9999);
+    }
+
+    private function defaultAnonymousPoolCapacity(): int
+    {
+        $participantLimit = $this->currentUserParticipantLimit();
+
+        return $participantLimit === null ? 100 : min(100, $participantLimit);
     }
 
     private function availableTemplatesQuery(?User $user)
@@ -132,6 +172,10 @@ class QuizController extends Controller
             return false;
         }
 
+        if (in_array($templateCode, self::INTERNAL_TEMPLATE_CODES, true)) {
+            return false;
+        }
+
         foreach (['start', 'student', 'question', 'result'] as $screen) {
             if (! view()->exists('quiz.templates.'.$templateCode.'.'.$screen)) {
                 return false;
@@ -145,17 +189,20 @@ class QuizController extends Controller
     {
         $databaseTemplates = $this->availableTemplatesQuery($user)
             ->orderBy('name')
-            ->get(['code', 'name']);
+            ->get(['code', 'name'])
+            ->filter(fn (QuizTemplate $template) => $this->builtInTemplateViewsExist($template->code));
 
-        $existingCodes = $databaseTemplates
+        // A registered template must always respect its database visibility rules.
+        // Filesystem discovery is kept only as a backwards-compatible fallback for
+        // legacy built-in templates that have no database record at all.
+        $registeredCodes = QuizTemplate::query()
             ->pluck('code')
             ->filter()
             ->all();
 
-        $builtInTemplates = collect(glob(resource_path('views/quiz/templates/*'), GLOB_ONLYDIR) ?: [])
-            ->map(fn (string $path) => basename($path))
+        $builtInTemplates = collect(self::LEGACY_COMMON_TEMPLATE_CODES)
             ->filter(fn (string $code) => $this->builtInTemplateViewsExist($code))
-            ->reject(fn (string $code) => in_array($code, $existingCodes, true))
+            ->reject(fn (string $code) => in_array($code, $registeredCodes, true))
             ->map(fn (string $code) => (object) [
                 'code' => $code,
                 'name' => Str::headline(str_replace('_', ' ', $code)),
@@ -173,8 +220,16 @@ class QuizController extends Controller
             return false;
         }
 
-        if ($this->builtInTemplateViewsExist($templateCode)) {
-            return true;
+        if (! $this->builtInTemplateViewsExist($templateCode)) {
+            return false;
+        }
+
+        $isRegistered = QuizTemplate::query()
+            ->where('code', $templateCode)
+            ->exists();
+
+        if (! $isRegistered) {
+            return in_array($templateCode, self::LEGACY_COMMON_TEMPLATE_CODES, true);
         }
 
         return $this->availableTemplatesQuery($user)
@@ -208,9 +263,12 @@ class QuizController extends Controller
 
         $quizzesQuery = Quiz::query()
             ->where('is_system_example', false)
-            ->with('category');
+            ->with([
+                'category',
+                'creator:id,name',
+            ]);
 
-        if ($user->role === 'teacher') {
+        if (! $user->isAdmin()) {
             $quizzesQuery->where('creator_id', $user->id);
         }
 
@@ -235,8 +293,10 @@ class QuizController extends Controller
 
         $categories = Category::orderBy('name')->get();
         $templates = $this->availableTemplatesForUser($this->currentUser());
+        $participantLimit = $this->currentUserParticipantLimit();
+        $defaultAnonymousPoolCapacity = $this->defaultAnonymousPoolCapacity();
 
-        return view('quizzes.create', compact('categories', 'templates'));
+        return view('quizzes.create', compact('categories', 'templates', 'participantLimit', 'defaultAnonymousPoolCapacity'));
     }
 
     /**
@@ -250,8 +310,9 @@ class QuizController extends Controller
         $questionCount = $quiz->questions()->count();
         $templates = $this->availableTemplatesForUser($this->currentUser());
         $isContentLocked = $quiz->hasLockedContent();
+        $participantLimit = $quiz->participantCapacityLimit();
 
-        return view('quizzes.edit', compact('quiz', 'categories', 'questionCount', 'templates', 'isContentLocked'));
+        return view('quizzes.edit', compact('quiz', 'categories', 'questionCount', 'templates', 'isContentLocked', 'participantLimit'));
     }
 
     /**
@@ -310,22 +371,23 @@ class QuizController extends Controller
             'notify_creator_on_pass' => 'boolean',
             'is_anonymous_bulk_mode' => 'boolean',
             'is_public_anonymous_pool_mode' => 'boolean',
-            'anonymous_pool_capacity' => 'nullable|integer|min:1|max:9999',
+            'anonymous_pool_capacity' => $this->anonymousPoolCapacityRule(),
             'student_access_policy' => ['required', 'string', Rule::in(Quiz::studentAccessPolicies())],
             'status' => 'required|in:active,inactive',
             'language' => 'required|in:el,en,auto',
             'image' => 'nullable|image|max:150',
         ], [
             'image.max' => __('controllers.quiz_image_max'),
+            'anonymous_pool_capacity.max' => __('controllers.anonymous_pool_capacity_limit'),
         ]);
 
-        $canManageSpecialModes = $this->currentUserCanManageSpecialModes();
-        $isAnonymousBulkMode = $canManageSpecialModes ? $request->boolean('is_anonymous_bulk_mode') : false;
-        $isPublicAnonymousPoolMode = $canManageSpecialModes ? $request->boolean('is_public_anonymous_pool_mode') : false;
-        $isCertificateVerificationEnabled = $canManageSpecialModes
+        $canManageAdminModes = $this->currentUserCanManageAdminModes();
+        $isAnonymousBulkMode = $request->boolean('is_anonymous_bulk_mode');
+        $isPublicAnonymousPoolMode = $request->boolean('is_public_anonymous_pool_mode');
+        $isCertificateVerificationEnabled = $canManageAdminModes
             ? $request->boolean('is_certificate_verification_enabled')
             : false;
-        $isSecondScreenEnabled = $canManageSpecialModes
+        $isSecondScreenEnabled = $canManageAdminModes
             ? $request->boolean('is_second_screen_enabled')
             : false;
 
@@ -348,7 +410,7 @@ class QuizController extends Controller
         }
 
         $anonymousPoolCapacity = $isPublicAnonymousPoolMode
-            ? max(1, (int) $request->integer('anonymous_pool_capacity', 100))
+            ? max(1, (int) $request->integer('anonymous_pool_capacity', $this->defaultAnonymousPoolCapacity()))
             : null;
 
         if ($isAnonymousBulkMode) {
@@ -468,7 +530,7 @@ class QuizController extends Controller
             'notify_creator_on_pass' => 'boolean',
             'is_anonymous_bulk_mode' => 'boolean',
             'is_public_anonymous_pool_mode' => 'boolean',
-            'anonymous_pool_capacity' => 'nullable|integer|min:1|max:9999',
+            'anonymous_pool_capacity' => $this->anonymousPoolCapacityRule($quiz),
             'student_access_policy' => ['required', 'string', Rule::in(Quiz::studentAccessPolicies())],
             'status' => 'required|in:active,inactive',
             'language' => 'required|in:el,en,auto',
@@ -482,19 +544,16 @@ class QuizController extends Controller
 
         $request->validate($rules, [
             'image.max' => __('controllers.quiz_image_max'),
+            'anonymous_pool_capacity.max' => __('controllers.anonymous_pool_capacity_limit'),
         ]);
 
-        $canManageSpecialModes = $this->currentUserCanManageSpecialModes();
-        $isAnonymousBulkMode = $canManageSpecialModes
-            ? $request->boolean('is_anonymous_bulk_mode')
-            : (bool) $quiz->is_anonymous_bulk_mode;
-        $isPublicAnonymousPoolMode = $canManageSpecialModes
-            ? $request->boolean('is_public_anonymous_pool_mode')
-            : (bool) $quiz->is_public_anonymous_pool_mode;
-        $isCertificateVerificationEnabled = $canManageSpecialModes
+        $canManageAdminModes = $this->currentUserCanManageAdminModes();
+        $isAnonymousBulkMode = $request->boolean('is_anonymous_bulk_mode');
+        $isPublicAnonymousPoolMode = $request->boolean('is_public_anonymous_pool_mode');
+        $isCertificateVerificationEnabled = $canManageAdminModes
             ? $request->boolean('is_certificate_verification_enabled')
             : $quiz->usesCertificateVerification();
-        $isSecondScreenEnabled = $canManageSpecialModes
+        $isSecondScreenEnabled = $canManageAdminModes
             ? $request->boolean('is_second_screen_enabled')
             : $quiz->usesSecondScreenMode();
 
@@ -516,12 +575,17 @@ class QuizController extends Controller
             ]);
         }
 
+        $participationModeChanged = $isAnonymousBulkMode !== (bool) $quiz->is_anonymous_bulk_mode
+            || $isPublicAnonymousPoolMode !== (bool) $quiz->is_public_anonymous_pool_mode;
+
+        if ($participationModeChanged && $quiz->students()->exists()) {
+            return back()->withInput()->withErrors([
+                'is_anonymous_bulk_mode' => __('controllers.participation_mode_has_students'),
+            ]);
+        }
+
         $anonymousPoolCapacity = $isPublicAnonymousPoolMode
-            ? (
-                $canManageSpecialModes
-                    ? max(1, (int) $request->integer('anonymous_pool_capacity', (int) ($quiz->anonymous_pool_capacity ?: 100)))
-                    : $quiz->anonymous_pool_capacity
-            )
+            ? max(1, (int) $request->integer('anonymous_pool_capacity', (int) ($quiz->anonymous_pool_capacity ?: 100)))
             : null;
 
         if ($isAnonymousBulkMode) {
@@ -664,6 +728,17 @@ class QuizController extends Controller
             $questionView = $this->userCanUseTemplateCode($quiz->question_view, $owner)
                 ? $quiz->question_view
                 : 'default';
+            $participantLimit = $owner->isAdmin()
+                ? null
+                : max(1, (int) $owner->max_students_per_quiz);
+            $isAnonymousBulkMode = (bool) $quiz->is_anonymous_bulk_mode;
+            $isPublicAnonymousPoolMode = (bool) $quiz->is_public_anonymous_pool_mode;
+            $anonymousPoolCapacity = $isPublicAnonymousPoolMode
+                ? min(
+                    max(1, (int) ($quiz->anonymous_pool_capacity ?? 1)),
+                    $participantLimit ?? 9999
+                )
+                : null;
 
             $copiedQuiz = Quiz::create([
                 'title' => $quiz->title,
@@ -692,13 +767,13 @@ class QuizController extends Controller
                 'status' => 'inactive',
                 'questions_limit' => $quiz->questions_limit,
                 'public_token' => null,
-                'public_token_hash' => (($quiz->allow_guest && $quiz->is_public) || $quiz->is_public_anonymous_pool_mode)
+                'public_token_hash' => (($quiz->allow_guest && $quiz->is_public) || $isPublicAnonymousPoolMode)
                     ? Quiz::generateLinkTokenHash()
                     : null,
                 'is_public' => (bool) $quiz->is_public,
-                'is_anonymous_bulk_mode' => $owner->isAdmin() ? (bool) $quiz->is_anonymous_bulk_mode : false,
-                'is_public_anonymous_pool_mode' => $owner->isAdmin() ? (bool) $quiz->is_public_anonymous_pool_mode : false,
-                'anonymous_pool_capacity' => $owner->isAdmin() ? $quiz->anonymous_pool_capacity : null,
+                'is_anonymous_bulk_mode' => $isAnonymousBulkMode,
+                'is_public_anonymous_pool_mode' => $isPublicAnonymousPoolMode,
+                'anonymous_pool_capacity' => $anonymousPoolCapacity,
                 'student_access_policy' => $quiz->studentAccessPolicy(),
                 'language' => $quiz->language ?: 'auto',
                 'image' => $this->duplicateStoredImage($quiz->image, 'quizzes_images'),

@@ -30,6 +30,14 @@
             margin-top: 40px;
             font-weight: bold;
         }
+
+        .certificate-name-line {
+            display: inline-block;
+            width: 320px;
+            min-height: 18px;
+            border-bottom: 2px solid #111;
+            vertical-align: baseline;
+        }
     </style>
 	@php
     use Illuminate\Support\Facades\URL;
@@ -52,7 +60,13 @@
     <h1>{{ __('pdfexp.certificate_title') }}</h1>
 
     <div class="section">
-		{{ __('pdfexp.certificate_body_line1') }} <strong>{{ $attempt->student_name }}</strong><br>
+		{{ __('pdfexp.certificate_body_line1') }}
+        @if ($isAnonymousParticipant ?? false)
+            <span class="certificate-name-line">&nbsp;</span>
+        @else
+            <strong>{{ $attempt->student_name }}</strong>
+        @endif
+        <br>
 		{{ __('pdfexp.certificate_body_line2') }}<br>
 		{{ __('pdfexp.certificate_program') }}<br>
 		<strong>"{{ $quiz->title }}"</strong><br>

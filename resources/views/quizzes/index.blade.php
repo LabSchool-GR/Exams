@@ -1,6 +1,10 @@
 @extends('layouts.navigation')
 
 @section('content')
+@php
+    $isAdmin = auth()->user()->isAdmin();
+@endphp
+
 <div class="dashboard-shell dashboard-page-shell">
     <div class="container py-4 py-lg-5">
         <section class="dashboard-section-card">
@@ -10,8 +14,12 @@
                         <i class="fas fa-list-alt"></i>
                         {{ __('quizzes.index_title') }}
                     </span>
-                    <h1 class="dashboard-page-header__title">{{ __('dashboard.my_active_quizzes') }}</h1>
-                    <p class="dashboard-page-header__text">{{ __('dashboard.quiz_collection_intro') }}</p>
+                    <h1 class="dashboard-page-header__title">
+                        {{ $isAdmin ? __('dashboard.all_quizzes_collection') : __('dashboard.my_active_quizzes') }}
+                    </h1>
+                    <p class="dashboard-page-header__text">
+                        {{ $isAdmin ? __('dashboard.all_quizzes_collection_intro') : __('dashboard.quiz_collection_intro') }}
+                    </p>
                 </div>
 
                 <div class="dashboard-form-actions">
@@ -136,7 +144,7 @@
                         <i class="fas fa-folder-open"></i>
                     </div>
                     <h3 class="dashboard-empty-state__title">
-                        {{ ($exampleQuizzes ?? collect())->isNotEmpty() ? __('quizzes.no_personal_quizzes') : __('quizzes.no_quizzes') }}
+                        {{ ! $isAdmin && ($exampleQuizzes ?? collect())->isNotEmpty() ? __('quizzes.no_personal_quizzes') : __('quizzes.no_quizzes') }}
                     </h3>
                     @if ($canCreateQuiz ?? true)
                         <a href="{{ route('quizzes.create') }}" class="btn dashboard-btn dashboard-btn--primary">
@@ -163,6 +171,15 @@
                                 </div>
 
                                 <div class="dashboard-collection-meta">
+                                    @if($isAdmin)
+                                        <span class="dashboard-collection-pill">
+                                            <i class="fas fa-user-circle"></i>
+                                            {{ __('quizzes.creator_label') }}:
+                                            {{ $quiz->creator?->id === auth()->id()
+                                                ? __('quizzes.creator_you')
+                                                : ($quiz->creator?->name ?? __('quizzes.creator_unavailable')) }}
+                                        </span>
+                                    @endif
                                     <span class="dashboard-collection-pill">
                                         <i class="fas fa-folder-open"></i>{{ $quiz->category->name }}
                                     </span>

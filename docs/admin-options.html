@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Administrator Options</title>
     <meta name="description" content="How administrators manage users, limits, categories, templates, updates, system checks, and wider data access in LabSchool Exams.">
-    <meta name="theme-color" content="#2563eb">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://labschool-gr.github.io/Exams/admin-options.html">
 
@@ -68,16 +67,16 @@
             </article>
 
             <article class="panel">
-                <h2 data-i18n="quizTitle">Administrator-only quiz settings</h2>
+                <h2 data-i18n="quizTitle">Administrator-only and quota-limited quiz settings</h2>
                 <p data-i18n="quizTextOne">
-                    Some quiz options are visible only to administrators because they affect security, public access, anonymity, or special execution flows. These include certificate verification, second-screen mode, anonymous bulk examination, and public anonymous pools.
+                    Certificate verification and second-screen mode remain visible only to administrators. Teachers may use bulk examination with pre-registered slots and public anonymous pools in their own quizzes.
                 </p>
                 <p data-i18n="quizTextTwo">
-                    These options are powerful and should be enabled only when the teacher understands the flow. For example, public anonymous access changes how participants enter and how results are stored.
+                    Both teacher-accessible bulk modes enforce the account limit for participants per quiz. Active public-pool reservations count toward the limit, and the two modes cannot be enabled at the same time.
                 </p>
                 <figure class="guide-figure">
                     <img src="screenshots/admin/47 admin-edit-quiz.jpg" alt="Administrator-only quiz settings">
-                    <figcaption data-i18n="quizCaption">Administrator-only quiz options control advanced public, anonymous, verification, and display-mode behavior.</figcaption>
+                    <figcaption data-i18n="quizCaption">Administrative verification/display settings remain separate from teacher-accessible, quota-limited bulk participation modes.</figcaption>
                 </figure>
             </article>
 
@@ -186,10 +185,10 @@
                     roleStepTwoText: "Check access, roles, public links, and sensitive settings.",
                     roleStepThreeTitle: "Continuity",
                     roleStepThreeText: "Keep categories, templates, updates, and user limits consistent.",
-                    quizTitle: "Administrator-only quiz settings",
-                    quizTextOne: "Some quiz options are visible only to administrators because they affect security, public access, anonymity, or special execution flows. These include certificate verification, second-screen mode, anonymous bulk examination, and public anonymous pools.",
-                    quizTextTwo: "These options are powerful and should be enabled only when the teacher understands the flow. For example, public anonymous access changes how participants enter and how results are stored.",
-                    quizCaption: "Administrator-only quiz options control advanced public, anonymous, verification, and display-mode behavior.",
+                    quizTitle: "Administrator-only and quota-limited quiz settings",
+                    quizTextOne: "Certificate verification and second-screen mode remain visible only to administrators. Teachers may use bulk examination with pre-registered slots and public anonymous pools in their own quizzes.",
+                    quizTextTwo: "Both teacher-accessible bulk modes enforce the account limit for participants per quiz. Active public-pool reservations count toward the limit, and the two modes cannot be enabled at the same time.",
+                    quizCaption: "Administrative verification/display settings remain separate from teacher-accessible, quota-limited bulk participation modes.",
                     categoriesTitle: "Managing categories",
                     categoriesTextOne: "Categories help organize quizzes into clear thematic groups. Administrators can create, edit, and delete categories so the quiz collection remains easy to search and consistent across users.",
                     categoriesTextTwo: "Before deleting a category, the administrator should check whether quizzes already use it. A category is not only a label; it helps teachers keep their material organized.",
@@ -230,10 +229,10 @@
                     roleStepTwoText: "Έλεγχος πρόσβασης, ρόλων, δημόσιων συνδέσμων και ευαίσθητων ρυθμίσεων.",
                     roleStepThreeTitle: "Συνέχεια λειτουργίας",
                     roleStepThreeText: "Συντήρηση κατηγοριών, προτύπων, ενημερώσεων και ορίων χρήσης.",
-                    quizTitle: "Ρυθμίσεις quiz μόνο για διαχειριστές",
-                    quizTextOne: "Ορισμένες επιλογές quiz εμφανίζονται μόνο στους διαχειριστές επειδή επηρεάζουν την ασφάλεια, τη δημόσια πρόσβαση, την ανωνυμία ή ειδικές ροές εκτέλεσης. Σε αυτές περιλαμβάνονται η δημόσια επαλήθευση βεβαιώσεων, η λειτουργία δεύτερης οθόνης, η ανώνυμη μαζική εξέταση και το δημόσιο ανώνυμο σύνολο.",
-                    quizTextTwo: "Οι επιλογές αυτές είναι ισχυρές και πρέπει να ενεργοποιούνται μόνο όταν ο εκπαιδευτικός κατανοεί τη ροή. Για παράδειγμα, η δημόσια ανώνυμη πρόσβαση αλλάζει τον τρόπο εισόδου των συμμετεχόντων και τον τρόπο αποθήκευσης των αποτελεσμάτων.",
-                    quizCaption: "Οι επιλογές quiz μόνο για διαχειριστές ελέγχουν προηγμένη δημόσια, ανώνυμη, επαληθεύσιμη και display-mode συμπεριφορά.",
+                    quizTitle: "Διαχειριστικές και οριοθετημένες ρυθμίσεις quiz",
+                    quizTextOne: "Η δημόσια επαλήθευση βεβαιώσεων και η λειτουργία δεύτερης οθόνης παραμένουν διαθέσιμες μόνο στους διαχειριστές. Οι εκπαιδευτικοί μπορούν να χρησιμοποιούν στα δικά τους quiz τη μαζική εξέταση με προκαταχωρισμένες θέσεις και το δημόσιο ανώνυμο σύνολο.",
+                    quizTextTwo: "Και οι δύο μαζικές λειτουργίες εφαρμόζουν το όριο εξεταζομένων ανά quiz του λογαριασμού. Οι ενεργές προσωρινές θέσεις του δημόσιου συνόλου προσμετρώνται και οι δύο λειτουργίες δεν ενεργοποιούνται ταυτόχρονα.",
+                    quizCaption: "Οι διαχειριστικές ρυθμίσεις επαλήθευσης και προβολής παραμένουν χωριστές από τις μαζικές λειτουργίες συμμετοχής των εκπαιδευτικών.",
                     categoriesTitle: "Διαχείριση κατηγοριών",
                     categoriesTextOne: "Οι κατηγορίες βοηθούν στην οργάνωση των quiz σε καθαρές θεματικές ομάδες. Οι διαχειριστές μπορούν να δημιουργούν, να επεξεργάζονται και να διαγράφουν κατηγορίες, ώστε η συλλογή quiz να παραμένει εύκολη στην αναζήτηση και συνεπής για όλους τους χρήστες.",
                     categoriesTextTwo: "Πριν από τη διαγραφή μιας κατηγορίας, ο διαχειριστής πρέπει να ελέγχει αν χρησιμοποιείται ήδη από quiz. Η κατηγορία δεν είναι απλώς μια ετικέτα· βοηθά τους εκπαιδευτικούς να οργανώνουν το υλικό τους.",

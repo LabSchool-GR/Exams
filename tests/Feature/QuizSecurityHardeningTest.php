@@ -986,10 +986,11 @@ it('prevents browser caching of participant question pages', function () {
         ->toContain('private');
 });
 
-it('stores public anonymous pool results only after final submission', function () {
+it('stores public anonymous pool results only after final submission and enforces the teacher quota', function () {
     /** @var TestCase $this */
-    $admin = User::factory()->create([
-        'role' => 'admin',
+    $owner = User::factory()->create([
+        'role' => 'teacher',
+        'max_students_per_quiz' => 1,
     ]);
 
     $category = Category::create([
@@ -1000,7 +1001,7 @@ it('stores public anonymous pool results only after final submission', function 
         'title' => 'Public Pool Runtime Quiz',
         'description' => 'Public pool runtime test quiz',
         'category_id' => $category->id,
-        'creator_id' => $admin->id,
+        'creator_id' => $owner->id,
         'quiz_code' => substr(str_shuffle('ABCDEFGHJKLMNPQRSTUVWXYZ23456789'), 0, 8),
         'max_attempts' => 1,
         'time_limit' => 600,
@@ -1017,7 +1018,7 @@ it('stores public anonymous pool results only after final submission', function 
         'is_public' => true,
         'is_anonymous_bulk_mode' => false,
         'is_public_anonymous_pool_mode' => true,
-        'anonymous_pool_capacity' => 1,
+        'anonymous_pool_capacity' => 100,
         'public_token_hash' => Quiz::generateLinkTokenHash(),
         'language' => 'el',
     ]);
@@ -1054,10 +1055,19 @@ it('stores public anonymous pool results only after final submission', function 
 
     $questionKey = array_key_first(session('question_route_map', []));
 
-    $this->post(route('quiz.submit_final', ['quizKey' => $quizKey]), [
+    $this->post(route('quiz.submit_answer', [
+        'quizKey' => $quizKey,
+        'questionKey' => $questionKey,
+    ]), [
         'current_question_key' => $questionKey,
         'answer_id' => [$correctAnswer->id],
     ])->assertRedirect(route('quiz.end', ['quizKey' => $quizKey]));
+
+    expect(QuizStudent::query()->where('quiz_id', $quiz->id)->count())->toBe(0)
+        ->and(QuizAttempt::query()->where('quiz_id', $quiz->id)->count())->toBe(0);
+
+    $this->get(route('quiz.end', ['quizKey' => $quizKey]))
+        ->assertOk();
 
     $student = QuizStudent::query()->where('quiz_id', $quiz->id)->first();
     $attempt = QuizAttempt::query()->where('quiz_id', $quiz->id)->first();
@@ -1069,7 +1079,24 @@ it('stores public anonymous pool results only after final submission', function 
         ->and($attempt)->not->toBeNull()
         ->and($attempt->quiz_student_id)->toBe($student->id)
         ->and($attempt->status)->toBe(QuizAttempt::STATUS_SUBMITTED)
+        ->and((float) $attempt->score)->toBe(100.0)
+        ->and($attempt->answers()->count())->toBe(1)
         ->and(QuizAnonymousPoolReservation::query()->where('quiz_id', $quiz->id)->count())->toBe(0);
+
+    $this->actingAs($owner)
+        ->get(route('quiz_attempts.register_students', $quiz))
+        ->assertOk()
+        ->assertSee(__('quizzes.public_anonymous_pool_dashboard_hint', [
+            'count' => 1,
+            'capacity' => 1,
+        ]));
+
+    $this->get($quiz->publicAccessUrl(now()->addMinutes(30)))
+        ->assertRedirect(route('quiz.join'))
+        ->assertSessionHas('error', __('join.public_pool_full'));
+
+    expect(QuizAnonymousPoolReservation::query()->where('quiz_id', $quiz->id)->count())->toBe(0)
+        ->and(QuizStudent::query()->where('quiz_id', $quiz->id)->count())->toBe(1);
 });
 
 it('drops abandoned public anonymous pool sessions without persisting participants', function () {
