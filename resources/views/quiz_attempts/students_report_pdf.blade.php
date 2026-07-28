@@ -1,133 +1,218 @@
 <!DOCTYPE html>
-<html lang="el">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
-    <title>{{ __('pdfexp.students_list_title') ?? 'Κατάλογος Μαθητών' }}</title>
+    <title>{{ __('pdfexp.students_list_title') }}</title>
     <style>
+        @page {
+            margin: 26px;
+        }
+
         body {
+            margin: 0;
             font-family: DejaVu Sans, sans-serif;
-            font-size: 13.5px;
-            line-height: 1.6;
-            color: #000;
-            padding: 40px;
+            font-size: 11px;
+            line-height: 1.45;
+            color: #14213d;
         }
 
-        h1 {
-            text-align: center;
-            font-size: 20px;
-            margin-bottom: 25px;
+        .sheet {
+            border: 1px solid #d6deeb;
+            border-radius: 14px;
+            padding: 18px 20px 16px;
+            background: #ffffff;
         }
 
-        .section {
-            border: 1px solid #ddd;
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
+        .header {
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #dfe7f2;
         }
 
-        .section h2 {
-            font-size: 16px;
-            margin-bottom: 15px;
-            color: #333;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 5px;
+        .eyebrow {
+            margin-bottom: 4px;
+            color: #5c6f91;
+            font-size: 9px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
         }
 
-        .info-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .info-table td {
-            padding: 6px 8px;
-            vertical-align: top;
-        }
-
-        .info-label {
+        .title {
+            margin: 0 0 4px;
+            color: #0f274d;
+            font-size: 18px;
             font-weight: bold;
-            color: #444;
-            width: 180px;
         }
 
-        .info-value {
-            color: #000;
+        .subtitle {
+            margin: 0;
+            color: #5f6f89;
+            font-size: 10px;
+        }
+
+        .summary-card {
+            margin-bottom: 16px;
+            padding: 13px 14px;
+            border: 1px solid #d9e3f0;
+            border-radius: 12px;
+            background: #f8fbff;
+        }
+
+        .summary-title {
+            margin: 0 0 8px;
+            color: #31507f;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+        }
+
+        .quiz-name {
+            margin: 0 0 8px;
+            color: #10294f;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .pill {
+            display: inline-block;
+            margin: 0 6px 4px 0;
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: #e7f0fb;
+            color: #1f4b82;
+            font-size: 9px;
+            font-weight: bold;
+        }
+
+        .section-title {
+            margin: 0 0 9px;
+            color: #0f274d;
+            font-size: 13px;
+            font-weight: bold;
         }
 
         .students-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            table-layout: fixed;
         }
 
-        .students-table th,
-        .students-table td {
-            border: 1px solid #333;
-            padding: 6px;
-            font-size: 12px;
+        .students-table thead {
+            display: table-header-group;
+        }
+
+        .students-table tr {
+            page-break-inside: avoid;
         }
 
         .students-table th {
-            background-color: #e9ecef;
+            padding: 8px 7px;
+            border: 1px solid #cbd8e8;
+            background: #e7f0fb;
+            color: #234a78;
+            font-size: 9px;
+            font-weight: bold;
+            letter-spacing: 0.35px;
+            text-transform: uppercase;
         }
 
-        .text-left {
+        .students-table td {
+            height: 28px;
+            padding: 7px 8px;
+            border: 1px solid #d9e3f0;
+            background: #ffffff;
+            color: #10294f;
+            vertical-align: middle;
+        }
+
+        .students-table tbody tr:nth-child(even) td {
+            background: #f8fbff;
+        }
+
+        .column-number {
+            width: 6%;
+            text-align: center;
+        }
+
+        .column-name {
+            width: 46%;
             text-align: left;
         }
 
-        .text-center {
+        .column-code {
+            width: 26%;
+            text-align: center;
+        }
+
+        .column-attempts {
+            width: 22%;
+            text-align: center;
+        }
+
+        .handwrite-line {
+            display: block;
+            width: 100%;
+            min-height: 17px;
+            border-bottom: 1.4px solid #31507f;
+        }
+
+        .footer-note {
+            margin-top: 12px;
+            color: #70819c;
+            font-size: 9px;
             text-align: center;
         }
     </style>
 </head>
 <body>
-    <div style="text-align: right; font-size: 12px; color: #555;">
-        {{ __('pdfexp.issue_date') ?? 'Ημερομηνία έκδοσης:' }} {{ \Carbon\Carbon::now()->format('d/m/Y') }}
-    </div>
+    <div class="sheet">
+        <div class="header">
+            <div class="eyebrow">{{ __('pdfexp.student_list') }}</div>
+            <h1 class="title">{{ __('pdfexp.students_list_title') }}</h1>
+            <p class="subtitle">
+                {{ __('pdfexp.issue_date') }} {{ now()->format('d/m/Y') }}
+            </p>
+        </div>
 
-    <h1>{{ __('pdfexp.students_list_title') ?? 'Κατάλογος Καταχωρημένων Μαθητών' }}</h1>
+        <div class="summary-card">
+            <div class="summary-title">{{ __('pdfexp.quiz_info') }}</div>
+            <div class="quiz-name">{{ $quiz->title }}</div>
+            <span class="pill">{{ __('pdfexp.quiz_code') }}: {{ $quiz->quiz_code }}</span>
+            <span class="pill">{{ __('pdfexp.quiz_teacher') }}: {{ $quiz->creator->name ?? '—' }}</span>
+            <span class="pill">{{ __('pdfexp.registered_students_count') }}: {{ count($data) }}</span>
+        </div>
 
-    <div class="section">
-        <h2>{{ __('pdfexp.quiz_info') }}</h2>
-        <table class="info-table">
-            <tr>
-                <td class="info-label">{{ __('pdfexp.quiz_title') }}:</td>
-                <td class="info-value">{{ $quiz->title }}</td>
-            </tr>
-            <tr>
-                <td class="info-label">{{ __('pdfexp.quiz_code') }}:</td>
-                <td class="info-value">{{ $quiz->quiz_code }}</td>
-            </tr>
-            <tr>
-                <td class="info-label">{{ __('pdfexp.quiz_teacher') }}:</td>
-                <td class="info-value">{{ $quiz->creator->name ?? '—' }}</td>
-            </tr>
-        </table>
-    </div>
+        <h2 class="section-title">{{ __('pdfexp.student_list') }}</h2>
 
-    <h2 style="font-size: 16px; margin-bottom: 10px; color: #333;">
-        {{ __('pdfexp.student_list') ?? 'Λίστα Μαθητών' }}
-    </h2>
-
-    <table class="students-table" style="margin-bottom: 30px;">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>{{ __('pdfexp.student_name') }}</th>
-                <th>{{ __('pdfexp.student_code') }}</th>
-                <th>{{ __('pdfexp.max_attempts') }}</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($data as $index => $entry)
+        <table class="students-table">
+            <thead>
                 <tr>
-                    <td class="text-center">{{ $index + 1 }}</td>
-                    <td class="text-left">{{ $entry['name'] }}</td>
-                    <td class="text-center">{{ $entry['code'] }}</td>
-                    <td class="text-center">{{ $entry['max_attempts'] }}</td>
+                    <th class="column-number">#</th>
+                    <th class="column-name">{{ __('pdfexp.student_name') }}</th>
+                    <th class="column-code">{{ __('pdfexp.student_code') }}</th>
+                    <th class="column-attempts">{{ __('pdfexp.max_attempts') }}</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($data as $index => $entry)
+                    <tr>
+                        <td class="column-number">{{ $index + 1 }}</td>
+                        <td class="column-name">
+                            @if($entry['is_anonymous'])
+                                <span class="handwrite-line">&nbsp;</span>
+                            @else
+                                {{ $entry['name'] }}
+                            @endif
+                        </td>
+                        <td class="column-code">{{ $entry['code'] }}</td>
+                        <td class="column-attempts">{{ $entry['max_attempts'] }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <div class="footer-note">{{ __('pdfexp.students_list_title') }} {{ __('pdfexp.print_title_suffix') }}</div>
+    </div>
 </body>
 </html>

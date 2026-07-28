@@ -10,6 +10,7 @@
 use App\Models\Category;
 use App\Models\Quiz;
 use App\Models\QuizAttempt;
+use App\Models\QuizStudent;
 use App\Models\QuizTemplate;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
@@ -48,6 +49,55 @@ function makeQuizForAuthorization(array $ownerOverrides = [], array $quizOverrid
 
     return [$owner, $quiz];
 }
+
+it('shows every personal quiz with its creator to administrators', function () {
+    [$teacher, $teacherQuiz] = makeQuizForAuthorization(
+        ['name' => 'Teacher Quiz Owner'],
+        ['title' => 'Teacher Managed Quiz']
+    );
+    $admin = User::factory()->create([
+        'name' => 'Administrator Owner',
+        'role' => 'admin',
+    ]);
+
+    $adminQuiz = $teacherQuiz->replicate();
+    $adminQuiz->fill([
+        'title' => 'Administrator Managed Quiz',
+        'creator_id' => $admin->id,
+        'quiz_code' => substr(str_shuffle('ABCDEFGHJKLMNPQRSTUVWXYZ23456789'), 0, 8),
+    ]);
+    $adminQuiz->save();
+
+    $this->actingAs($admin)
+        ->get(route('quizzes.index'))
+        ->assertOk()
+        ->assertSee(__('dashboard.all_quizzes_collection'))
+        ->assertSee(__('dashboard.all_quizzes_collection_intro'))
+        ->assertSee($teacherQuiz->title)
+        ->assertSee($adminQuiz->title)
+        ->assertSee(__('quizzes.creator_label'))
+        ->assertSee($teacher->name)
+        ->assertSee(__('quizzes.creator_you'));
+});
+
+it('keeps the personal quiz list private and creator metadata hidden from teachers', function () {
+    [$teacher, $ownQuiz] = makeQuizForAuthorization(
+        ['name' => 'Current Teacher'],
+        ['title' => 'Current Teacher Quiz']
+    );
+    [, $otherQuiz] = makeQuizForAuthorization(
+        ['name' => 'Other Teacher'],
+        ['title' => 'Other Teacher Quiz']
+    );
+
+    $this->actingAs($teacher)
+        ->get(route('quizzes.index'))
+        ->assertOk()
+        ->assertSee(__('dashboard.my_active_quizzes'))
+        ->assertSee($ownQuiz->title)
+        ->assertDontSee($otherQuiz->title)
+        ->assertDontSee(__('quizzes.creator_label'));
+});
 
 it('allows the quiz creator to open the quiz edit screen', function () {
     [$owner, $quiz] = makeQuizForAuthorization();
@@ -103,6 +153,42 @@ it('allows the quiz creator to update the quiz', function () {
     expect($quiz->fresh()->title)->toBe('Updated Quiz Title')
         ->and($quiz->fresh()->studentAccessPolicy())->toBe(Quiz::STUDENT_ACCESS_POLICY_PIN_ONLY)
         ->and($quiz->fresh()->shouldNotifyCreatorOnPass())->toBeFalse();
+});
+
+it('prevents changing a participation mode while participant records exist', function () {
+    [$owner, $quiz] = makeQuizForAuthorization([], [
+        'is_anonymous_bulk_mode' => true,
+    ]);
+
+    QuizStudent::create([
+        'quiz_id' => $quiz->id,
+        'student_code' => '0001',
+        'student_name' => QuizStudent::examSlotName('0001'),
+        'max_attempts' => 1,
+        'is_anonymous' => true,
+        'access_token_hash' => QuizStudent::generateLinkTokenHash(),
+    ]);
+
+    $this->actingAs($owner)
+        ->from(route('quizzes.edit', $quiz))
+        ->put(route('quizzes.update', $quiz), [
+            'title' => $quiz->title,
+            'description' => $quiz->description,
+            'category_id' => $quiz->category_id,
+            'time_limit' => 10,
+            'pass_percentage' => 60,
+            'question_view' => 'default',
+            'is_anonymous_bulk_mode' => '0',
+            'is_public_anonymous_pool_mode' => '1',
+            'anonymous_pool_capacity' => 10,
+            'status' => 'active',
+            'language' => 'el',
+        ])
+        ->assertRedirect(route('quizzes.edit', $quiz))
+        ->assertSessionHasErrors(['is_anonymous_bulk_mode']);
+
+    expect((bool) $quiz->fresh()->is_anonymous_bulk_mode)->toBeTrue()
+        ->and((bool) $quiz->fresh()->is_public_anonymous_pool_mode)->toBeFalse();
 });
 
 it('returns 403 when another teacher tries to update the quiz', function () {
@@ -322,9 +408,10 @@ it('forces guest and public access off when anonymous bulk mode is enabled', fun
         ->and($createdQuiz->public_token_hash)->toBeNull();
 });
 
-it('allows only admins to activate special anonymous modes', function () {
+it('allows teachers to activate pre-registered bulk exam mode', function () {
     $teacher = User::factory()->create([
         'role' => 'teacher',
+        'max_students_per_quiz' => 30,
     ]);
 
     $category = Category::create([
@@ -334,14 +421,12 @@ it('allows only admins to activate special anonymous modes', function () {
     $this->actingAs($teacher)
         ->post(route('quizzes.store'), [
             'title' => 'Teacher Special Mode Quiz',
-            'description' => 'Teacher should not activate special modes',
+            'description' => 'Teacher may activate a quota-limited bulk mode',
             'category_id' => $category->id,
             'time_limit' => 10,
             'pass_percentage' => 60,
             'question_view' => 'default',
             'is_anonymous_bulk_mode' => '1',
-            'is_public_anonymous_pool_mode' => '1',
-            'anonymous_pool_capacity' => 100,
             'status' => 'active',
             'language' => 'el',
         ])
@@ -350,9 +435,91 @@ it('allows only admins to activate special anonymous modes', function () {
     $createdQuiz = Quiz::query()->where('creator_id', $teacher->id)->latest('id')->first();
 
     expect($createdQuiz)->not->toBeNull()
-        ->and((bool) $createdQuiz->is_anonymous_bulk_mode)->toBeFalse()
+        ->and((bool) $createdQuiz->is_anonymous_bulk_mode)->toBeTrue()
         ->and((bool) $createdQuiz->is_public_anonymous_pool_mode)->toBeFalse()
         ->and($createdQuiz->anonymous_pool_capacity)->toBeNull();
+});
+
+it('allows teachers to activate a public anonymous pool within their participant quota', function () {
+    $teacher = User::factory()->create([
+        'role' => 'teacher',
+        'max_students_per_quiz' => 30,
+    ]);
+
+    $category = Category::create([
+        'name' => 'Teacher Public Pool Category '.uniqid(),
+    ]);
+
+    $this->actingAs($teacher)
+        ->post(route('quizzes.store'), [
+            'title' => 'Teacher Public Pool Quiz',
+            'description' => 'Teacher quota-limited public pool',
+            'category_id' => $category->id,
+            'time_limit' => 10,
+            'pass_percentage' => 60,
+            'question_view' => 'default',
+            'is_public_anonymous_pool_mode' => '1',
+            'anonymous_pool_capacity' => 30,
+            'status' => 'active',
+            'language' => 'el',
+        ])
+        ->assertRedirect(route('quizzes.index'));
+
+    $createdQuiz = Quiz::query()->where('creator_id', $teacher->id)->latest('id')->first();
+
+    expect($createdQuiz)->not->toBeNull()
+        ->and((bool) $createdQuiz->is_public_anonymous_pool_mode)->toBeTrue()
+        ->and((bool) $createdQuiz->is_public)->toBeTrue()
+        ->and((bool) $createdQuiz->allow_guest)->toBeFalse()
+        ->and($createdQuiz->anonymous_pool_capacity)->toBe(30)
+        ->and($createdQuiz->public_token_hash)->not->toBeNull();
+});
+
+it('rejects a teacher public anonymous pool capacity above the account quota', function () {
+    $teacher = User::factory()->create([
+        'role' => 'teacher',
+        'max_students_per_quiz' => 30,
+    ]);
+
+    $category = Category::create([
+        'name' => 'Teacher Pool Limit Category '.uniqid(),
+    ]);
+
+    $this->actingAs($teacher)
+        ->from(route('quizzes.create'))
+        ->post(route('quizzes.store'), [
+            'title' => 'Oversized Teacher Public Pool',
+            'description' => 'Must fail server-side validation',
+            'category_id' => $category->id,
+            'time_limit' => 10,
+            'pass_percentage' => 60,
+            'question_view' => 'default',
+            'is_public_anonymous_pool_mode' => '1',
+            'anonymous_pool_capacity' => 31,
+            'status' => 'active',
+            'language' => 'el',
+        ])
+        ->assertRedirect(route('quizzes.create'))
+        ->assertSessionHasErrors(['anonymous_pool_capacity']);
+
+    expect(Quiz::query()->where('creator_id', $teacher->id)->exists())->toBeFalse();
+});
+
+it('shows participation modes to teachers while keeping administrator options hidden', function () {
+    $teacher = User::factory()->create([
+        'role' => 'teacher',
+        'max_students_per_quiz' => 30,
+    ]);
+
+    $this->actingAs($teacher)
+        ->get(route('quizzes.create'))
+        ->assertOk()
+        ->assertSee(__('quizzes_cards.participation_modes_section'))
+        ->assertSee(__('quizzes_cards.anonymous_bulk_mode'))
+        ->assertSee(__('quizzes_cards.public_anonymous_pool_mode'))
+        ->assertSee(__('quizzes.anonymous_pool_account_limit', ['limit' => 30]))
+        ->assertDontSee(__('quizzes_cards.certificate_verification'))
+        ->assertDontSee(__('display.mode_label'));
 });
 
 it('forces public anonymous pool settings when enabled by an admin', function () {
@@ -546,7 +713,7 @@ it('rejects quiz creation when the selected template is not available to the tea
     ]);
 
     $privateTemplate = QuizTemplate::create([
-        'code' => 'private_template_'.uniqid(),
+        'code' => 'modern_img',
         'name' => 'Private Template',
         'description' => 'Not assigned to the acting teacher',
         'is_common' => false,
@@ -556,6 +723,11 @@ it('rejects quiz creation when the selected template is not available to the tea
     $category = Category::create([
         'name' => 'Template Validation Category '.uniqid(),
     ]);
+
+    $this->actingAs($owner)
+        ->get(route('quizzes.create'))
+        ->assertOk()
+        ->assertDontSee('value="modern_img"', false);
 
     $this->actingAs($owner)
         ->post(route('quizzes.store'), [
@@ -571,6 +743,78 @@ it('rejects quiz creation when the selected template is not available to the tea
         ->assertSessionHasErrors(['question_view']);
 
     expect(Quiz::query()->where('creator_id', $owner->id)->count())->toBe(0);
+});
+
+it('allows an assigned teacher to view and select a private built-in template', function () {
+    $owner = User::factory()->create([
+        'role' => 'teacher',
+    ]);
+
+    $privateTemplate = QuizTemplate::create([
+        'code' => 'modern_img',
+        'name' => 'Assigned Modern Template',
+        'description' => 'Available only to selected teachers',
+        'is_common' => false,
+    ]);
+    $privateTemplate->users()->sync([$owner->id]);
+
+    $category = Category::create([
+        'name' => 'Assigned Template Category '.uniqid(),
+    ]);
+
+    $this->actingAs($owner)
+        ->get(route('quizzes.create'))
+        ->assertOk()
+        ->assertSee('value="modern_img"', false);
+
+    $this->actingAs($owner)
+        ->post(route('quizzes.store'), [
+            'title' => 'Quiz With Assigned Template',
+            'description' => 'Authorized private template selection',
+            'category_id' => $category->id,
+            'time_limit' => 10,
+            'pass_percentage' => 60,
+            'question_view' => 'modern_img',
+            'status' => 'active',
+            'language' => 'el',
+        ])
+        ->assertSessionDoesntHaveErrors()
+        ->assertRedirect(route('quizzes.index'));
+
+    expect(Quiz::query()
+        ->where('creator_id', $owner->id)
+        ->where('question_view', 'modern_img')
+        ->exists())->toBeTrue();
+});
+
+it('does not authorize a non-core template from filesystem presence alone', function () {
+    $owner = User::factory()->create([
+        'role' => 'teacher',
+    ]);
+
+    $category = Category::create([
+        'name' => 'Unregistered Template Category '.uniqid(),
+    ]);
+
+    expect(QuizTemplate::query()->where('code', 'modern_img')->exists())->toBeFalse();
+
+    $this->actingAs($owner)
+        ->get(route('quizzes.create'))
+        ->assertOk()
+        ->assertDontSee('value="modern_img"', false);
+
+    $this->actingAs($owner)
+        ->post(route('quizzes.store'), [
+            'title' => 'Quiz With Unregistered Template',
+            'description' => 'Filesystem presence must not grant access',
+            'category_id' => $category->id,
+            'time_limit' => 10,
+            'pass_percentage' => 60,
+            'question_view' => 'modern_img',
+            'status' => 'active',
+            'language' => 'el',
+        ])
+        ->assertSessionHasErrors(['question_view']);
 });
 
 it('falls back to the default participant template when the configured template view is missing', function () {

@@ -57,6 +57,26 @@ class QuizStudent extends Model
     }
 
     /**
+     * Build the neutral label used by pre-registered bulk-exam positions.
+     */
+    public static function examSlotName(string $studentCode): string
+    {
+        return __('controllers.exam_slot_name', ['code' => $studentCode]);
+    }
+
+    /**
+     * Present legacy bulk-exam placeholders with the current position terminology.
+     */
+    public function displayName(?Quiz $quiz = null): string
+    {
+        if ($this->is_anonymous && $quiz?->is_anonymous_bulk_mode) {
+            return self::examSlotName($this->student_code);
+        }
+
+        return $this->student_name;
+    }
+
+    /**
      * Generate a one-way hash for participant access links without persisting a raw token.
      */
     public static function generateLinkTokenHash(): string

@@ -42,7 +42,7 @@ return [
             <li>Guest participation without requiring an account, where enabled</li>
             <li>Create personalised access links for specific participants</li>
             <li>Publish public quizzes in a catalogue for direct guest participation</li>
-            <li>Run anonymous bulk-exam sessions with generated slots and four-digit codes</li>
+            <li>Run bulk examinations with pre-registered slots, unique PINs, and QR Codes</li>
             <li>Offer a public anonymous pool with controlled capacity for open participation</li>
             <li>Enable learning mode without permanently storing attempts or scores</li>
         </ul>

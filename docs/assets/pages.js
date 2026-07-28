@@ -7,8 +7,6 @@
             navHomeShort: "Home",
             navLearn: "User Guide",
             navLearnShort: "Guide",
-            navSponsor: "Support",
-            navSponsorShort: "Support",
             backToTop: "Back to top",
             returnHome: "Home Page",
             returnHomeShort: "Back",
@@ -20,8 +18,6 @@
             navHomeShort: "Αρχική",
             navLearn: "Οδηγός Χρήσης",
             navLearnShort: "Οδηγός",
-            navSponsor: "Υποστήριξη Έργου",
-            navSponsorShort: "Υποστήριξη",
             backToTop: "Επιστροφή πάνω",
             returnHome: "Αρχική Σελίδα",
             returnHomeShort: "Επιστροφή",
@@ -31,8 +27,7 @@
 
     const navigation = {
         home: "index.html",
-        learn: "learn.html",
-        sponsor: "sponsor.html"
+        learn: "learn.html"
     };
 
     function renderLayout() {
@@ -53,10 +48,6 @@
                     <a class="nav-link" href="${navigation.learn}">
                         <span class="nav-label-full" data-common-i18n="navLearn">User Guide</span>
                         <span class="nav-label-short" data-common-i18n="navLearnShort">Guide</span>
-                    </a>
-                    <a class="nav-link" href="${navigation.sponsor}">
-                        <span class="nav-label-full" data-common-i18n="navSponsor">Support</span>
-                        <span class="nav-label-short" data-common-i18n="navSponsorShort">Support</span>
                     </a>
                     <div class="language-switch" aria-label="Language">
                         <button type="button" data-language-option="en" aria-pressed="true">EN</button>

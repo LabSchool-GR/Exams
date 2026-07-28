@@ -93,6 +93,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('quizzes/catalogue', [QuizParticipantController::class, 'catalogue'])->name('quizzes.catalogue');
     Route::get('quizzes/{quiz}/students/report', [QuizAttemptController::class, 'studentsReportPdf'])->name('quiz_attempts.students_report_pdf');
     Route::get('quizzes/{quiz}/anonymous-cards-pdf', [QuizAttemptController::class, 'downloadAnonymousCardsPdf'])->name('quiz_attempts.anonymous_cards_pdf');
+    Route::get('quizzes/{quiz}/public-pool-invitation-pdf', [QuizAttemptController::class, 'downloadPublicPoolInvitationPdf'])
+        ->middleware('signed')
+        ->name('quiz_attempts.public_pool_invitation_pdf');
 
     Route::post('quizzes/{quiz}/quiz_attempts/{quizAttempt}/submit', [QuizAttemptController::class, 'submit'])->name('quizzes.quiz_attempts.submit');
     Route::get('/quiz_attempts/{attempt}/certificate', [QuizAttemptController::class, 'downloadCertificate'])->name('quiz_attempts.certificate');

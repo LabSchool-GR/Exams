@@ -58,7 +58,7 @@ class QuizTemplateController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'code' => 'required|alpha_dash|unique:quiz_templates,code',
+            'code' => 'required|alpha_dash|not_in:shared_img|unique:quiz_templates,code',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'is_common' => 'boolean',

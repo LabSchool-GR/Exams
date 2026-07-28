@@ -81,4 +81,5 @@ return [
     'students_list_title' => 'Student Register',
     'student_list' => 'Registered Students',
     'issue_date' => 'Issue Date:',
+    'registered_students_count' => 'Total students',
 ];

@@ -78,7 +78,7 @@
                                 </div>
 
                                 <div>
-                                    <h2 class="dashboard-collection-card__title">{{ $student->student_name }}</h2>
+                                    <h2 class="dashboard-collection-card__title">{{ $student->displayName($quiz) }}</h2>
                                     <div class="dashboard-collection-meta">
                                         <span class="dashboard-collection-pill">
                                             <i class="fas fa-key"></i>{{ $code }}
@@ -182,7 +182,6 @@
             @endif
         </section>
 
-        @php $guestUrl = $quiz->publicAccessUrl(); @endphp
         @if (!empty($guestUrl))
             <section class="dashboard-section-card mb-4">
                 <div class="dashboard-page-header">
@@ -196,20 +195,31 @@
                     </div>
                 </div>
 
-                <div class="dashboard-form-group">
+                <div @class([
+                    'dashboard-copy-control',
+                    'dashboard-copy-control--with-actions' => $quiz->is_public_anonymous_pool_mode
+                        && $quiz->status === 'active'
+                        && !empty($publicPoolInvitationPdfUrl),
+                ])>
+                    <label for="guest-link" class="visually-hidden">
+                        {{ $quiz->is_public_anonymous_pool_mode ? __('quizzes.public_anonymous_pool_link') : __('quizzes.guest_link') }}
+                    </label>
                     <input type="text" class="form-control dashboard-form-control" value="{{ $guestUrl }}" readonly id="guest-link">
-                </div>
-
-                <div class="dashboard-form-actions dashboard-form-actions--end">
                     <button
                         type="button"
-                        class="btn dashboard-btn dashboard-btn--ghost"
+                        class="btn dashboard-btn dashboard-btn--ghost dashboard-copy-control__button"
                         data-copy-target="guest-link"
                         data-copy-success="{{ __('ui.copy_link_success') }}"
                         data-copy-error="{{ __('ui.copy_link_failed') }}"
                     >
                         <i class="fas fa-copy me-2"></i>{{ __('quizzes.copy') }}
                     </button>
+
+                    @if ($quiz->is_public_anonymous_pool_mode && $quiz->status === 'active' && !empty($publicPoolInvitationPdfUrl))
+                        <a href="{{ $publicPoolInvitationPdfUrl }}" class="btn dashboard-btn dashboard-btn--ghost dashboard-copy-control__button" target="_blank">
+                            <i class="fas fa-file-pdf me-2"></i>{{ __('quizzes.download_public_pool_invitation_pdf') }}
+                        </a>
+                    @endif
                 </div>
             </section>
         @endif
@@ -225,7 +235,7 @@
                 </div>
             </div>
 
-            @if(isset($studentLimit) && !auth()->user()?->isAdmin())
+            @if(isset($studentLimit))
                 <div class="dashboard-status-card dashboard-status-card--warning mb-4">
                     <i class="fas fa-circle-info"></i>
                     <div>{{ __('quizzes.student_limit_status', ['count' => $students->count(), 'limit' => $studentLimit]) }}</div>
@@ -235,7 +245,7 @@
             @if ($quiz->is_public_anonymous_pool_mode)
                 <div class="dashboard-status-card dashboard-status-card--warning mb-0">
                     <i class="fas fa-circle-info"></i>
-                    <div>{{ __('quizzes.public_anonymous_pool_dashboard_hint', ['count' => $publicAnonymousPoolCompletedCount ?? 0, 'capacity' => $quiz->anonymous_pool_capacity ?? 0]) }}</div>
+                    <div>{{ __('quizzes.public_anonymous_pool_dashboard_hint', ['count' => $publicAnonymousPoolCompletedCount ?? 0, 'capacity' => $effectiveAnonymousPoolCapacity ?? $quiz->anonymous_pool_capacity ?? 0]) }}</div>
                 </div>
             @elseif ($quiz->is_anonymous_bulk_mode)
                 <form action="{{ route('quiz_attempts.store_anonymous_students', $quiz) }}" method="POST" class="dashboard-form-stack">
@@ -246,7 +256,7 @@
                             <label for="anonymous_slots_count" class="dashboard-form-label">
                                 <i class="fas fa-users text-muted"></i>{{ __('quizzes.anonymous_slots_count') }}
                             </label>
-                            <input type="number" name="anonymous_slots_count" id="anonymous_slots_count" min="1" max="9999" value="1" class="form-control dashboard-form-control" required>
+                            <input type="number" name="anonymous_slots_count" id="anonymous_slots_count" min="1" max="{{ $remainingStudentCapacity ?? 9999 }}" value="1" class="form-control dashboard-form-control" required>
                             <div class="dashboard-form-help">{{ __('quizzes.anonymous_slots_count_hint') }}</div>
                         </div>
 

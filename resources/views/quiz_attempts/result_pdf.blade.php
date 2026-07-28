@@ -120,6 +120,14 @@
             font-weight: bold;
         }
 
+        .result-name-line {
+            display: inline-block;
+            width: 170px;
+            min-height: 15px;
+            border-bottom: 1.5px solid #11284d;
+            vertical-align: baseline;
+        }
+
         .metric-strip {
             margin: 16px 0 18px;
         }
@@ -335,7 +343,13 @@
                     <table class="detail-table">
                         <tr class="meta-row">
                             <td class="meta-label">{{ __('pdfexp.student_name') }}</td>
-                            <td class="meta-value">{{ $attempt->student_name ?? '—' }}</td>
+                            <td class="meta-value">
+                                @if ($isAnonymousParticipant ?? false)
+                                    <span class="result-name-line">&nbsp;</span>
+                                @else
+                                    {{ $attempt->student_name ?? '—' }}
+                                @endif
+                            </td>
                         </tr>
                         <tr class="meta-row">
                             <td class="meta-label">{{ __('pdfexp.student_code') }}</td>

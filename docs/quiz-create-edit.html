@@ -4,8 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Quiz Creation and Editing</title>
-    <meta name="description" content="How educators create and edit quizzes in LabSchool Exams, including teacher options and administrator experimental modes.">
-    <meta name="theme-color" content="#2563eb">
+    <meta name="description" content="How educators create and edit quizzes in LabSchool Exams, including quota-limited bulk participation and administrator-only controls.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://labschool-gr.github.io/Exams/quiz-create-edit.html">
 
@@ -15,7 +14,7 @@
     <meta property="og:url" content="https://labschool-gr.github.io/Exams/quiz-create-edit.html">
     <meta property="og:site_name" content="LabSchool Exams">
     <meta property="og:title" content="Quiz Creation and Editing">
-    <meta property="og:description" content="How educators create and edit quizzes in LabSchool Exams, including teacher options and administrator experimental modes.">
+    <meta property="og:description" content="How educators create and edit quizzes in LabSchool Exams, including quota-limited bulk participation and administrator-only controls.">
     <meta property="og:image" content="https://labschool-gr.github.io/Exams/assets/og-exams.png">
     <meta property="og:image:secure_url" content="https://labschool-gr.github.io/Exams/assets/og-exams.png">
     <meta property="og:image:type" content="image/png">
@@ -25,7 +24,7 @@
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Quiz Creation and Editing">
-    <meta name="twitter:description" content="How educators create and edit quizzes in LabSchool Exams, including teacher options and administrator experimental modes.">
+    <meta name="twitter:description" content="How educators create and edit quizzes in LabSchool Exams, including quota-limited bulk participation and administrator-only controls.">
     <meta name="twitter:image" content="https://labschool-gr.github.io/Exams/assets/og-exams.png">
     <link rel="stylesheet" href="assets/pages.css">
 </head>
@@ -158,9 +157,9 @@
             </article>
 
             <article class="panel">
-                <h2 data-i18n="adminTitle">Administrator experimental options</h2>
+                <h2 data-i18n="adminTitle">Bulk participation and administrator options</h2>
                 <p data-i18n="adminTextOne">
-                    Administrators see an extra group of experimental options. These are powerful modes for special scenarios, so they are intentionally not shown to regular teachers.
+                    Teachers can choose either bulk examination with pre-registered slots or a public anonymous pool. Both modes enforce the account participant limit and cannot be combined.
                 </p>
                 <div class="guide-steps">
                     <div class="guide-step">
@@ -172,16 +171,16 @@
                         <p data-i18n="secondScreenText">Starts a registered examinee on a shared screen while answers are given from the connected mobile controller.</p>
                     </div>
                     <div class="guide-step">
-                        <strong data-i18n="anonymousTitle">Anonymous modes</strong>
-                        <p data-i18n="anonymousText">Anonymous bulk mode creates anonymous positions. Public anonymous pool mode uses one public link with a defined capacity.</p>
+                        <strong data-i18n="anonymousTitle">Special participation modes</strong>
+                        <p data-i18n="anonymousText">Bulk examination creates pre-registered exam slots with unique PINs and QR Codes. Public anonymous pool mode uses one public link with a defined capacity.</p>
                     </div>
                 </div>
                 <div class="callout">
-                    <p data-i18n="adminNote">Important: anonymous bulk mode and public anonymous pool mode cannot be enabled together. Learning mode cannot be combined with the anonymous modes. Second-screen mode also cannot be combined with learning mode or anonymous modes.</p>
+                    <p data-i18n="adminNote">Important: bulk examination with pre-registered slots and public anonymous pool mode cannot be enabled together. Learning and second-screen modes cannot be combined with either of these special participation modes.</p>
                 </div>
                 <figure class="guide-figure">
-                    <img src="screenshots/create-edit/09 admin create edit.jpg" alt="Administrator experimental quiz options">
-                    <figcaption data-i18n="adminCaption">Experimental administrator-only options and public anonymous pool capacity.</figcaption>
+                    <img src="screenshots/create-edit/09 admin create edit.jpg" alt="Bulk participation and administrator quiz options">
+                    <figcaption data-i18n="adminCaption">Quota-limited bulk participation is available to teachers, while certificate verification and second-screen mode remain administrator-only.</figcaption>
                 </figure>
             </article>
         </section>
@@ -194,7 +193,7 @@
             translations: {
                 en: {
                     pageTitle: "Quiz Creation and Editing",
-                    description: "How educators create and edit quizzes in LabSchool Exams, including teacher options and administrator experimental modes.",
+                    description: "How educators create and edit quizzes in LabSchool Exams, including quota-limited bulk participation and administrator-only controls.",
                     eyebrow: "Second guide",
                     title: "Quiz Creation and Editing",
                     lead: "This page explains how a teacher creates a quiz, what each group of options controls, and which extra experimental modes are available only to administrators.",
@@ -234,16 +233,16 @@
                     editTextOne: "Editing uses almost the same form as creation. The teacher can update the title, description, category, timing, template, language, status, access rules, and image.",
                     editTextTwo: "If a quiz already has submitted or locked content, the application may restrict content changes. In that case, only safer operational settings, such as status and selected administrator controls, remain editable.",
                     editCaption: "The edit page keeps the same structure so the teacher can find the same settings again.",
-                    adminTitle: "Administrator experimental options",
-                    adminTextOne: "Administrators see an extra group of experimental options. These are powerful modes for special scenarios, so they are intentionally not shown to regular teachers.",
+                    adminTitle: "Bulk participation and administrator options",
+                    adminTextOne: "Teachers can choose either bulk examination with pre-registered slots or a public anonymous pool. Both modes enforce the account participant limit and cannot be combined.",
                     certificateTitle: "Public certificate verification",
                     certificateText: "Adds QR/public verification for certificates. The document remains evidence of assessment, not an official certification.",
                     secondScreenTitle: "Second screen and mobile controller",
                     secondScreenText: "Starts a registered examinee on a shared screen while answers are given from the connected mobile controller.",
-                    anonymousTitle: "Anonymous modes",
-                    anonymousText: "Anonymous bulk mode creates anonymous positions. Public anonymous pool mode uses one public link with a defined capacity.",
-                    adminNote: "Important: anonymous bulk mode and public anonymous pool mode cannot be enabled together. Learning mode cannot be combined with the anonymous modes. Second-screen mode also cannot be combined with learning mode or anonymous modes.",
-                    adminCaption: "Experimental administrator-only options and public anonymous pool capacity."
+                    anonymousTitle: "Special participation modes",
+                    anonymousText: "Bulk examination creates pre-registered exam slots with unique PINs and QR Codes. Public anonymous pool mode uses one public link with a defined capacity.",
+                    adminNote: "Important: bulk examination with pre-registered slots and public anonymous pool mode cannot be enabled together. Learning and second-screen modes cannot be combined with either of these special participation modes.",
+                    adminCaption: "Quota-limited bulk participation is available to teachers, while certificate verification and second-screen mode remain administrator-only."
                 },
                 el: {
                     pageTitle: "Δημιουργία και Επεξεργασία Quiz",
@@ -287,16 +286,16 @@
                     editTextOne: "Η επεξεργασία χρησιμοποιεί σχεδόν την ίδια φόρμα με τη δημιουργία. Ο εκπαιδευτικός μπορεί να αλλάξει τίτλο, περιγραφή, κατηγορία, χρόνο, πρότυπο, γλώσσα, κατάσταση, κανόνες πρόσβασης και εικόνα.",
                     editTextTwo: "Αν ένα quiz έχει ήδη υποβολές ή κλειδωμένο περιεχόμενο, η εφαρμογή μπορεί να περιορίσει τις αλλαγές περιεχομένου. Τότε παραμένουν διαθέσιμες κυρίως ασφαλέστερες λειτουργικές ρυθμίσεις, όπως η κατάσταση και ορισμένες επιλογές διαχειριστή.",
                     editCaption: "Η σελίδα επεξεργασίας κρατά την ίδια δομή, ώστε ο εκπαιδευτικός να βρίσκει ξανά τις ίδιες ρυθμίσεις.",
-                    adminTitle: "Πειραματικές επιλογές διαχειριστή",
-                    adminTextOne: "Οι διαχειριστές βλέπουν μια επιπλέον ομάδα πειραματικών επιλογών. Είναι ισχυρές λειτουργίες για ειδικά σενάρια, γι' αυτό δεν εμφανίζονται στους απλούς εκπαιδευτικούς.",
+                    adminTitle: "Μαζική συμμετοχή και επιλογές διαχειριστή",
+                    adminTextOne: "Οι εκπαιδευτικοί μπορούν να επιλέξουν είτε μαζική εξέταση με προκαταχωρισμένες θέσεις είτε δημόσιο ανώνυμο σύνολο. Και οι δύο λειτουργίες εφαρμόζουν το όριο εξεταζομένων του λογαριασμού και δεν συνδυάζονται.",
                     certificateTitle: "Δημόσια επαλήθευση βεβαίωσης",
                     certificateText: "Προσθέτει QR και δημόσιο έλεγχο γνησιότητας για βεβαιώσεις. Το έγγραφο παραμένει βεβαίωση αξιολόγησης και όχι επίσημη πιστοποίηση.",
                     secondScreenTitle: "Τηλεόραση και χειριστήριο κινητού",
                     secondScreenText: "Ξεκινά έναν καταχωρημένο εξεταζόμενο σε κοινή οθόνη, ενώ οι απαντήσεις δίνονται από συνδεδεμένο κινητό χειριστήριο.",
-                    anonymousTitle: "Ανώνυμες λειτουργίες",
-                    anonymousText: "Η ανώνυμη μαζική εξέταση δημιουργεί ανώνυμες θέσεις. Το δημόσιο ανώνυμο σύνολο χρησιμοποιεί έναν δημόσιο σύνδεσμο με συγκεκριμένη χωρητικότητα.",
-                    adminNote: "Σημαντικό: η ανώνυμη μαζική εξέταση και το δημόσιο ανώνυμο σύνολο δεν μπορούν να ενεργοποιηθούν μαζί. Η λειτουργία εκμάθησης δεν συνδυάζεται με τις ανώνυμες λειτουργίες. Η λειτουργία δεύτερης οθόνης επίσης δεν συνδυάζεται με learning mode ή ανώνυμες λειτουργίες.",
-                    adminCaption: "Πειραματικές επιλογές μόνο για διαχειριστές και χωρητικότητα δημόσιου ανώνυμου συνόλου."
+                    anonymousTitle: "Ειδικές λειτουργίες συμμετοχής",
+                    anonymousText: "Η μαζική εξέταση δημιουργεί προκαταχωρισμένες θέσεις με μοναδικά PIN και QR Codes. Το δημόσιο ανώνυμο σύνολο χρησιμοποιεί έναν δημόσιο σύνδεσμο με συγκεκριμένη χωρητικότητα.",
+                    adminNote: "Σημαντικό: η μαζική εξέταση με προκαταχωρισμένες θέσεις και το δημόσιο ανώνυμο σύνολο δεν μπορούν να ενεργοποιηθούν μαζί. Η λειτουργία εκμάθησης και η λειτουργία δεύτερης οθόνης δεν συνδυάζονται με καμία από αυτές τις ειδικές λειτουργίες συμμετοχής.",
+                    adminCaption: "Η μαζική συμμετοχή με όριο είναι διαθέσιμη στους εκπαιδευτικούς, ενώ η επαλήθευση βεβαιώσεων και η δεύτερη οθόνη παραμένουν μόνο για διαχειριστές."
                 }
             }
         };

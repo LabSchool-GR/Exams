@@ -131,6 +131,13 @@
             font-weight: bold;
         }
 
+        .handwrite-line {
+            display: block;
+            width: 100%;
+            min-height: 17px;
+            border-bottom: 1.4px solid #31507f;
+        }
+
         .access-section {
             margin-top: 16px;
             border: 1px solid #d6deeb;
@@ -292,7 +299,13 @@
                         <table class="meta-table">
                             <tr class="meta-row">
                                 <td class="meta-label">{{ __('pdfexp.student_name') }}</td>
-                                <td class="meta-value">{{ $student->student_name }}</td>
+                                <td class="meta-value">
+                                    @if($student->is_anonymous)
+                                        <span class="handwrite-line">&nbsp;</span>
+                                    @else
+                                        {{ $student->student_name }}
+                                    @endif
+                                </td>
                             </tr>
                             <tr class="meta-row">
                                 <td class="meta-label">{{ __('pdfexp.student_code') }}</td>
@@ -321,7 +334,6 @@
         @if (($is_guest && $guest_url) || (!$is_guest && ($student_url || $pin_join_url)))
             <div class="access-section">
                 <div class="access-title">{{ __('pdfexp.access_title') }}</div>
-                <div class="access-subtitle">{{ __('pdfexp.qr_label') }}</div>
 
                 <table class="access-table">
                     <tr>

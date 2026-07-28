@@ -15,6 +15,7 @@ use App\Models\QuizStudent;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -185,9 +186,155 @@ it('lists registered students by student code to avoid decrypt-and-sort in memor
         ->and(strpos($content, 'Alpha Student'))->toBeLessThan(strpos($content, 'Zeta Student'));
 });
 
-it('generates anonymous participant slots with unique codes and independent attempt limits', function () {
+it('renders the guest link and copy action as one responsive accessible control', function () {
+    [$owner, $quiz] = makeQuizAttemptForAuthorization();
+
+    $quiz->update([
+        'allow_guest' => true,
+        'is_public' => true,
+        'public_token_hash' => Quiz::generateLinkTokenHash(),
+    ]);
+
+    $this->actingAs($owner)
+        ->get(route('quiz_attempts.register_students', $quiz))
+        ->assertOk()
+        ->assertSee('class="dashboard-copy-control"', false)
+        ->assertSee('for="guest-link" class="visually-hidden"', false)
+        ->assertSee('class="btn dashboard-btn dashboard-btn--ghost dashboard-copy-control__button"', false)
+        ->assertSee('data-copy-target="guest-link"', false);
+});
+
+it('downloads a signed public pool invitation with the exact shared link shown on screen', function () {
     $owner = User::factory()->create([
         'role' => 'teacher',
+        'max_students_per_quiz' => 30,
+    ]);
+    $category = Category::create([
+        'name' => 'Public Invitation Category '.uniqid(),
+    ]);
+    $quiz = Quiz::create([
+        'title' => 'Open Knowledge Invitation',
+        'description' => 'Shared anonymous assessment invitation',
+        'category_id' => $category->id,
+        'creator_id' => $owner->id,
+        'quiz_code' => substr(str_shuffle('ABCDEFGHJKLMNPQRSTUVWXYZ23456789'), 0, 8),
+        'max_attempts' => 1,
+        'time_limit' => 900,
+        'is_random_order' => false,
+        'is_random_answers_order' => false,
+        'show_answer_numbering' => false,
+        'allow_guest' => false,
+        'has_timer' => true,
+        'allow_resume' => false,
+        'pass_percentage' => 50,
+        'question_view' => 'default',
+        'status' => 'active',
+        'questions_limit' => null,
+        'is_public' => true,
+        'is_public_anonymous_pool_mode' => true,
+        'anonymous_pool_capacity' => 30,
+        'public_token_hash' => Quiz::generateLinkTokenHash(),
+        'language' => 'el',
+    ]);
+
+    $page = $this->actingAs($owner)
+        ->get(route('quiz_attempts.register_students', $quiz))
+        ->assertOk()
+        ->assertSee(__('quizzes.download_public_pool_invitation_pdf'))
+        ->assertSee('class="dashboard-copy-control dashboard-copy-control--with-actions"', false);
+
+    preg_match('/value="([^"]+)" readonly id="guest-link"/', $page->getContent(), $linkMatches);
+    preg_match('/href="([^"]*public-pool-invitation-pdf[^"]*)"/', $page->getContent(), $pdfMatches);
+
+    $sharedUrl = html_entity_decode($linkMatches[1] ?? '');
+    $pdfUrl = html_entity_decode($pdfMatches[1] ?? '');
+    parse_str((string) parse_url($pdfUrl, PHP_URL_QUERY), $pdfQuery);
+    $expiresAt = Carbon::createFromTimestamp((int) ($pdfQuery['link_expires'] ?? 0));
+
+    expect($sharedUrl)->not->toBe('')
+        ->and($pdfUrl)->not->toBe('')
+        ->and($sharedUrl)->toBe($quiz->publicAccessUrl($expiresAt));
+
+    $this->get($pdfUrl)
+        ->assertOk()
+        ->assertHeader('content-type', 'application/pdf')
+        ->assertDownload('quiz_invitation_'.$quiz->id.'.pdf');
+
+    $otherTeacher = User::factory()->create(['role' => 'teacher']);
+
+    $this->actingAs($otherTeacher)
+        ->get($pdfUrl)
+        ->assertForbidden();
+});
+
+it('rejects public pool invitation PDFs for unsigned inactive or incompatible quizzes', function () {
+    [$owner, $quiz] = makeQuizAttemptForAuthorization();
+
+    $unsignedUrl = route('quiz_attempts.public_pool_invitation_pdf', [
+        'quiz' => $quiz,
+        'link_expires' => now()->addHour()->getTimestamp(),
+    ]);
+
+    $this->actingAs($owner)
+        ->get($unsignedUrl)
+        ->assertForbidden();
+
+    $signedUrl = URL::signedRoute('quiz_attempts.public_pool_invitation_pdf', [
+        'quiz' => $quiz,
+        'link_expires' => now()->addHour()->getTimestamp(),
+    ]);
+
+    $this->get($signedUrl)
+        ->assertRedirect(route('quiz_attempts.register_students', $quiz))
+        ->assertSessionHas('error', __('controllers.public_anonymous_pool_mode_disabled'));
+
+    $quiz->update([
+        'is_public' => true,
+        'is_public_anonymous_pool_mode' => true,
+        'anonymous_pool_capacity' => 10,
+        'public_token_hash' => Quiz::generateLinkTokenHash(),
+        'status' => 'inactive',
+    ]);
+    $inactiveUrl = URL::signedRoute('quiz_attempts.public_pool_invitation_pdf', [
+        'quiz' => $quiz,
+        'link_expires' => now()->addHour()->getTimestamp(),
+    ]);
+
+    $this->get($inactiveUrl)
+        ->assertRedirect(route('quiz_attempts.register_students', $quiz))
+        ->assertSessionHas('error', __('controllers.public_anonymous_pool_invitation_inactive'));
+});
+
+it('renders localized invitation details without participant data', function () {
+    [$owner, $quiz] = makeQuizAttemptForAuthorization();
+    $quiz->load('creator');
+    $publicUrl = 'https://example.test/public/invitation?signature=safe';
+    $expiresAt = now()->addDay();
+
+    App::setLocale('el');
+    $html = view('quiz_attempts.public_pool_invitation_pdf', [
+        'quiz' => $quiz,
+        'publicUrl' => $publicUrl,
+        'qrSvg' => base64_encode('<svg></svg>'),
+        'expiresAt' => $expiresAt,
+        'effectiveCapacity' => 30,
+    ])->render();
+    $normalizedHtml = str_replace('&#8203;', '', $html);
+
+    expect($normalizedHtml)
+        ->toContain(__('public_pool_invitation.document_title'))
+        ->toContain($quiz->title)
+        ->toContain($owner->name)
+        ->toContain($publicUrl)
+        ->toContain('data:image/svg+xml;base64,')
+        ->not->toContain('student_code')
+        ->not->toContain('student_name');
+});
+
+it('generates pre-registered exam slots with unique codes and independent attempt limits', function () {
+    $owner = User::factory()->create([
+        'role' => 'teacher',
+        'max_students_per_quiz' => 3,
     ]);
 
     $category = Category::create([
@@ -230,10 +377,63 @@ it('generates anonymous participant slots with unique codes and independent atte
         ->get();
 
     expect($students)->toHaveCount(3)
-        ->and($students->pluck('student_name')->unique()->all())->toBe([__('controllers.anonymous_student_name')])
+        ->and($students->every(
+            fn (QuizStudent $student) => $student->student_name === QuizStudent::examSlotName($student->student_code)
+        ))->toBeTrue()
         ->and($students->pluck('max_attempts')->unique()->all())->toBe([2])
         ->and($students->pluck('student_code')->unique()->count())->toBe(3)
         ->and($students->every(fn (QuizStudent $student) => preg_match('/^\d{4}$/', $student->student_code) === 1 && $student->student_code !== '0000'))->toBeTrue();
+
+    $this->actingAs($owner)
+        ->post(route('quiz_attempts.store_anonymous_students', $quiz), [
+            'anonymous_slots_count' => 1,
+            'anonymous_max_attempts' => 1,
+        ])
+        ->assertRedirect(route('quiz_attempts.register_students', $quiz))
+        ->assertSessionHas('error', __('controllers.student_limit_reached'));
+
+    expect(QuizStudent::query()->where('quiz_id', $quiz->id)->count())->toBe(3);
+
+    $legacyStudent = $students->first();
+    $legacyStudent->update([
+        'student_name' => __('controllers.anonymous_student_name'),
+    ]);
+    $examSlotName = QuizStudent::examSlotName($legacyStudent->student_code);
+
+    $this->actingAs($owner)
+        ->get(route('quiz_attempts.register_students', $quiz))
+        ->assertOk()
+        ->assertSee($examSlotName)
+        ->assertDontSee(__('controllers.anonymous_student_name'));
+
+    $this->get($legacyStudent->accessLinkUrl(now()->addMinutes(30)))
+        ->assertRedirect(route('quiz.start'))
+        ->assertSessionHas('student_name', $examSlotName);
+
+    $this->withSession(['quiz_id' => $quiz->id])
+        ->post(route('quiz.validate_student'), [
+            'student_code' => $legacyStudent->student_code,
+        ])
+        ->assertRedirect(route('quiz.start'))
+        ->assertSessionHas('student_name', $examSlotName);
+
+    expect(
+        $quiz->attempts()->latest('id')->value('student_name')
+    )->toBe($examSlotName);
+
+    $pdfResponses = [
+        $this->actingAs($owner)->get(route('quiz_attempts.student_info_pdf', [
+            'quiz' => $quiz,
+            'student_code' => $students->first()->student_code,
+        ])),
+        $this->actingAs($owner)->get(route('quiz_attempts.students_report_pdf', $quiz)),
+        $this->actingAs($owner)->get(route('quiz_attempts.anonymous_cards_pdf', $quiz)),
+    ];
+
+    foreach ($pdfResponses as $response) {
+        $response->assertOk();
+        expect((string) $response->headers->get('content-type'))->toContain('application/pdf');
+    }
 });
 
 it('limits manual student registrations to five attempts even when resume is disabled', function () {
