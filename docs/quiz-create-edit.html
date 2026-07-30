@@ -159,7 +159,28 @@
             <article class="panel">
                 <h2 data-i18n="adminTitle">Bulk participation and administrator options</h2>
                 <p data-i18n="adminTextOne">
-                    Teachers can choose either bulk examination with pre-registered slots or a public anonymous pool. Both modes enforce the account participant limit and cannot be combined.
+                    Teachers can choose either bulk examination with pre-registered slots or a public anonymous pool. Both modes enforce the account participant limit, are mutually exclusive, and are intended for participants whose details may not be known in advance.
+                </p>
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <strong data-i18n="bulkTitle">Bulk examination with pre-registered slots</strong>
+                        <p data-i18n="bulkText">Creates separate exam slots with unique PINs and QR Codes. Each printed card can be handed to a participant, who writes their name on it for an external association.</p>
+                    </div>
+                    <div class="guide-step">
+                        <strong data-i18n="publicPoolTitle">Public anonymous pool</strong>
+                        <p data-i18n="publicPoolText">Uses one common public QR/link. A temporary anonymous slot is assigned when someone enters, while a permanent result is stored only after final submission and within the configured capacity.</p>
+                    </div>
+                </div>
+                <figure class="guide-figure">
+                    <img src="screenshots/create-edit/10 anonymous.jpg" alt="Bulk participation modes available to teachers">
+                    <figcaption data-i18n="participationCaption">The two teacher participation modes are mutually exclusive and use the participant limit configured for the account.</figcaption>
+                </figure>
+                <div class="callout">
+                    <p data-i18n="adminNote">Important: bulk examination with pre-registered slots and public anonymous pool mode cannot be enabled together. Learning and second-screen modes cannot be combined with either of these special participation modes.</p>
+                </div>
+                <h3 data-i18n="adminOnlyTitle">Administrator-only quiz options</h3>
+                <p data-i18n="adminOnlyText">
+                    The following controls are visible only to administrators. They are separate from the bulk participation modes available to teachers.
                 </p>
                 <div class="guide-steps">
                     <div class="guide-step">
@@ -170,17 +191,10 @@
                         <strong data-i18n="secondScreenTitle">Second screen and mobile controller</strong>
                         <p data-i18n="secondScreenText">Starts a registered examinee on a shared screen while answers are given from the connected mobile controller.</p>
                     </div>
-                    <div class="guide-step">
-                        <strong data-i18n="anonymousTitle">Special participation modes</strong>
-                        <p data-i18n="anonymousText">Bulk examination creates pre-registered exam slots with unique PINs and QR Codes. Public anonymous pool mode uses one public link with a defined capacity.</p>
-                    </div>
-                </div>
-                <div class="callout">
-                    <p data-i18n="adminNote">Important: bulk examination with pre-registered slots and public anonymous pool mode cannot be enabled together. Learning and second-screen modes cannot be combined with either of these special participation modes.</p>
                 </div>
                 <figure class="guide-figure">
-                    <img src="screenshots/create-edit/09 admin create edit.jpg" alt="Bulk participation and administrator quiz options">
-                    <figcaption data-i18n="adminCaption">Quota-limited bulk participation is available to teachers, while certificate verification and second-screen mode remain administrator-only.</figcaption>
+                    <img src="screenshots/create-edit/11 admin.jpg" alt="Quiz options available only to administrators">
+                    <figcaption data-i18n="adminCaption">Public certificate verification and second-screen/mobile-controller mode remain administrator-only controls.</figcaption>
                 </figure>
             </article>
         </section>
@@ -196,7 +210,7 @@
                     description: "How educators create and edit quizzes in LabSchool Exams, including quota-limited bulk participation and administrator-only controls.",
                     eyebrow: "Second guide",
                     title: "Quiz Creation and Editing",
-                    lead: "This page explains how a teacher creates a quiz, what each group of options controls, and which extra experimental modes are available only to administrators.",
+                    lead: "This page explains how a teacher creates a quiz, what each group of options controls, and which controls are available to teachers or only to administrators.",
                     collectionTitle: "Starting from the personal quiz collection",
                     collectionTextOne: "The teacher starts from the personal quiz collection. From there, a new quiz can be created, an existing quiz can be edited, or a shared example quiz can be copied as a new personal quiz.",
                     collectionTextTwo: "The example quiz is useful for a first test because it already has structure and content. A teacher can preview it or copy it, while administrators can also edit platform examples directly.",
@@ -234,22 +248,27 @@
                     editTextTwo: "If a quiz already has submitted or locked content, the application may restrict content changes. In that case, only safer operational settings, such as status and selected administrator controls, remain editable.",
                     editCaption: "The edit page keeps the same structure so the teacher can find the same settings again.",
                     adminTitle: "Bulk participation and administrator options",
-                    adminTextOne: "Teachers can choose either bulk examination with pre-registered slots or a public anonymous pool. Both modes enforce the account participant limit and cannot be combined.",
+                    adminTextOne: "Teachers can choose either bulk examination with pre-registered slots or a public anonymous pool. Both modes enforce the account participant limit, are mutually exclusive, and are intended for participants whose details may not be known in advance.",
+                    bulkTitle: "Bulk examination with pre-registered slots",
+                    bulkText: "Creates separate exam slots with unique PINs and QR Codes. Each printed card can be handed to a participant, who writes their name on it for an external association.",
+                    publicPoolTitle: "Public anonymous pool",
+                    publicPoolText: "Uses one common public QR/link. A temporary anonymous slot is assigned when someone enters, while a permanent result is stored only after final submission and within the configured capacity.",
+                    participationCaption: "The two teacher participation modes are mutually exclusive and use the participant limit configured for the account.",
+                    adminOnlyTitle: "Administrator-only quiz options",
+                    adminOnlyText: "The following controls are visible only to administrators. They are separate from the bulk participation modes available to teachers.",
                     certificateTitle: "Public certificate verification",
                     certificateText: "Adds QR/public verification for certificates. The document remains evidence of assessment, not an official certification.",
                     secondScreenTitle: "Second screen and mobile controller",
                     secondScreenText: "Starts a registered examinee on a shared screen while answers are given from the connected mobile controller.",
-                    anonymousTitle: "Special participation modes",
-                    anonymousText: "Bulk examination creates pre-registered exam slots with unique PINs and QR Codes. Public anonymous pool mode uses one public link with a defined capacity.",
                     adminNote: "Important: bulk examination with pre-registered slots and public anonymous pool mode cannot be enabled together. Learning and second-screen modes cannot be combined with either of these special participation modes.",
-                    adminCaption: "Quota-limited bulk participation is available to teachers, while certificate verification and second-screen mode remain administrator-only."
+                    adminCaption: "Public certificate verification and second-screen/mobile-controller mode remain administrator-only controls."
                 },
                 el: {
                     pageTitle: "Δημιουργία και Επεξεργασία Quiz",
-                    description: "Πώς οι εκπαιδευτικοί δημιουργούν και επεξεργάζονται quiz στο LabSchool Exams, μαζί με τις επιλογές εκπαιδευτικών και τις πειραματικές λειτουργίες διαχειριστών.",
+                    description: "Πώς οι εκπαιδευτικοί δημιουργούν και επεξεργάζονται quiz στο LabSchool Exams, μαζί με τη μαζική συμμετοχή και τις επιλογές που παραμένουν διαθέσιμες μόνο στους διαχειριστές.",
                     eyebrow: "Δεύτερος οδηγός",
                     title: "Δημιουργία και Επεξεργασία Quiz",
-                    lead: "Η σελίδα αυτή εξηγεί πώς ένας εκπαιδευτικός δημιουργεί ένα quiz, τι ελέγχει κάθε ομάδα επιλογών και ποιες επιπλέον πειραματικές λειτουργίες είναι διαθέσιμες μόνο στους διαχειριστές.",
+                    lead: "Η σελίδα αυτή εξηγεί πώς ένας εκπαιδευτικός δημιουργεί ένα quiz, τι ελέγχει κάθε ομάδα επιλογών και ποιες ρυθμίσεις είναι διαθέσιμες στους εκπαιδευτικούς ή μόνο στους διαχειριστές.",
                     collectionTitle: "Ξεκινώντας από την προσωπική συλλογή quiz",
                     collectionTextOne: "Ο εκπαιδευτικός ξεκινά από την προσωπική συλλογή quiz. Από εκεί μπορεί να δημιουργήσει νέο quiz, να επεξεργαστεί ένα υπάρχον ή να αντιγράψει ένα κοινό παράδειγμα ως νέο προσωπικό quiz.",
                     collectionTextTwo: "Το παράδειγμα quiz είναι χρήσιμο για την πρώτη δοκιμή, γιατί έχει ήδη δομή και περιεχόμενο. Ο εκπαιδευτικός μπορεί να το προεπισκοπήσει ή να το αντιγράψει, ενώ οι διαχειριστές μπορούν επίσης να επεξεργαστούν απευθείας τα παραδείγματα πλατφόρμας.",
@@ -287,15 +306,20 @@
                     editTextTwo: "Αν ένα quiz έχει ήδη υποβολές ή κλειδωμένο περιεχόμενο, η εφαρμογή μπορεί να περιορίσει τις αλλαγές περιεχομένου. Τότε παραμένουν διαθέσιμες κυρίως ασφαλέστερες λειτουργικές ρυθμίσεις, όπως η κατάσταση και ορισμένες επιλογές διαχειριστή.",
                     editCaption: "Η σελίδα επεξεργασίας κρατά την ίδια δομή, ώστε ο εκπαιδευτικός να βρίσκει ξανά τις ίδιες ρυθμίσεις.",
                     adminTitle: "Μαζική συμμετοχή και επιλογές διαχειριστή",
-                    adminTextOne: "Οι εκπαιδευτικοί μπορούν να επιλέξουν είτε μαζική εξέταση με προκαταχωρισμένες θέσεις είτε δημόσιο ανώνυμο σύνολο. Και οι δύο λειτουργίες εφαρμόζουν το όριο εξεταζομένων του λογαριασμού και δεν συνδυάζονται.",
+                    adminTextOne: "Οι εκπαιδευτικοί μπορούν να επιλέξουν είτε μαζική εξέταση με προκαταχωρισμένες θέσεις είτε δημόσιο ανώνυμο σύνολο. Και οι δύο λειτουργίες εφαρμόζουν το όριο εξεταζομένων του λογαριασμού, είναι αμοιβαία αποκλειόμενες και προορίζονται για συμμετέχοντες των οποίων τα στοιχεία μπορεί να μην είναι γνωστά εκ των προτέρων.",
+                    bulkTitle: "Μαζική εξέταση με προκαταχωρισμένες θέσεις",
+                    bulkText: "Δημιουργεί χωριστές θέσεις εξέτασης με μοναδικά PIN και QR Codes. Κάθε εκτυπωμένη κάρτα μπορεί να δοθεί σε έναν συμμετέχοντα, ο οποίος γράφει επάνω το όνομά του για την αντιστοίχιση εκτός εφαρμογής.",
+                    publicPoolTitle: "Δημόσιο ανώνυμο σύνολο εξεταζόμενων",
+                    publicPoolText: "Χρησιμοποιεί ένα κοινό δημόσιο QR/link. Κατά την είσοδο δεσμεύεται προσωρινή ανώνυμη θέση, ενώ μόνιμο αποτέλεσμα αποθηκεύεται μόνο μετά την τελική υποβολή και μέσα στη δηλωμένη χωρητικότητα.",
+                    participationCaption: "Οι δύο λειτουργίες συμμετοχής των εκπαιδευτικών είναι αμοιβαία αποκλειόμενες και χρησιμοποιούν το όριο εξεταζομένων που έχει οριστεί για τον λογαριασμό.",
+                    adminOnlyTitle: "Επιλογές quiz μόνο για διαχειριστές",
+                    adminOnlyText: "Οι παρακάτω ρυθμίσεις εμφανίζονται μόνο στους διαχειριστές και είναι ανεξάρτητες από τις λειτουργίες μαζικής συμμετοχής των εκπαιδευτικών.",
                     certificateTitle: "Δημόσια επαλήθευση βεβαίωσης",
                     certificateText: "Προσθέτει QR και δημόσιο έλεγχο γνησιότητας για βεβαιώσεις. Το έγγραφο παραμένει βεβαίωση αξιολόγησης και όχι επίσημη πιστοποίηση.",
                     secondScreenTitle: "Τηλεόραση και χειριστήριο κινητού",
                     secondScreenText: "Ξεκινά έναν καταχωρημένο εξεταζόμενο σε κοινή οθόνη, ενώ οι απαντήσεις δίνονται από συνδεδεμένο κινητό χειριστήριο.",
-                    anonymousTitle: "Ειδικές λειτουργίες συμμετοχής",
-                    anonymousText: "Η μαζική εξέταση δημιουργεί προκαταχωρισμένες θέσεις με μοναδικά PIN και QR Codes. Το δημόσιο ανώνυμο σύνολο χρησιμοποιεί έναν δημόσιο σύνδεσμο με συγκεκριμένη χωρητικότητα.",
                     adminNote: "Σημαντικό: η μαζική εξέταση με προκαταχωρισμένες θέσεις και το δημόσιο ανώνυμο σύνολο δεν μπορούν να ενεργοποιηθούν μαζί. Η λειτουργία εκμάθησης και η λειτουργία δεύτερης οθόνης δεν συνδυάζονται με καμία από αυτές τις ειδικές λειτουργίες συμμετοχής.",
-                    adminCaption: "Η μαζική συμμετοχή με όριο είναι διαθέσιμη στους εκπαιδευτικούς, ενώ η επαλήθευση βεβαιώσεων και η δεύτερη οθόνη παραμένουν μόνο για διαχειριστές."
+                    adminCaption: "Η δημόσια επαλήθευση βεβαίωσης και η λειτουργία τηλεόρασης με χειριστήριο κινητού παραμένουν διαθέσιμες μόνο στους διαχειριστές."
                 }
             }
         };

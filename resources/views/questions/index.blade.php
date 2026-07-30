@@ -121,41 +121,87 @@
             <div class="dashboard-page-header">
                 <div>
                     <span class="dashboard-section-card__eyebrow">
-                        <i class="fas fa-file-import"></i>
-                        {{ __('quizzes.import_questions') }}
+                        <i class="fas fa-file-csv"></i>
+                        {{ __('quizzes.question_csv_tools_eyebrow') }}
                     </span>
-                    <h2 class="dashboard-page-header__title">{{ __('quizzes.import_questions') }}</h2>
-                    <p class="dashboard-page-header__text">{{ __('quizzes.csv_format_hint') }}: <span class="dashboard-code-inline">text, answer_1, answer_2, ..., correct_answers</span></p>
+                    <h2 class="dashboard-page-header__title">{{ __('quizzes.question_csv_exchange') }}</h2>
+                    <p class="dashboard-page-header__text dashboard-page-header__text--wide">{{ __('quizzes.question_csv_exchange_intro') }}</p>
                 </div>
             </div>
 
-            <form action="{{ route('quizzes.questions.import', $quiz) }}" method="POST" enctype="multipart/form-data" id="questions-import-form" class="dashboard-form-stack" data-question-import-form data-max-lines="20" data-expected-header-prefix="text,answer_1,answer_2" data-empty-file-message="{{ __('ui.csv_empty_file') }}" data-read-error-message="{{ __('ui.csv_read_error') }}" data-too-many-rows-message="{{ __('ui.question_csv_too_many_rows') }}" data-invalid-headers-message="{{ __('ui.question_csv_invalid_headers') }}" data-empty-question-message="{{ __('ui.question_csv_empty_text') }}">
-                @csrf
+            <div class="question-csv-workflow">
+                <article class="question-csv-workflow__card question-csv-workflow__card--export">
+                    <div class="question-csv-workflow__header">
+                        <span class="question-csv-workflow__icon" aria-hidden="true">
+                            <i class="fas fa-file-export"></i>
+                        </span>
+                        <div>
+                            <h3 class="question-csv-workflow__title">{{ __('quizzes.question_csv_export_section_title') }}</h3>
+                            <p class="question-csv-workflow__text">{{ __('quizzes.question_csv_export_section_text') }}</p>
+                        </div>
+                    </div>
 
-                <div class="dashboard-form-group">
-                    <label for="questions_csv" class="dashboard-form-label">
-                        <i class="fas fa-file-csv text-muted"></i>{{ __('quizzes.select_csv_file') }}
-                    </label>
-                    <input type="file" name="questions_csv" id="questions_csv" class="form-control dashboard-form-control" accept=".csv" data-question-import-input required @if($isContentLocked ?? false) disabled @endif>
-                    <div class="dashboard-form-help">
-                        {{ __('quizzes.csv_format_hint') }}: <span class="dashboard-code-inline">text, answer_1, answer_2, ..., correct_answers</span> - max 20 rows, UTF-8 encoded
+                    <div class="question-csv-workflow__details">
+                        <i class="fas fa-circle-check" aria-hidden="true"></i>
+                        <span>{{ __('quizzes.export_questions_csv_hint') }}</span>
                     </div>
-                    <div class="dashboard-form-help">
-                        <span class="dashboard-code-inline">correct_answers</span> accepts answer numbers like <span class="dashboard-code-inline">1</span> or <span class="dashboard-code-inline">1,3</span>
-                    </div>
-                    <div class="dashboard-form-help">
-                        <a href="{{ asset('storage/docs/questions_template.csv') }}" target="_blank" rel="noopener" class="dashboard-inline-link">
-                            <i class="fas fa-file-csv me-1"></i>{{ __('quizzes.download_csv_template') }}
+
+                    @if(($questionsWithImagesCount ?? 0) > 0)
+                        <div class="dashboard-status-card dashboard-status-card--warning">
+                            <i class="fas fa-image"></i>
+                            <div>{{ trans_choice('quizzes.question_csv_images_omitted', $questionsWithImagesCount, ['count' => $questionsWithImagesCount]) }}</div>
+                        </div>
+                    @endif
+
+                    <div class="question-csv-workflow__actions">
+                        <a href="{{ route('quizzes.questions.export', $quiz) }}" class="btn dashboard-btn dashboard-btn--ghost">
+                            <i class="fas fa-download me-2"></i>{{ __('quizzes.export_questions_csv') }}
                         </a>
                     </div>
-                </div>
+                </article>
 
-                <div class="dashboard-form-actions dashboard-form-actions--end">
-                    <button type="submit" class="btn dashboard-btn dashboard-btn--primary" @if(!($canAddQuestion ?? true) || ($isContentLocked ?? false)) disabled @endif>
-                        <i class="fas fa-upload me-2"></i>{{ __('quizzes.import') }}
-                    </button>
-                </div>
-            </form>
+                <article class="question-csv-workflow__card question-csv-workflow__card--import">
+                    <div class="question-csv-workflow__header">
+                        <span class="question-csv-workflow__icon" aria-hidden="true">
+                            <i class="fas fa-file-import"></i>
+                        </span>
+                        <div>
+                            <h3 class="question-csv-workflow__title">{{ __('quizzes.question_csv_import_section_title') }}</h3>
+                            <p class="question-csv-workflow__text">{{ __('quizzes.question_csv_import_section_text') }}</p>
+                        </div>
+                    </div>
+
+                    <form action="{{ route('quizzes.questions.import', $quiz) }}" method="POST" enctype="multipart/form-data" id="questions-import-form" class="dashboard-form-stack question-csv-workflow__form" data-question-import-form data-max-lines="{{ $questionImportLimit ?? 500 }}" data-expected-header-prefix="text,answer_1,answer_2" data-empty-file-message="{{ __('ui.csv_empty_file') }}" data-read-error-message="{{ __('ui.csv_read_error') }}" data-too-many-rows-message="{{ __('ui.question_csv_too_many_rows') }}" data-invalid-headers-message="{{ __('ui.question_csv_invalid_headers') }}" data-empty-question-message="{{ __('ui.question_csv_empty_text') }}">
+                        @csrf
+
+                        <div class="dashboard-form-group">
+                            <label for="questions_csv" class="dashboard-form-label">
+                                <i class="fas fa-file-csv text-muted"></i>{{ __('quizzes.select_csv_file') }}
+                            </label>
+                            <input type="file" name="questions_csv" id="questions_csv" class="form-control dashboard-form-control" accept=".csv" data-question-import-input required @if($isContentLocked ?? false) disabled @endif>
+                            <div class="dashboard-form-help">
+                                {{ __('quizzes.csv_format_hint') }}:
+                                <span class="dashboard-code-inline">text, answer_1, answer_2, ..., correct_answers</span>
+                            </div>
+                            <div class="dashboard-form-help">
+                                {{ __('quizzes.question_csv_import_limit_hint', ['count' => $questionImportLimit ?? 500]) }}
+                                {{ __('quizzes.question_csv_correct_answers_hint') }}
+                            </div>
+                            <div class="dashboard-form-help">
+                                <a href="{{ asset('storage/docs/questions_template.csv') }}" target="_blank" rel="noopener" class="dashboard-inline-link">
+                                    <i class="fas fa-file-csv me-1"></i>{{ __('quizzes.download_csv_template') }}
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="question-csv-workflow__actions">
+                            <button type="submit" class="btn dashboard-btn dashboard-btn--primary" @if(!($canAddQuestion ?? true) || ($isContentLocked ?? false)) disabled @endif>
+                                <i class="fas fa-upload me-2"></i>{{ __('quizzes.import_questions_csv') }}
+                            </button>
+                        </div>
+                    </form>
+                </article>
+            </div>
         </section>
     </div>
 </div>

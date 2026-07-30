@@ -25,7 +25,7 @@ function makeQuizForQuestionEditor(): array
     ]);
 
     $category = Category::create([
-        'name' => 'Test Category',
+        'name' => 'Test Category '.uniqid(),
     ]);
 
     $quiz = Quiz::create([
@@ -33,7 +33,7 @@ function makeQuizForQuestionEditor(): array
         'description' => 'Test quiz',
         'category_id' => $category->id,
         'creator_id' => $user->id,
-        'quiz_code' => 'QZ123456',
+        'quiz_code' => strtoupper(substr(hash('sha256', uniqid('', true)), 0, 8)),
         'max_attempts' => 1,
         'time_limit' => 600,
         'is_random_order' => false,
@@ -177,6 +177,182 @@ CSV;
     expect($questions[1]->answers->where('is_correct', true)->pluck('text')->values()->all())->toBe(['A', 'E']);
 });
 
+it('presents question csv export and import as two organized workflow cards', function () {
+    [$user, $quiz] = makeQuizForQuestionEditor();
+
+    $this->actingAs($user)
+        ->get(route('quizzes.questions.index', $quiz))
+        ->assertOk()
+        ->assertSee(__('quizzes.question_csv_exchange'))
+        ->assertSee(__('quizzes.question_csv_export_section_title'))
+        ->assertSee(__('quizzes.question_csv_import_section_title'))
+        ->assertSee(__('quizzes.export_questions_csv'))
+        ->assertSee(__('quizzes.import_questions_csv'))
+        ->assertSee(route('quizzes.questions.export', $quiz), false)
+        ->assertSee(route('quizzes.questions.import', $quiz), false)
+        ->assertSee('question-csv-workflow__card--export', false)
+        ->assertSee('question-csv-workflow__card--import', false);
+});
+
+it('round trips exported questions into a different teachers quiz', function () {
+    [$sourceOwner, $sourceQuiz] = makeQuizForQuestionEditor();
+    [$targetOwner, $targetQuiz] = makeQuizForQuestionEditor();
+
+    $firstQuestion = $sourceQuiz->questions()->create([
+        'text' => "Ποια πρόταση έχει κόμμα,\nκαι εισαγωγικά \"σωστά\";",
+        'image' => 'questions_images/not-exported.png',
+        'correct_answers_count' => 2,
+        'order' => 1,
+    ]);
+    $firstQuestion->answers()->createMany([
+        ['text' => 'Πρώτη, επιλογή', 'is_correct' => true],
+        ['text' => 'Δεύτερη "επιλογή"', 'is_correct' => false],
+        ['text' => "Τρίτη\nεπιλογή", 'is_correct' => true],
+    ]);
+
+    $secondQuestion = $sourceQuiz->questions()->create([
+        'text' => '=2+2;',
+        'correct_answers_count' => 1,
+        'order' => 2,
+    ]);
+    $secondQuestion->answers()->createMany([
+        ['text' => '+4', 'is_correct' => true],
+        ['text' => '@λάθος', 'is_correct' => false],
+    ]);
+
+    $exportResponse = $this
+        ->actingAs($sourceOwner)
+        ->get(route('quizzes.questions.export', $sourceQuiz));
+
+    $exportResponse
+        ->assertOk()
+        ->assertHeader('content-type', 'text/csv; charset=UTF-8')
+        ->assertDownload("quiz_questions_{$sourceQuiz->id}.csv");
+
+    $csv = $exportResponse->streamedContent();
+
+    expect($csv)
+        ->toStartWith("\xEF\xBB\xBF")
+        ->not->toContain('questions_images/not-exported.png')
+        ->toContain("\t=2+2;")
+        ->toContain("\t+4")
+        ->toContain("\t@λάθος");
+
+    $importResponse = $this
+        ->actingAs($targetOwner)
+        ->from(route('quizzes.questions.index', $targetQuiz))
+        ->post(route('quizzes.questions.import', $targetQuiz), [
+            'questions_csv' => UploadedFile::fake()->createWithContent('question-exchange.csv', $csv),
+        ]);
+
+    $importResponse
+        ->assertRedirect(route('quizzes.questions.index', $targetQuiz))
+        ->assertSessionHas('success');
+
+    $importedQuestions = $targetQuiz->questions()
+        ->with(['answers' => fn ($query) => $query->orderBy('id')])
+        ->orderBy('id')
+        ->get();
+
+    expect($importedQuestions)->toHaveCount(2);
+    expect($importedQuestions[0]->text)->toBe($firstQuestion->text);
+    expect($importedQuestions[0]->image)->toBeNull();
+    expect($importedQuestions[0]->answers->pluck('text')->all())
+        ->toBe($firstQuestion->answers()->orderBy('id')->pluck('text')->all());
+    expect($importedQuestions[0]->answers->where('is_correct', true)->pluck('text')->values()->all())
+        ->toBe(['Πρώτη, επιλογή', "Τρίτη\nεπιλογή"]);
+    expect($importedQuestions[1]->text)->toBe('=2+2;');
+    expect($importedQuestions[1]->answers->pluck('text')->all())->toBe(['+4', '@λάθος']);
+    expect($importedQuestions[1]->answers->where('is_correct', true)->pluck('text')->values()->all())
+        ->toBe(['+4']);
+});
+
+it('does not allow another teacher to export a quiz question exchange file', function () {
+    [$owner, $quiz] = makeQuizForQuestionEditor();
+    $otherTeacher = User::factory()->create(['role' => 'teacher']);
+
+    $this->actingAs($otherTeacher)
+        ->get(route('quizzes.questions.export', $quiz))
+        ->assertForbidden();
+});
+
+it('imports more than the former twenty question limit within the teacher quota', function () {
+    [$user, $quiz] = makeQuizForQuestionEditor();
+    $user->update([
+        'max_questions_per_quiz' => 30,
+        'max_answers_per_question' => 2,
+    ]);
+
+    $rows = ['text,answer_1,answer_2,correct_answers'];
+    for ($index = 1; $index <= 25; $index++) {
+        $rows[] = "Question {$index},Correct {$index},Wrong {$index},1";
+    }
+
+    $this->actingAs($user)
+        ->from(route('quizzes.questions.index', $quiz))
+        ->post(route('quizzes.questions.import', $quiz), [
+            'questions_csv' => UploadedFile::fake()->createWithContent(
+                'twenty-five-questions.csv',
+                implode("\n", $rows)
+            ),
+        ])
+        ->assertRedirect(route('quizzes.questions.index', $quiz))
+        ->assertSessionHas('success');
+
+    expect($quiz->questions()->count())->toBe(25);
+});
+
+it('rejects an import atomically when it exceeds the remaining question quota', function () {
+    [$user, $quiz] = makeQuizForQuestionEditor();
+    $user->update([
+        'max_questions_per_quiz' => 2,
+        'max_answers_per_question' => 2,
+    ]);
+
+    $csv = <<<'CSV'
+text,answer_1,answer_2,correct_answers
+Question 1,Correct,Wrong,1
+Question 2,Correct,Wrong,1
+Question 3,Correct,Wrong,1
+CSV;
+
+    $this->actingAs($user)
+        ->from(route('quizzes.questions.index', $quiz))
+        ->post(route('quizzes.questions.import', $quiz), [
+            'questions_csv' => UploadedFile::fake()->createWithContent('over-quota.csv', $csv),
+        ])
+        ->assertRedirect(route('quizzes.questions.index', $quiz))
+        ->assertSessionHas('error');
+
+    expect($quiz->questions()->count())->toBe(0);
+});
+
+it('enforces the five hundred question csv safety cap before writing any records', function () {
+    [$user, $quiz] = makeQuizForQuestionEditor();
+    $user->update([
+        'max_questions_per_quiz' => 600,
+        'max_answers_per_question' => 2,
+    ]);
+
+    $rows = ['text,answer_1,answer_2,correct_answers'];
+    for ($index = 1; $index <= 501; $index++) {
+        $rows[] = "Safety cap question {$index},Correct,Wrong,1";
+    }
+
+    $this->actingAs($user)
+        ->from(route('quizzes.questions.index', $quiz))
+        ->post(route('quizzes.questions.import', $quiz), [
+            'questions_csv' => UploadedFile::fake()->createWithContent(
+                'over-safety-cap.csv',
+                implode("\n", $rows)
+            ),
+        ])
+        ->assertRedirect(route('quizzes.questions.index', $quiz))
+        ->assertSessionHas('error', __('controllers.question_csv_too_many_rows', ['max' => 500]));
+
+    expect($quiz->questions()->count())->toBe(0);
+});
+
 it('rejects legacy text-only csv question imports', function () {
     [$user, $quiz] = makeQuizForQuestionEditor();
 
@@ -195,7 +371,7 @@ CSV;
 
     $response
         ->assertRedirect(route('quizzes.questions.index', $quiz))
-        ->assertSessionHas('error', 'CSV must contain the headers: text, answer_1, answer_2, ..., correct_answers.');
+        ->assertSessionHas('error', __('controllers.question_csv_invalid_headers'));
 
     expect($quiz->questions()->count())->toBe(0);
 });

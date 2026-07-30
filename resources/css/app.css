@@ -709,6 +709,10 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.7;
 }
 
+.dashboard-page-header__text--wide {
+    max-width: none;
+}
+
 .dashboard-page-header__main {
     flex: 1 1 auto;
     min-width: 0;
@@ -1632,9 +1636,106 @@ h1, h2, h3, h4, h5, h6 {
     background: rgba(24, 49, 83, 0.06);
 }
 
+.question-csv-workflow {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 1rem;
+}
+
+.question-csv-workflow__card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 100%;
+    padding: 1.25rem;
+    border: 1px solid rgba(26, 106, 143, 0.14);
+    border-radius: 1.15rem;
+    background: #fff;
+}
+
+.question-csv-workflow__card--export {
+    background: linear-gradient(145deg, rgba(232, 247, 248, 0.84), rgba(248, 252, 253, 0.98));
+}
+
+.question-csv-workflow__card--import {
+    background: linear-gradient(145deg, rgba(245, 249, 254, 0.94), #fff);
+}
+
+.question-csv-workflow__header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+}
+
+.question-csv-workflow__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 0.85rem;
+    background: rgba(23, 119, 143, 0.11);
+    color: #176b81;
+    font-size: 1.05rem;
+    flex: 0 0 auto;
+}
+
+.question-csv-workflow__card--import .question-csv-workflow__icon {
+    background: rgba(38, 102, 178, 0.1);
+    color: #285f9d;
+}
+
+.question-csv-workflow__title {
+    margin: 0;
+    color: var(--dashboard-ink);
+    font-size: 1.08rem;
+    line-height: 1.35;
+}
+
+.question-csv-workflow__text {
+    margin: 0.4rem 0 0;
+    color: var(--dashboard-muted);
+    line-height: 1.55;
+}
+
+.question-csv-workflow__details {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin-top: 1rem;
+    padding: 0.8rem 0.9rem;
+    border-radius: 0.85rem;
+    background: rgba(255, 255, 255, 0.72);
+    color: #36566e;
+    line-height: 1.5;
+}
+
+.question-csv-workflow__details i {
+    margin-top: 0.18rem;
+    color: #18745f;
+}
+
+.question-csv-workflow__form {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    margin-top: 1rem;
+}
+
+.question-csv-workflow__actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: auto;
+    padding-top: 1.15rem;
+}
+
 @media (max-width: 991.98px) {
     .dashboard-auth-grid,
     .dashboard-profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .question-csv-workflow {
         grid-template-columns: 1fr;
     }
 }
@@ -1697,6 +1798,15 @@ h1, h2, h3, h4, h5, h6 {
 
     .dashboard-collection-actions {
         justify-content: flex-start;
+    }
+
+    .question-csv-workflow__card {
+        padding: 1rem;
+    }
+
+    .question-csv-workflow__actions,
+    .question-csv-workflow__actions .dashboard-btn {
+        width: 100%;
     }
 }
 
