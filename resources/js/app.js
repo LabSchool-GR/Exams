@@ -516,7 +516,7 @@ function initQuestionCsvValidation() {
             reader.onload = (loadEvent) => {
                 const csvContent = String(loadEvent.target?.result ?? '');
                 const rows = parseCsvRows(csvContent);
-                const maxLines = Number(form.dataset.maxLines ?? '20');
+                const maxLines = Number(form.dataset.maxLines ?? '500');
                 const expectedHeaderPrefix = String(form.dataset.expectedHeaderPrefix ?? '').trim().toLowerCase();
                 const errors = [];
 
@@ -529,8 +529,16 @@ function initQuestionCsvValidation() {
                     errors.push(replaceTokens(form.dataset.tooManyRowsMessage ?? '', { max: maxLines }));
                 }
 
-                const headerRow = rows[0].map((cell) => cell.trim()).join(',').toLowerCase();
-                if (expectedHeaderPrefix && !headerRow.startsWith(expectedHeaderPrefix)) {
+                const headerCells = rows[0].map((cell, index) => {
+                    const normalizedCell = cell.trim().toLowerCase();
+
+                    return index === 0 ? normalizedCell.replace(/^\uFEFF/, '') : normalizedCell;
+                });
+                const headerRow = headerCells.join(',').toLowerCase();
+                if (
+                    expectedHeaderPrefix
+                    && (!headerRow.startsWith(expectedHeaderPrefix) || !headerCells.includes('correct_answers'))
+                ) {
                     errors.push(form.dataset.invalidHeadersMessage ?? '');
                 }
 

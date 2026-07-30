@@ -20,10 +20,17 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class QuestionController extends Controller
 {
     use AuthorizesQuizOwnership;
+
+    private const MAX_CSV_FILE_KILOBYTES = 5120;
+
+    private const MAX_CSV_IMPORT_QUESTIONS = 500;
+
+    private const MAX_CSV_ANSWERS_PER_QUESTION = 20;
 
     private function redirectWhenQuizContentLocked(Quiz $quiz): RedirectResponse
     {
@@ -62,8 +69,28 @@ class QuestionController extends Controller
         $questions = $quiz->questions()->with('answers')->get();
         $isContentLocked = $quiz->hasLockedContent();
         $canAddQuestion = ! $isContentLocked && $this->canAddQuestion($quiz);
+        $user = auth()->user();
+        $questionImportLimit = self::MAX_CSV_IMPORT_QUESTIONS;
 
-        return view('questions.index', compact('quiz', 'questions', 'canAddQuestion', 'isContentLocked'));
+        if ($user && ! $user->isAdmin()) {
+            $questionImportLimit = min(
+                self::MAX_CSV_IMPORT_QUESTIONS,
+                max(0, (int) $user->max_questions_per_quiz - $questions->count())
+            );
+        }
+
+        $questionsWithImagesCount = $questions
+            ->filter(fn (Question $question): bool => is_string($question->image) && $question->image !== '')
+            ->count();
+
+        return view('questions.index', compact(
+            'quiz',
+            'questions',
+            'canAddQuestion',
+            'isContentLocked',
+            'questionImportLimit',
+            'questionsWithImagesCount'
+        ));
     }
 
     /**
@@ -337,7 +364,7 @@ class QuestionController extends Controller
      * Import multiple questions from a CSV file.
      *
      * Expected headers: text, answer_1, answer_2, ..., correct_answers
-     * Limit: 20 questions per import
+     * Limit: the authenticated teacher's remaining quota, up to 500 questions per file.
      */
     public function importCsv(Request $request, Quiz $quiz): RedirectResponse
     {
@@ -357,43 +384,14 @@ class QuestionController extends Controller
         }
 
         $request->validate([
-            'questions_csv' => 'required|file|mimes:csv,txt|max:1024',
+            'questions_csv' => 'required|file|mimes:csv,txt|max:'.self::MAX_CSV_FILE_KILOBYTES,
         ]);
 
         $file = $request->file('questions_csv');
-        $lines = array_map('str_getcsv', file($file->getRealPath()));
+        $parsedRows = $this->parseQuestionImportFile($file->getRealPath(), $user);
 
-        if (empty($lines)) {
-            return back()->with('error', 'The uploaded CSV is empty.');
-        }
-
-        $headers = $this->normalizeQuestionImportHeaders($lines[0]);
-        $answerColumns = $this->extractQuestionImportAnswerColumns($headers);
-        $headerError = $this->validateQuestionImportHeaders($headers, $answerColumns);
-
-        if ($headerError !== null) {
-            return back()->with('error', $headerError);
-        }
-
-        $rows = array_slice($lines, 1);
-        $parsedRows = [];
-
-        foreach ($rows as $rowIndex => $row) {
-            if ($this->isQuestionImportRowEmpty($row)) {
-                continue;
-            }
-
-            $parsedRow = $this->parseQuestionImportRow($row, $headers, $answerColumns, $rowIndex + 2, $user);
-
-            if (is_string($parsedRow)) {
-                return back()->with('error', $parsedRow);
-            }
-
-            $parsedRows[] = $parsedRow;
-        }
-
-        if (count($parsedRows) > 20) {
-            return back()->with('error', 'Maximum of 20 questions allowed per CSV import.');
+        if (is_string($parsedRows)) {
+            return back()->with('error', $parsedRows);
         }
 
         if ($user && ! $user->isAdmin()) {
@@ -407,7 +405,7 @@ class QuestionController extends Controller
         }
 
         if ($parsedRows === []) {
-            return back()->with('error', 'No valid questions were imported.');
+            return back()->with('error', __('controllers.question_csv_no_valid_rows'));
         }
 
         DB::transaction(function () use ($quiz, $parsedRows): void {
@@ -419,7 +417,169 @@ class QuestionController extends Controller
 
         $created = count($parsedRows);
 
-        return back()->with('success', "$created question(s) imported successfully.");
+        return back()->with('success', trans_choice('controllers.question_csv_imported', $created, [
+            'count' => $created,
+        ]));
+    }
+
+    /**
+     * Export question text, answers, and correct-answer positions in the same CSV contract accepted by importCsv.
+     */
+    public function exportCsv(Quiz $quiz): StreamedResponse
+    {
+        $this->authorizeQuizAccess($quiz);
+
+        $questions = $quiz->questions()
+            ->with(['answers' => fn ($query) => $query->orderBy('id')])
+            ->orderBy('id')
+            ->get();
+        $maximumAnswerCount = max(
+            2,
+            (int) $questions->max(
+                fn (Question $question): int => $question->answers->count()
+            )
+        );
+        $filename = "quiz_questions_{$quiz->id}.csv";
+
+        return response()->streamDownload(function () use ($questions, $maximumAnswerCount): void {
+            $output = fopen('php://output', 'wb');
+
+            if ($output === false) {
+                return;
+            }
+
+            fwrite($output, "\xEF\xBB\xBF");
+
+            $headers = ['text'];
+            for ($answerNumber = 1; $answerNumber <= $maximumAnswerCount; $answerNumber++) {
+                $headers[] = "answer_{$answerNumber}";
+            }
+            $headers[] = 'correct_answers';
+            fputcsv($output, $headers, ',', '"', '', "\r\n");
+
+            foreach ($questions as $question) {
+                $answers = $question->answers->values();
+                $row = [$this->escapeSpreadsheetFormula((string) $question->text)];
+
+                for ($answerIndex = 0; $answerIndex < $maximumAnswerCount; $answerIndex++) {
+                    $answerText = (string) ($answers->get($answerIndex)?->text ?? '');
+                    $row[] = $this->escapeSpreadsheetFormula($answerText);
+                }
+
+                $row[] = $answers
+                    ->map(fn ($answer, int $index): ?int => $answer->is_correct ? $index + 1 : null)
+                    ->filter()
+                    ->implode(',');
+
+                fputcsv($output, $row, ',', '"', '', "\r\n");
+            }
+
+            fclose($output);
+        }, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'X-Content-Type-Options' => 'nosniff',
+        ]);
+    }
+
+    /**
+     * Parse the uploaded CSV one logical record at a time, including quoted multiline fields.
+     *
+     * @return list<array{question: array<string, mixed>, answers: Collection<int, array{id: int|null, text: string, is_correct: bool}>}>|string
+     */
+    private function parseQuestionImportFile(string|false $path, ?User $user): array|string
+    {
+        if (! is_string($path) || $path === '') {
+            return __('controllers.question_csv_read_failed');
+        }
+
+        $handle = fopen($path, 'rb');
+
+        if ($handle === false) {
+            return __('controllers.question_csv_read_failed');
+        }
+
+        try {
+            $headerRow = fgetcsv($handle, 0, ',', '"', '');
+
+            if ($headerRow === false || $this->isQuestionImportRowEmpty($headerRow)) {
+                return __('controllers.question_csv_empty');
+            }
+
+            if (! $this->isUtf8CsvRow($headerRow)) {
+                return __('controllers.question_csv_utf8_required');
+            }
+
+            $headers = $this->normalizeQuestionImportHeaders($headerRow);
+            $answerColumns = $this->extractQuestionImportAnswerColumns($headers);
+            $headerError = $this->validateQuestionImportHeaders($headers, $answerColumns);
+
+            if ($headerError !== null) {
+                return $headerError;
+            }
+
+            $parsedRows = [];
+            $recordNumber = 1;
+
+            while (($row = fgetcsv($handle, 0, ',', '"', '')) !== false) {
+                $recordNumber++;
+
+                if ($this->isQuestionImportRowEmpty($row)) {
+                    continue;
+                }
+
+                if (! $this->isUtf8CsvRow($row)) {
+                    return __('controllers.question_csv_row_utf8_required', ['row' => $recordNumber]);
+                }
+
+                if (count($parsedRows) >= self::MAX_CSV_IMPORT_QUESTIONS) {
+                    return __('controllers.question_csv_too_many_rows', [
+                        'max' => self::MAX_CSV_IMPORT_QUESTIONS,
+                    ]);
+                }
+
+                $parsedRow = $this->parseQuestionImportRow(
+                    $row,
+                    $headers,
+                    $answerColumns,
+                    $recordNumber,
+                    $user
+                );
+
+                if (is_string($parsedRow)) {
+                    return $parsedRow;
+                }
+
+                $parsedRows[] = $parsedRow;
+            }
+
+            return $parsedRows;
+        } finally {
+            fclose($handle);
+        }
+    }
+
+    /**
+     * Keep spreadsheet applications from evaluating teacher-authored text as a formula.
+     */
+    private function escapeSpreadsheetFormula(string $value): string
+    {
+        return preg_match('/^[=+\-@]/u', ltrim($value)) === 1 ? "\t".$value : $value;
+    }
+
+    /**
+     * Validate encoding before values reach database-backed question models.
+     *
+     * @param  array<int, mixed>  $row
+     */
+    private function isUtf8CsvRow(array $row): bool
+    {
+        foreach ($row as $value) {
+            if (! mb_check_encoding((string) $value, 'UTF-8')) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -469,8 +629,23 @@ class QuestionController extends Controller
      */
     private function validateQuestionImportHeaders(array $headers, array $answerColumns): ?string
     {
-        if (! in_array('text', $headers, true) || ! in_array('correct_answers', $headers, true) || count($answerColumns) < 2) {
-            return 'CSV must contain the headers: text, answer_1, answer_2, ..., correct_answers.';
+        $hasSingleTextColumn = count(array_keys($headers, 'text', true)) === 1;
+        $hasSingleCorrectAnswersColumn = count(array_keys($headers, 'correct_answers', true)) === 1;
+        $answerNumbersAreSequential = array_keys($answerColumns) === range(1, count($answerColumns));
+
+        if (
+            ! $hasSingleTextColumn
+            || ! $hasSingleCorrectAnswersColumn
+            || count($answerColumns) < 2
+            || ! $answerNumbersAreSequential
+        ) {
+            return __('controllers.question_csv_invalid_headers');
+        }
+
+        if (count($answerColumns) > self::MAX_CSV_ANSWERS_PER_QUESTION) {
+            return __('controllers.question_csv_too_many_answer_columns', [
+                'max' => self::MAX_CSV_ANSWERS_PER_QUESTION,
+            ]);
         }
 
         return null;
@@ -507,7 +682,7 @@ class QuestionController extends Controller
         $questionText = trim((string) ($row[$textIndex] ?? ''));
 
         if ($questionText === '') {
-            return "Row {$rowNumber}: question text is required.";
+            return __('controllers.question_csv_text_required', ['row' => $rowNumber]);
         }
 
         $answersData = collect($answerColumns)
@@ -521,17 +696,24 @@ class QuestionController extends Controller
             ->values();
 
         if ($answersData->count() < 2) {
-            return "Row {$rowNumber}: each question must include at least two answers.";
+            return __('controllers.question_csv_minimum_answers', ['row' => $rowNumber]);
         }
 
-        if ($user && ! $user->isAdmin() && $answersData->count() > $user->max_answers_per_question) {
-            return "Row {$rowNumber}: you can import up to {$user->max_answers_per_question} answers per question.";
+        $answerLimit = $user && ! $user->isAdmin()
+            ? min(self::MAX_CSV_ANSWERS_PER_QUESTION, (int) $user->max_answers_per_question)
+            : self::MAX_CSV_ANSWERS_PER_QUESTION;
+
+        if ($answersData->count() > $answerLimit) {
+            return __('controllers.question_csv_answer_limit', [
+                'row' => $rowNumber,
+                'max' => $answerLimit,
+            ]);
         }
 
         $correctAnswersRaw = trim((string) ($row[$correctAnswersIndex] ?? ''));
 
         if ($correctAnswersRaw === '') {
-            return "Row {$rowNumber}: correct_answers is required.";
+            return __('controllers.question_csv_correct_required', ['row' => $rowNumber]);
         }
 
         $correctAnswerNumbers = collect(explode(',', $correctAnswersRaw))
@@ -540,12 +722,12 @@ class QuestionController extends Controller
             ->values();
 
         if ($correctAnswerNumbers->isEmpty()) {
-            return "Row {$rowNumber}: correct_answers must contain answer numbers like 1 or 1,3.";
+            return __('controllers.question_csv_correct_format', ['row' => $rowNumber]);
         }
 
         foreach ($correctAnswerNumbers as $correctAnswerNumber) {
             if (! ctype_digit($correctAnswerNumber) || (int) $correctAnswerNumber < 1) {
-                return "Row {$rowNumber}: correct_answers must contain answer numbers like 1 or 1,3.";
+                return __('controllers.question_csv_correct_format', ['row' => $rowNumber]);
             }
         }
 
@@ -554,14 +736,14 @@ class QuestionController extends Controller
             ->values();
 
         if ($correctAnswerNumbers->unique()->count() !== $correctAnswerNumbers->count()) {
-            return "Row {$rowNumber}: correct_answers cannot contain duplicate answer numbers.";
+            return __('controllers.question_csv_correct_duplicates', ['row' => $rowNumber]);
         }
 
         $availableAnswerNumbers = $answersData->pluck('number')->all();
         $missingAnswerNumbers = array_values(array_diff($correctAnswerNumbers->all(), $availableAnswerNumbers));
 
         if ($missingAnswerNumbers !== []) {
-            return "Row {$rowNumber}: correct_answers references missing answer columns.";
+            return __('controllers.question_csv_correct_missing', ['row' => $rowNumber]);
         }
 
         return [

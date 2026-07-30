@@ -178,6 +178,30 @@ test('default and modern image templates depend on a neutral shared image layer'
     }
 });
 
+test('question templates compose the background veil and image in one paint layer', function () {
+    foreach (['default', 'shared_img'] as $template) {
+        $questionView = file_get_contents(
+            resource_path("views/quiz/templates/{$template}/question.blade.php")
+        );
+
+        expect($questionView)
+            ->toContain('background-image:')
+            ->toContain('linear-gradient(rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0.68))')
+            ->toContain('background-attachment: scroll')
+            ->toContain('animation: riseIn 0.22s ease-out forwards')
+            ->not->toContain('body::before')
+            ->not->toContain('<div class="overlay"></div>');
+    }
+
+    $modernTheme = file_get_contents(
+        resource_path('views/quiz/templates/modern_img/partials/theme.blade.php')
+    );
+
+    expect($modernTheme)
+        ->toContain("=== 'question' ? 'scroll' : 'fixed'")
+        ->not->toContain('body::before');
+});
+
 test('the internal shared image layer cannot be registered as a selectable template', function () {
     $admin = User::factory()->create(['role' => 'admin']);
 

@@ -8,18 +8,18 @@ EXAMS releases can ship two package types:
 The current supported incremental path is:
 
 ```text
-v2.1.4 -> v2.2.0
+v2.2.0 -> v2.2.1
 ```
 
 ## Package Names
 
-For `v2.2.0`, the release workflow publishes:
+For `v2.2.1`, the release workflow publishes:
 
 ```text
-labschool-exams-v2.2.0-full.zip
-labschool-exams-v2.2.0-full.zip.sha256
-labschool-exams-v2.1.4-to-v2.2.0-upgrade.zip
-labschool-exams-v2.1.4-to-v2.2.0-upgrade.zip.sha256
+labschool-exams-v2.2.1-full.zip
+labschool-exams-v2.2.1-full.zip.sha256
+labschool-exams-v2.2.0-to-v2.2.1-upgrade.zip
+labschool-exams-v2.2.0-to-v2.2.1-upgrade.zip.sha256
 update.json
 ```
 
@@ -27,7 +27,7 @@ update.json
 
 The incremental package contains:
 
-- files added, copied, renamed, or modified between `v2.1.4` and `v2.2.0`
+- files added, copied, renamed, or modified between `v2.2.0` and `v2.2.1`
 - built frontend assets under `public/build`
 - a top-level `VERSION` file for the target version
 - `upgrade-manifest.json`

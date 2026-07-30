@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Quiz Questions and Answers</title>
-    <meta name="description" content="How educators add, edit, delete, and import quiz questions and answers in LabSchool Exams.">
+    <meta name="description" content="How educators add, edit, delete, export, and import quiz questions and answers in LabSchool Exams.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://labschool-gr.github.io/Exams/quiz-questions-answers.html">
 
@@ -14,7 +14,7 @@
     <meta property="og:url" content="https://labschool-gr.github.io/Exams/quiz-questions-answers.html">
     <meta property="og:site_name" content="LabSchool Exams">
     <meta property="og:title" content="Quiz Questions and Answers">
-    <meta property="og:description" content="How educators add, edit, delete, and import quiz questions and answers in LabSchool Exams.">
+    <meta property="og:description" content="How educators add, edit, delete, export, and import quiz questions and answers in LabSchool Exams.">
     <meta property="og:image" content="https://labschool-gr.github.io/Exams/assets/og-exams.png">
     <meta property="og:image:secure_url" content="https://labschool-gr.github.io/Exams/assets/og-exams.png">
     <meta property="og:image:type" content="image/png">
@@ -24,7 +24,7 @@
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Quiz Questions and Answers">
-    <meta name="twitter:description" content="How educators add, edit, delete, and import quiz questions and answers in LabSchool Exams.">
+    <meta name="twitter:description" content="How educators add, edit, delete, export, and import quiz questions and answers in LabSchool Exams.">
     <meta name="twitter:image" content="https://labschool-gr.github.io/Exams/assets/og-exams.png">
     <link rel="stylesheet" href="assets/pages.css">
 </head>
@@ -36,7 +36,7 @@
             <span class="eyebrow" data-i18n="eyebrow">Third guide</span>
             <h1 class="page-title" data-i18n="title">Quiz Questions and Answers</h1>
             <p class="lead" data-i18n="lead">
-                This page explains how a teacher manages the questions of a quiz, adds possible answers, marks the correct answer or answers, and imports questions in bulk.
+                This page explains how a teacher manages the questions of a quiz, adds possible answers, marks the correct answer or answers, and exports or imports question content with CSV.
             </p>
 
         </section>
@@ -112,30 +112,30 @@
             </article>
 
             <article class="panel">
-                <h2 data-i18n="csvTitle">Bulk import with CSV</h2>
+                <h2 data-i18n="csvTitle">Exporting and importing questions with CSV</h2>
                 <p data-i18n="csvTextOne">
-                    When a teacher has many questions ready in a spreadsheet, the CSV import can create several questions at once. The expected format is simple: question text, answer columns, and a final column that says which answer numbers are correct.
+                    A teacher can export the questions of one quiz and import the same file into another. The UTF-8 file contains question text, answer choices, and the positions of the correct answers, but no participant, result, access, or quiz-setting data.
                 </p>
                 <p data-i18n="csvTextTwo">
-                    The CSV headers must follow this pattern: <code>text, answer_1, answer_2, ..., correct_answers</code>. The <code>correct_answers</code> value can be a single number such as <code>1</code>, or multiple numbers such as <code>1,3</code>.
+                    The headers follow the pattern <code>text, answer_1, answer_2, ..., correct_answers</code>. The <code>correct_answers</code> value can be one number such as <code>1</code>, or multiple numbers such as <code>1,3</code>. Imported questions are appended to the target quiz without replacing existing questions.
                 </p>
                 <div class="guide-steps">
                     <div class="guide-step">
-                        <strong data-i18n="csvStepOneTitle">Use UTF-8</strong>
-                        <p data-i18n="csvStepOneText">Save the CSV as UTF-8 so Greek and English text import correctly.</p>
+                        <strong data-i18n="csvStepOneTitle">Export for reuse</strong>
+                        <p data-i18n="csvStepOneText">Download a ready-to-import CSV containing all question text, answer choices, and correct-answer positions.</p>
                     </div>
                     <div class="guide-step">
-                        <strong data-i18n="csvStepTwoTitle">Up to 20 rows</strong>
-                        <p data-i18n="csvStepTwoText">Each import accepts up to 20 question rows.</p>
+                        <strong data-i18n="csvStepTwoTitle">Import a compatible file</strong>
+                        <p data-i18n="csvStepTwoText">Use an exported file or complete the provided CSV template. The whole file is rejected if any row is invalid.</p>
                     </div>
                     <div class="guide-step">
-                        <strong data-i18n="csvStepThreeTitle">Respect limits</strong>
-                        <p data-i18n="csvStepThreeText">Teacher account limits still apply to total questions and answers.</p>
+                        <strong data-i18n="csvStepThreeTitle">Limits and images</strong>
+                        <p data-i18n="csvStepThreeText">The teacher's remaining limits apply, with a safety cap of 500 questions per file. Question images must be added separately.</p>
                     </div>
                 </div>
                 <figure class="guide-figure">
-                    <img src="screenshots/questions/10 questions.jpg" alt="CSV import panel under question list">
-                    <figcaption data-i18n="csvCaption">The CSV import panel appears under the question list and includes a template download link.</figcaption>
+                    <img src="screenshots/questions/13 csv.jpg" alt="Question export and import options using CSV">
+                    <figcaption data-i18n="csvCaption">The question page separates CSV export and import into two clear, compatible steps.</figcaption>
                 </figure>
             </article>
 
@@ -155,10 +155,10 @@
             translations: {
                 en: {
                     pageTitle: "Quiz Questions and Answers",
-                    description: "How educators add, edit, delete, and import quiz questions and answers in LabSchool Exams.",
+                    description: "How educators add, edit, delete, export, and import quiz questions and answers in LabSchool Exams.",
                     eyebrow: "Third guide",
                     title: "Quiz Questions and Answers",
-                    lead: "This page explains how a teacher manages the questions of a quiz, adds possible answers, marks the correct answer or answers, and imports questions in bulk.",
+                    lead: "This page explains how a teacher manages the questions of a quiz, adds possible answers, marks the correct answer or answers, and exports or imports question content with CSV.",
                     listTitle: "The question list of a quiz",
                     listTextOne: "Each quiz has its own question list. From this page, the teacher can add a new question, edit an existing one, or delete a question that is no longer needed.",
                     listTextTwo: "Every question card shows the question text and how many correct answers it has. This helps the teacher quickly check whether the quiz is ready before sending it to examinees.",
@@ -181,25 +181,25 @@
                     editTextOne: "Editing a question uses the same form as creation, but with the current data already filled in. The teacher can correct wording, add or remove answers, and change which answers are marked as correct.",
                     editTextTwo: "The application keeps the answer structure consistent: empty answer rows are ignored, invalid answer references are rejected, and the number of correct answers is recalculated after saving.",
                     editCaption: "Editing an existing question with an image and answer list.",
-                    csvTitle: "Bulk import with CSV",
-                    csvTextOne: "When a teacher has many questions ready in a spreadsheet, the CSV import can create several questions at once. The expected format is simple: question text, answer columns, and a final column that says which answer numbers are correct.",
-                    csvTextTwo: "The CSV headers must follow this pattern: text, answer_1, answer_2, ..., correct_answers. The correct_answers value can be a single number such as 1, or multiple numbers such as 1,3.",
-                    csvStepOneTitle: "Use UTF-8",
-                    csvStepOneText: "Save the CSV as UTF-8 so Greek and English text import correctly.",
-                    csvStepTwoTitle: "Up to 20 rows",
-                    csvStepTwoText: "Each import accepts up to 20 question rows.",
-                    csvStepThreeTitle: "Respect limits",
-                    csvStepThreeText: "Teacher account limits still apply to total questions and answers.",
-                    csvCaption: "The CSV import panel appears under the question list and includes a template download link.",
+                    csvTitle: "Exporting and importing questions with CSV",
+                    csvTextOne: "A teacher can export the questions of one quiz and import the same file into another. The UTF-8 file contains question text, answer choices, and the positions of the correct answers, but no participant, result, access, or quiz-setting data.",
+                    csvTextTwo: "The headers follow the pattern text, answer_1, answer_2, ..., correct_answers. The correct_answers value can be one number such as 1, or multiple numbers such as 1,3. Imported questions are appended to the target quiz without replacing existing questions.",
+                    csvStepOneTitle: "Export for reuse",
+                    csvStepOneText: "Download a ready-to-import CSV containing all question text, answer choices, and correct-answer positions.",
+                    csvStepTwoTitle: "Import a compatible file",
+                    csvStepTwoText: "Use an exported file or complete the provided CSV template. The whole file is rejected if any row is invalid.",
+                    csvStepThreeTitle: "Limits and images",
+                    csvStepThreeText: "The teacher's remaining limits apply, with a safety cap of 500 questions per file. Question images must be added separately.",
+                    csvCaption: "The question page separates CSV export and import into two clear, compatible steps.",
                     lockedTitle: "When question editing is locked",
                     lockedText: "If a quiz already has locked content, submitted attempts, or data that must remain stable, the application can stop question editing. This protects previous results and prevents changes that would make reports unreliable."
                 },
                 el: {
                     pageTitle: "Ερωτήσεις και Απαντήσεις Quiz",
-                    description: "Πώς οι εκπαιδευτικοί προσθέτουν, επεξεργάζονται, διαγράφουν και εισάγουν ερωτήσεις και απαντήσεις σε quiz του LabSchool Exams.",
+                    description: "Πώς οι εκπαιδευτικοί προσθέτουν, επεξεργάζονται, διαγράφουν, εξάγουν και εισάγουν ερωτήσεις και απαντήσεις σε quiz του LabSchool Exams.",
                     eyebrow: "Τρίτος οδηγός",
                     title: "Ερωτήσεις και Απαντήσεις Quiz",
-                    lead: "Η σελίδα αυτή εξηγεί πώς ο εκπαιδευτικός διαχειρίζεται τις ερωτήσεις ενός quiz, προσθέτει πιθανές απαντήσεις, σημειώνει τη σωστή ή τις σωστές απαντήσεις και εισάγει ερωτήσεις μαζικά.",
+                    lead: "Η σελίδα αυτή εξηγεί πώς ο εκπαιδευτικός διαχειρίζεται τις ερωτήσεις ενός quiz, προσθέτει πιθανές απαντήσεις, σημειώνει τη σωστή ή τις σωστές απαντήσεις και εξάγει ή εισάγει περιεχόμενο ερωτήσεων με CSV.",
                     listTitle: "Η λίστα ερωτήσεων ενός quiz",
                     listTextOne: "Κάθε quiz έχει τη δική του λίστα ερωτήσεων. Από αυτή τη σελίδα ο εκπαιδευτικός μπορεί να προσθέσει νέα ερώτηση, να επεξεργαστεί μια υπάρχουσα ή να διαγράψει μια ερώτηση που δεν χρειάζεται πλέον.",
                     listTextTwo: "Κάθε πλαίσιο ερώτησης δείχνει το κείμενο της ερώτησης και πόσες σωστές απαντήσεις έχει. Έτσι ο εκπαιδευτικός ελέγχει γρήγορα αν το quiz είναι έτοιμο πριν το δώσει στους εξεταζόμενους.",
@@ -222,16 +222,16 @@
                     editTextOne: "Η επεξεργασία ερώτησης χρησιμοποιεί την ίδια φόρμα με τη δημιουργία, αλλά με συμπληρωμένα τα υπάρχοντα δεδομένα. Ο εκπαιδευτικός μπορεί να διορθώσει διατύπωση, να προσθέσει ή να αφαιρέσει απαντήσεις και να αλλάξει ποιες απαντήσεις είναι σωστές.",
                     editTextTwo: "Η εφαρμογή κρατά τη δομή των απαντήσεων συνεπή: οι κενές γραμμές απαντήσεων αγνοούνται, οι μη έγκυρες αναφορές απαντήσεων απορρίπτονται και το πλήθος σωστών απαντήσεων υπολογίζεται ξανά μετά την αποθήκευση.",
                     editCaption: "Επεξεργασία υπάρχουσας ερώτησης με εικόνα και λίστα απαντήσεων.",
-                    csvTitle: "Μαζική εισαγωγή με CSV",
-                    csvTextOne: "Όταν ο εκπαιδευτικός έχει πολλές ερωτήσεις έτοιμες σε υπολογιστικό φύλλο, η εισαγωγή CSV μπορεί να δημιουργήσει πολλές ερωτήσεις μαζί. Η αναμενόμενη μορφή είναι απλή: κείμενο ερώτησης, στήλες απαντήσεων και μια τελική στήλη που δηλώνει ποιοι αριθμοί απαντήσεων είναι σωστοί.",
-                    csvTextTwo: "Οι επικεφαλίδες του CSV πρέπει να ακολουθούν το μοτίβο: text, answer_1, answer_2, ..., correct_answers. Η τιμή correct_answers μπορεί να είναι ένας αριθμός, όπως 1, ή περισσότεροι αριθμοί, όπως 1,3.",
-                    csvStepOneTitle: "Χρήση UTF-8",
-                    csvStepOneText: "Αποθηκεύουμε το CSV ως UTF-8 ώστε ελληνικά και αγγλικά κείμενα να εισαχθούν σωστά.",
-                    csvStepTwoTitle: "Έως 20 γραμμές",
-                    csvStepTwoText: "Κάθε εισαγωγή δέχεται έως 20 γραμμές ερωτήσεων.",
-                    csvStepThreeTitle: "Τήρηση ορίων",
-                    csvStepThreeText: "Τα όρια του λογαριασμού εκπαιδευτικού συνεχίζουν να ισχύουν για το σύνολο ερωτήσεων και απαντήσεων.",
-                    csvCaption: "Η ενότητα εισαγωγής CSV εμφανίζεται κάτω από τη λίστα ερωτήσεων και περιλαμβάνει σύνδεσμο για πρότυπο αρχείο.",
+                    csvTitle: "Εξαγωγή και εισαγωγή ερωτήσεων με CSV",
+                    csvTextOne: "Ο εκπαιδευτικός μπορεί να εξαγάγει τις ερωτήσεις ενός quiz και να εισαγάγει το ίδιο αρχείο σε άλλο. Το αρχείο UTF-8 περιλαμβάνει τα κείμενα των ερωτήσεων, τις επιλογές απαντήσεων και τις θέσεις των σωστών απαντήσεων, αλλά όχι εξεταζόμενους, αποτελέσματα, στοιχεία πρόσβασης ή ρυθμίσεις του quiz.",
+                    csvTextTwo: "Οι επικεφαλίδες ακολουθούν το μοτίβο text, answer_1, answer_2, ..., correct_answers. Η τιμή correct_answers μπορεί να είναι ένας αριθμός, όπως 1, ή περισσότεροι, όπως 1,3. Οι εισαγόμενες ερωτήσεις προστίθενται στο quiz προορισμού χωρίς να αντικαθιστούν τις υπάρχουσες.",
+                    csvStepOneTitle: "Εξαγωγή για επαναχρησιμοποίηση",
+                    csvStepOneText: "Κατεβάζουμε ένα έτοιμο για εισαγωγή CSV με όλα τα κείμενα ερωτήσεων, τις επιλογές απαντήσεων και τις θέσεις των σωστών απαντήσεων.",
+                    csvStepTwoTitle: "Εισαγωγή συμβατού αρχείου",
+                    csvStepTwoText: "Χρησιμοποιούμε ένα εξαγόμενο αρχείο ή συμπληρώνουμε το διαθέσιμο πρότυπο CSV. Αν κάποια εγγραφή είναι λανθασμένη, απορρίπτεται ολόκληρο το αρχείο.",
+                    csvStepThreeTitle: "Όρια και εικόνες",
+                    csvStepThreeText: "Ισχύει το διαθέσιμο υπόλοιπο του εκπαιδευτικού, με ανώτατο όριο ασφαλείας 500 ερωτήσεων ανά αρχείο. Οι εικόνες ερωτήσεων προστίθενται χωριστά.",
+                    csvCaption: "Η σελίδα ερωτήσεων διαχωρίζει την εξαγωγή και την εισαγωγή CSV σε δύο σαφή και συμβατά βήματα.",
                     lockedTitle: "Όταν κλειδώνει η επεξεργασία ερωτήσεων",
                     lockedText: "Αν ένα quiz έχει ήδη κλειδωμένο περιεχόμενο, υποβλημένες προσπάθειες ή δεδομένα που πρέπει να μείνουν σταθερά, η εφαρμογή μπορεί να σταματήσει την επεξεργασία ερωτήσεων. Έτσι προστατεύονται τα προηγούμενα αποτελέσματα και αποφεύγονται αλλαγές που θα έκαναν τις αναφορές αναξιόπιστες."
                 }

@@ -34,7 +34,7 @@ body {
     background-position: left top, right bottom, center, center;
     background-repeat: no-repeat;
     background-size: auto, auto, cover, cover;
-    background-attachment: fixed;
+    background-attachment: {{ ($templateScreen ?? '') === 'question' ? 'scroll' : 'fixed' }};
     font-family: Figtree, "Segoe UI", sans-serif;
 }
 

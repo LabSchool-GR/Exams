@@ -71,8 +71,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Import questions via CSV
+    // Exchange question content through a CSV contract shared by import and export.
     Route::post('quizzes/{quiz}/questions/import', [QuestionController::class, 'importCsv'])->name('quizzes.questions.import');
+    Route::get('quizzes/{quiz}/questions/export', [QuestionController::class, 'exportCsv'])->name('quizzes.questions.export');
 
     // Resource controllers keep the conventional CRUD surface easy to discover for students.
     Route::resource('categories', CategoryController::class);

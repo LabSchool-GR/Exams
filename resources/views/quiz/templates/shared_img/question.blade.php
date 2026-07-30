@@ -17,22 +17,18 @@
 
 body {
     min-height: 100dvh;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0.68)),
     @if(isset($quiz) && $quiz->image)
-        background-image: url('{{ asset('storage/' . $quiz->image) }}');
+        url('{{ asset('storage/' . $quiz->image) }}');
     @else
-        background-image: url('{{ asset('storage/bg-quiz.jpg') }}');
+        url('{{ asset('storage/bg-quiz.jpg') }}');
     @endif
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
+    background-attachment: scroll;
+    background-color: var(--quiz-bg);
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(255, 255, 255, 0.68);
-    z-index: 1;
 }
 
 .screen-shell {
@@ -378,13 +374,13 @@ body {
 
 .fade-in {
     opacity: 0;
-    animation: riseIn 0.55s ease-out forwards;
+    animation: riseIn 0.22s ease-out forwards;
 }
 
 @keyframes riseIn {
     from {
         opacity: 0;
-        transform: translateY(14px);
+        transform: translateY(6px);
     }
     to {
         opacity: 1;
@@ -530,7 +526,6 @@ body {
 @endphp
 
 @if(!$allowDisplay)
-    <div class="overlay"></div>
     <div class="container screen-shell d-flex justify-content-center align-items-center">
         <div class="exam-card"
              data-quiz-question-runtime
@@ -556,8 +551,6 @@ body {
     </div>
     @php return; @endphp
 @endif
-
-<div class="overlay"></div>
 
 <div class="container screen-shell d-flex justify-content-center align-items-center">
     <div class="exam-card quiz-runtime-fallback-target fade-in"

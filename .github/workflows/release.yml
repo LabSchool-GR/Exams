@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 env:
-  UPGRADE_BASE_TAG: v2.1.4
+  UPGRADE_BASE_TAG: v2.2.0
 
 jobs:
   verify-release:

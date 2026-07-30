@@ -26,6 +26,24 @@ The format is intentionally lightweight and release-friendly so entries can be r
 
 ## Unreleased
 
+## [v2.2.1] - 2026-07-30
+
+### Added
+
+- Quiz owners can export question text, answer choices, and correct-answer positions as a UTF-8 CSV and import the same format directly into another quiz.
+
+### Changed
+
+- Question CSV imports now use streaming RFC-compatible parsing, support up to the teacher's remaining quota with a 500-question safety cap, and provide localized validation feedback.
+
+### Fixed
+
+- Question pages now keep the background veil visible from the first paint and use a shorter card entrance, preventing a flash of the unfiltered background between questions.
+
+### Security
+
+- Updated the locked frontend build dependencies within their compatible release ranges, resolving the current Axios, Vite, Rollup, PostCSS, form-data, Lodash, and related npm advisories.
+
 ## [v2.2.0] - 2026-07-28
 
 ### Added
